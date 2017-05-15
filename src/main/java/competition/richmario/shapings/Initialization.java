@@ -5,6 +5,7 @@
 package competition.richmario.shapings;
 
 import competition.richmario.StateAction;
+import competition.richmario.experiment.ShapingManager;
 
 /**
  *
@@ -12,13 +13,21 @@ import competition.richmario.StateAction;
  */
 public abstract class Initialization extends Shaping{
 
+    private ShapingManager m_shapingManager;
+
     public Initialization(double scaling, double gamma){
         super(scaling, gamma);
+        this.m_shapingManager = new ShapingManager();
     }
     
     @Override
     public double shape(StateAction sa1, StateAction sa2, double reward){
-        return reward;
+        return reward +
+                this.m_shapingManager.getShapingReward(
+                        sa1.getState(),
+                        sa1.getAction(),
+                        sa2.getState()
+                );
     }
     
 }
