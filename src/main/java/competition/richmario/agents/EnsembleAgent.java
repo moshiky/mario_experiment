@@ -85,9 +85,9 @@ abstract public class EnsembleAgent extends BasicMarioAIAgent implements Agent {
         int[] state = new int[10];
         
         // CLOSEST TWO ENEMIES
-        state[0] = isMarioAbleToJump ? 0 : 1;
-        state[1] = isMarioOnGround ? 0 : 1;
-        state[2] = isMarioAbleToShoot ? 0 : 1;//marioMode;//
+        state[0] = isMarioAbleToJump ? 1 : 0;
+        state[1] = isMarioOnGround ? 1 : 0;
+        state[2] = isMarioAbleToShoot ? 1 : 0;//marioMode;//
         float xdiff = marioFloatPos[0] - prevMarioPos[0];
         float ydiff = marioFloatPos[1] - prevMarioPos[1];
         state[3] = xdiff < 0 ? 0 : (xdiff == 0 ? 1 : 2);

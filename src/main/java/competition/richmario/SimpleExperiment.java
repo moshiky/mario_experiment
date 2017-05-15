@@ -50,7 +50,7 @@ import weka.core.Utils;
  * 7, 2009 Time: 4:38:23 PM Package: ch.idsia
  */
 public class SimpleExperiment {
-    
+
     private static final boolean DEBUG = true;
     public static Integer episode = 0;
     public static Integer usingSimilarities = 1 ; // 0 = no, 1 = full similarities, 2 = poop
@@ -126,7 +126,7 @@ public class SimpleExperiment {
 
     public static double[] experiment() throws Exception {
 
-        boolean visualize = false;
+        boolean visualize = true;
 
         double alpha = 0.01;
         double gamma = 0.9;
@@ -173,7 +173,7 @@ public class SimpleExperiment {
             marioAIOptions.setLevelRandSeed(RNG.randomInt(1000000));
             marioAIOptions.setMarioMode(RNG.randomInt(3));
             marioAIOptions.setGapsCount(false);
-            marioAIOptions.setVisualization(false);
+            marioAIOptions.setVisualization(visualize);
             basicTask.setOptionsAndReset(marioAIOptions);
             agent.newEpisode();
 
