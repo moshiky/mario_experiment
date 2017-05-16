@@ -59,6 +59,8 @@ public class SimpleExperiment {
     public static Integer simStage = 0;
     private Double avg = 0.0;
 
+    public static boolean isBasicQLearning;
+
 
 
     public static void main(String[] args) throws Exception {
@@ -147,10 +149,9 @@ public class SimpleExperiment {
 
         final BasicTask basicTask = new BasicTask(marioAIOptions);
         double[] results = new double[episodes / testStepSize + 1];
+        double rewardTmpSum = 0;
 
         for (int i = 0; i <= episodes; ++i) {
-
-
 
             if(i > 0 && i % testStepSize == 0) {
                 Integer stepResultIndex = i / testStepSize;
@@ -159,17 +160,6 @@ public class SimpleExperiment {
                 //Double testResult = test(agent);
                 //results[stepResultIndex] = testResult;
                 //System.out.println("test result[" + stepResultIndex + "]:" + testResult);
-            }
-
-            if(i == 0) {
-                start = new Date();
-            } else if(i % 1000 == 0) {
-                end = new Date();
-
-                long seconds = (end.getTime() - start.getTime()) / 1000;
-                logger.info("TIME: " + seconds);
-                start = new Date();
-
             }
 
             episode = i;
@@ -184,11 +174,12 @@ public class SimpleExperiment {
 
             Double res = basicTask.runSingleEpisode(1, true);
 
-
-            if(i % 1000 == 0) {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-hh HH:mm:ss");
-                logger.info("step:" + i + " time:" + format.format(new Date()));
+            if(i % logger.LOGGING_INTERVAL == 0) {
+                logger.info("step #" + i + " res=" + rewardTmpSum/logger.LOGGING_INTERVAL);
+                rewardTmpSum = 0;
             }
+            rewardTmpSum += res;
+            logger.addEpisodeResult(res);
 
         }
 

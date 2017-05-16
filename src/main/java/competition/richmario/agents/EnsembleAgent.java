@@ -383,12 +383,11 @@ abstract public class EnsembleAgent extends BasicMarioAIAgent implements Agent {
         StateAction sa = getState();
 
         float thisreward = reward - lastReward;
-        if (runs % this.logger.LOGGING_INTERVAL == 0) {
+        /*if (runs % this.logger.LOGGING_INTERVAL == 0) {
             this.logger.info("interval reward mean = " + (rewardTmpSum/this.logger.LOGGING_INTERVAL));
             rewardTmpSum = 0;
         }
-        rewardTmpSum += thisreward;
-        this.logger.addEpisodeResult(thisreward);
+        rewardTmpSum += thisreward;*/
 
 
         if(reward != lastReward) {

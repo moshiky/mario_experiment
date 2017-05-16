@@ -17,7 +17,7 @@ import java.util.logging.FileHandler;
  */
 public class Logger {
 
-    public final int LOGGING_INTERVAL = 10000;
+    public final int LOGGING_INTERVAL = 100;
     private String m_infoLogFilePath;
     private JFrame m_curveDisplay;
     private LearningCurveDisplay m_learningCurveDisplay;
