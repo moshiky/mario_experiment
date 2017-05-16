@@ -87,10 +87,10 @@ public class DemonstrationExperiment {
         switch (new Integer(args[0])) {
             default:
             case 0:
-                agent = new LinearEnsembleAgent(new PCAQAgent[]{new PCAQAgent(gamma, "human_mario_2905.arff", new Integer(args[1]))}, 0.05);
+                agent = new LinearEnsembleAgent(null, new PCAQAgent[]{new PCAQAgent(gamma, "human_mario_2905.arff", new Integer(args[1]))}, 0.05);
                 break;
             case 1:
-                agent = new LinearEnsembleAgent(new IncrementalPCAQAgent[]{new IncrementalPCAQAgent(gamma, "human_mario_2905.arff", new Integer(args[1]))}, 0.05);
+                agent = new LinearEnsembleAgent(null, new IncrementalPCAQAgent[]{new IncrementalPCAQAgent(gamma, "human_mario_2905.arff", new Integer(args[1]))}, 0.05);
 //                agent = new LinearEnsembleAgent(new MultiPCAQAgent[]{new MultiPCAQAgent(gamma, "human_mario_2905.arff", new Integer(args[1]))}, 0.05);
                 break;
             case 2:

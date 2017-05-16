@@ -19,7 +19,7 @@ import util.Util;
 public class RankingEnsembleAgent extends EnsembleAgent{
     
     public RankingEnsembleAgent(QLambdaAgent[] agents, double epsilon) {
-        super(agents, epsilon);
+        super(null, agents, epsilon);
     }
     
     @Override

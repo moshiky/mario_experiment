@@ -19,7 +19,7 @@ import util.Util;
 public class VotingEnsembleAgent extends EnsembleAgent{
     
     public VotingEnsembleAgent(QLambdaAgent[] agents, double epsilon) {
-        super(agents, epsilon);
+        super(null, agents, epsilon);
     }
     
     @Override

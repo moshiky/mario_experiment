@@ -77,19 +77,19 @@ public class OnlineInitExperiment {
             case 0:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 1:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 1.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 2:
                 OnlineInitialization init = new OnlineInitialization(1.0, gamma);
                 learner = new QLambdaAgent(init, 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
                 init.setAgent(learner);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
         }
 

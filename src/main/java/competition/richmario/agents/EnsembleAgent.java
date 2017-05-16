@@ -13,6 +13,7 @@ import ch.idsia.benchmark.mario.engine.GeneralizerLevelScene;
 import ch.idsia.benchmark.mario.engine.sprites.Mario;
 import competition.richmario.StateAction;
 import competition.richmario.experiment.SimilarityManager;
+import loggingUtils.Logger;
 import org.apache.commons.math3.util.Pair;
 import util.*;
 
@@ -26,8 +27,8 @@ import static competition.richmario.SimpleExperiment.simStage;
  * @author timbrys
  */
 abstract public class EnsembleAgent extends BasicMarioAIAgent implements Agent {
-    
-    protected double epsilon;
+
+        protected double epsilon;
     
     protected StateAction prevSA;
     
@@ -39,12 +40,14 @@ abstract public class EnsembleAgent extends BasicMarioAIAgent implements Agent {
     
     protected Demonstration record;
     protected boolean recording;
+
+    protected Logger logger;
     
-    public EnsembleAgent(QLambdaAgent[] agents, double epsilon){
-        this(agents, epsilon, false);
+    public EnsembleAgent(Logger logger, QLambdaAgent[] agents, double epsilon){
+        this(logger, agents, epsilon, false);
     }
     
-    public EnsembleAgent(QLambdaAgent[] agents, double epsilon, boolean recording){
+    public EnsembleAgent(Logger logger, QLambdaAgent[] agents, double epsilon, boolean recording){
         super("Ensemble");
         
         this.epsilon = epsilon;
@@ -59,6 +62,8 @@ abstract public class EnsembleAgent extends BasicMarioAIAgent implements Agent {
      
         this.recording = recording;
         this.record = new Demonstration(-1);
+
+        this.logger = logger;
         
         reset();
     }
@@ -372,12 +377,18 @@ abstract public class EnsembleAgent extends BasicMarioAIAgent implements Agent {
 
     static int runs = 0;
     static int sizeTotal = 0;
+    static double rewardTmpSum = 0;
 
     public void giveIntermediateReward(float reward) {
         StateAction sa = getState();
 
-        
         float thisreward = reward - lastReward;
+        if (runs % this.logger.LOGGING_INTERVAL == 0) {
+            this.logger.info("interval reward mean = " + (rewardTmpSum/this.logger.LOGGING_INTERVAL));
+            rewardTmpSum = 0;
+        }
+        rewardTmpSum += thisreward;
+        this.logger.addEpisodeResult(thisreward);
 
 
         if(reward != lastReward) {
@@ -404,7 +415,9 @@ abstract public class EnsembleAgent extends BasicMarioAIAgent implements Agent {
                 int size = similarities.size();
                 sizeTotal += size;
                 runs++;
-                System.out.println("@" + runs + " = " + sizeTotal);
+                /*if (runs % this.logger.LOGGING_INTERVAL == 0) {
+                    this.logger.info("@" + runs + " = " + sizeTotal);
+                }*/
 
                 for (Pair<StateAction, Double> similarity : similarities) {
                     StateAction ssa = similarity.getFirst();
@@ -499,7 +512,7 @@ abstract public class EnsembleAgent extends BasicMarioAIAgent implements Agent {
             return greedyActionSelection(sa);
         }
 //        double tau = 0.01;
-//        
+//
 //        double sum = 0.0;
 //        double[] values = new double[getNumActions()];
 //        double highest = -Double.MAX_VALUE;

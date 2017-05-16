@@ -32,7 +32,7 @@ package ch.idsia.utils;
  * User: Sergey Karakovskiy, firstname_at_idsia_dot_ch
  * Date: Jul 25, 2009
  * Time: 3:26:43 PM
- * Package: ch.idsia.utils
+ * Package: ch.idsia.loggingUtils
  */
 public class MathX
 {

@@ -5,6 +5,8 @@
 package competition.richmario.agents;
 
 import competition.richmario.StateAction;
+import loggingUtils.Logger;
+import sun.rmi.runtime.Log;
 import util.Util;
 
 /**
@@ -13,12 +15,12 @@ import util.Util;
  */
 public class LinearEnsembleAgent extends EnsembleAgent {
 
-    public LinearEnsembleAgent(QLambdaAgent[] agents, double epsilon) {
-        super(agents, epsilon, false);
+    public LinearEnsembleAgent(Logger logger, QLambdaAgent[] agents, double epsilon) {
+        super(logger, agents, epsilon, false);
     }
     
-    public LinearEnsembleAgent(QLambdaAgent[] agents, double epsilon, boolean record) {
-        super(agents, epsilon, record);
+    public LinearEnsembleAgent(Logger logger, QLambdaAgent[] agents, double epsilon, boolean record) {
+        super(logger, agents, epsilon, record);
     }
     
     @Override

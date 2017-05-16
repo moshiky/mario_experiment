@@ -42,6 +42,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 
+import loggingUtils.Logger;
+import sun.rmi.runtime.Log;
 import util.RNG;
 import weka.core.Utils;
 
@@ -60,33 +62,36 @@ public class SimpleExperiment {
 
 
     public static void main(String[] args) throws Exception {
+        long currentTime = System.currentTimeMillis();
+        Logger logger = new Logger("logs/info__" + currentTime + ".log");
+        logger.initiateLearningCurveDisplay(currentTime);
 
         //for(simStage = 0; simStage <= 5; simStage++) {
-            System.out.println("Stage: " + simStage);
+            logger.info("Stage: " + simStage);
             for (double sim = 0.3; sim <= 0.3; sim += 0.3) {
 
                 EnsembleAgent.strongSimFactor = sim;
                 EnsembleAgent.weakSimFactor = sim / 2.0;
-                System.out.println("Starting with weight: " + sim);
+                logger.info("Starting with weight: " + sim);
 
-                double[] avgs = experimentMain();
+                double[] avgs = experimentMain(logger);
 
                 //System.out.println(Arrays.toString(means(results)));
-                System.out.println("FINAL weight " + sim);
-                System.out.println(Arrays.toString(avgs));
+                logger.info("FINAL weight " + sim);
+                logger.info(Arrays.toString(avgs));
             }
         //}
         System.exit(0);
     }
 
-    public static double[] experimentMain() throws Exception {
+    public static double[] experimentMain(Logger logger) throws Exception {
 
         double[] resultsSum = null;
         int runs = 10;
 
         for(int i = 0; i < runs; ++i) {
-            double[] result = experiment();
-            System.out.println(Arrays.toString(result));
+            double[] result = experiment(logger);
+            logger.info(Arrays.toString(result));
             if(resultsSum == null) {
                 resultsSum = result;
             } else {
@@ -124,9 +129,9 @@ public class SimpleExperiment {
     static Date start = null;
     static Date end = null;
 
-    public static double[] experiment() throws Exception {
+    public static double[] experiment(Logger logger) throws Exception {
 
-        boolean visualize = true;
+        boolean visualize = false;
 
         double alpha = 0.01;
         double gamma = 0.9;
@@ -138,7 +143,7 @@ public class SimpleExperiment {
 
         EnsembleAgent agent;
 
-        agent = new LinearEnsembleAgent(new QLambdaAgent[]{new QLambdaAgent(alpha, lambda, new ConstantInitialization(1.0, gamma, 0.0), gamma)}, epsilon);
+        agent = new LinearEnsembleAgent(logger, new QLambdaAgent[]{new QLambdaAgent(alpha, lambda, new ConstantInitialization(1.0, gamma, 0.0), gamma)}, epsilon);
 
         final BasicTask basicTask = new BasicTask(marioAIOptions);
         double[] results = new double[episodes / testStepSize + 1];
@@ -162,7 +167,7 @@ public class SimpleExperiment {
                 end = new Date();
 
                 long seconds = (end.getTime() - start.getTime()) / 1000;
-                System.out.println("TIME: " + seconds);
+                logger.info("TIME: " + seconds);
                 start = new Date();
 
             }
@@ -182,7 +187,7 @@ public class SimpleExperiment {
 
             if(i % 1000 == 0) {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-hh HH:mm:ss");
-                System.out.println("step:" + i + " time:" + format.format(new Date()));
+                logger.info("step:" + i + " time:" + format.format(new Date()));
             }
 
         }

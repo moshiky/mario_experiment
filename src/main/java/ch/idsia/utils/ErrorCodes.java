@@ -32,7 +32,7 @@ package ch.idsia.utils;
  * User: Sergey Karakovskiy, sergey.karakovskiy@gmail.com
  * Date: Oct 21, 2010
  * Time: 5:07:46 AM
- * Package: ch.idsia.utils
+ * Package: ch.idsia.loggingUtils
  */
 public class ErrorCodes
 {

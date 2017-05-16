@@ -16,7 +16,7 @@ import util.Util;
 public class ConfidenceEnsembleAgent extends EnsembleAgent {
 
     public ConfidenceEnsembleAgent(QLambdaAgent[] agents, double epsilon) {
-        super(agents, epsilon);
+        super(null, agents, epsilon);
     }
     
     @Override

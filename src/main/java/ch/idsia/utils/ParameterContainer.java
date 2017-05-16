@@ -41,7 +41,7 @@ import java.util.List;
  * User: Sergey Karakovskiy, firstName_at_idsia_dot_ch
  * Date: May 5, 2009
  * Time: 9:34:33 PM
- * Package: ch.idsia.utils
+ * Package: ch.idsia.loggingUtils
  */
 public class ParameterContainer
 {

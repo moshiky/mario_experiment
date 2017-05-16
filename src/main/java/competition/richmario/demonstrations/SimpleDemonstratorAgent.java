@@ -17,7 +17,7 @@ import util.RNG;
 public class SimpleDemonstratorAgent extends EnsembleAgent{
 
     public SimpleDemonstratorAgent() {
-        super(new QLambdaAgent[0], 0.0, true);
+        super(null, new QLambdaAgent[0], 0.0, true);
     }
     
     @Override

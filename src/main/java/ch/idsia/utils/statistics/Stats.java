@@ -264,7 +264,7 @@ public static String rmsString(double[] v)
 }
 
 /**
- * Runs through some utils using the functions
+ * Runs through some loggingUtils using the functions
  * defined in this class.
  *
  * @throws java.io.IOException

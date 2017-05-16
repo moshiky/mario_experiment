@@ -113,32 +113,32 @@ public class IRLExperiment {
             case 0:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 1:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 1.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 2:
                 learner = new QLambdaAgent(new IRLShaping(1.0, gamma, "IRL/multi_reward_mario_data_09282015/alg1_reward_weights.csv"),
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 3:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), 
                         new IRLShaping(1.0, gamma, "IRL/multi_reward_mario_data_09282015/alg1_reward_weights.csv"), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 4:
                 learner = new QLambdaAgent(new IRLShaping(1.0, gamma, "IRL/multi_reward_mario_data_09282015/alg1_reward_weights.csv"), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 5:
-                learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), 
+                learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0),
                         new DynamicShaping(1.0, gamma, new IRLShaping(1.0, gamma, "IRL/multi_reward_mario_data_09282015/alg1_reward_weights.csv")), gamma);
 //                        new DynamicShaping(1.0, gamma, new IRLShaping(1.0, gamma, args[1])), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 6:
                 learner = new QLambdaAgent(new MultivariateIRLShaping(1.0, gamma, 
@@ -146,7 +146,7 @@ public class IRLExperiment {
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_component_means.csv",
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_component_covariance_matrices.csv"),
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 7:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), 
@@ -154,14 +154,14 @@ public class IRLExperiment {
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_reward_weights.csv",
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_component_means.csv",
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_component_covariance_matrices.csv"), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 8:
                 learner = new QLambdaAgent(new MultivariateIRLShaping(1.0, gamma, 
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_reward_weights.csv",
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_component_means.csv",
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_component_covariance_matrices.csv"), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 9:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0),
@@ -169,45 +169,45 @@ public class IRLExperiment {
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_reward_weights.csv",
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_component_means.csv",
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_component_covariance_matrices.csv")), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 10:
                 learner = new QLambdaAgent(new DemonstrationShaping(1.0, gamma, new Demonstration("richdemos/bener_human_mario.arff")),
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 11:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0),
                         new DemonstrationShaping(1.0, gamma, new Demonstration("richdemos/bener_human_mario.arff")), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 12:
                 learner = new QLambdaAgent(new DemonstrationShaping(1.0, gamma, new Demonstration("richdemos/bener_human_mario.arff")), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 13:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0),
                         new DynamicShaping(1.0, gamma, new DemonstrationShaping(1.0, gamma, new Demonstration("richdemos/bener_human_mario.arff"))), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 14:
                 learner = new QLambdaAgent(new HATShaping(1.0, gamma, "richdemos/bener_human_mario.arff"),
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 15:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0),
                         new HATShaping(1.0, gamma, "richdemos/bener_human_mario.arff"), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 16:
                 learner = new QLambdaAgent(new HATShaping(1.0, gamma, "richdemos/bener_human_mario.arff"), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 17:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0),
                         new DynamicShaping(1.0, gamma, new HATShaping(1.0, gamma, "richdemos/bener_human_mario.arff")), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
         }
 

@@ -67,7 +67,7 @@ public class TransferExperiment {
         marioAIOptions.setVisualization(false);
         final BasicTask basicTask = new BasicTask(marioAIOptions);
         
-        LinearEnsembleAgent agent = new LinearEnsembleAgent(new QLambdaAgent[]{new QLambdaAgent(new HeuristicShaping(-1, 1.0, 0.9), 0.9)}, 0.05);
+        LinearEnsembleAgent agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{new QLambdaAgent(new HeuristicShaping(-1, 1.0, 0.9), 0.9)}, 0.05);
         
         marioAIOptions.setAgent(agent);
         marioAIOptions.setLevelDifficulty(0);
@@ -106,39 +106,39 @@ public class TransferExperiment {
             case 0:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 1:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 1.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 2:
                 learner = new QLambdaAgent(new TransferShaping(1.0, gamma, source.getValues()), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 3:
                 learner = new QLambdaAgent(new TransferShaping(1.0, gamma, source.getValues()), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 4:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0),
                         new DynamicShaping(1.0, gamma, new TransferShaping(1.0, gamma, source.getValues())), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 5:
                 learner = new QLambdaAgent(new TransferShaping(1.0, gamma, source.getValues()),
                         new DynamicShaping(1.0, gamma, new TransferShaping(1.0, gamma, source.getValues())), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 6:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0),
                         new TransferShaping(1.0, gamma, source.getValues()), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 7:
-                learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), 
+                learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0),
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
                 agent = new ProbabilisticPolicyReuseAgent(learner, source, 0.05);
                 break;

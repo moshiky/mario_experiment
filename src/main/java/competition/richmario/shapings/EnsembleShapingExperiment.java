@@ -93,16 +93,16 @@ public class EnsembleShapingExperiment {
         switch (new Integer(args[0])) {
             default:
             case 0:
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), getShaping(-1, gamma), gamma)}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), getShaping(-1, gamma), gamma)}, 0.05);
                 break;
             case 1:
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{new QLambdaAgent(getShaping(new Integer(args[1]), gamma), new ConstantInitialization(1.0, gamma, 0.0), gamma)}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{new QLambdaAgent(getShaping(new Integer(args[1]), gamma), new ConstantInitialization(1.0, gamma, 0.0), gamma)}, 0.05);
                 break;
             case 2:
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{new QLambdaAgent(new CombiShaping(shapes, gamma), new ConstantInitialization(1.0, gamma, 0.0), gamma)}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{new QLambdaAgent(new CombiShaping(shapes, gamma), new ConstantInitialization(1.0, gamma, 0.0), gamma)}, 0.05);
                 break;
             case 3:
-                agent = new LinearEnsembleAgent(ensemble, 0.05);
+                agent = new LinearEnsembleAgent(null, ensemble, 0.05);
                 break;
             case 4:
                 agent = new VotingEnsembleAgent(ensemble, 0.05);

@@ -68,7 +68,7 @@ public class AdviceExperiment {
         marioAIOptions.setVisualization(false);
 
         AdviceShaping advice = new AdviceShaping(1.0, gamma);
-        EnsembleAgent agent = new LinearEnsembleAgent(new QLambdaAgent[]{new QLambdaAgent(new DynamicShaping(1.0, gamma, advice), gamma)}, 0.05);
+        EnsembleAgent agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{new QLambdaAgent(new DynamicShaping(1.0, gamma, advice), gamma)}, 0.05);
         
         final BasicTask basicTask = new BasicTask(marioAIOptions);
         

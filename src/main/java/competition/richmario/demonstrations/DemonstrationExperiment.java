@@ -115,7 +115,7 @@ public class DemonstrationExperiment {
         final MarioAIOptions marioAIOptions = new MarioAIOptions(new String[]{});
         marioAIOptions.setVisualization(false);
         double gamma = 0.9;
-        EnsembleAgent agent = new LinearEnsembleAgent(new QLambdaAgent[]{new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), new HeuristicShaping(-1, 1.0, gamma), gamma)}, 0.05);
+        EnsembleAgent agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), new HeuristicShaping(-1, 1.0, gamma), gamma)}, 0.05);
         final BasicTask basicTask = new BasicTask(marioAIOptions);
         for (int i = 0; i < 1000; ++i) {
             marioAIOptions.setAgent(agent);
@@ -162,36 +162,36 @@ public class DemonstrationExperiment {
             case 0:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 1:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 1.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 2:
                 learner = new QLambdaAgent(new DemonstrationShaping(1.0, gamma, new Demonstration(args[1])), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 3:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), 
                         new DemonstrationShaping(1.0, gamma, new Demonstration(args[1])), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 4:
                 learner = new QLambdaAgent(new DemonstrationShaping(1.0, gamma, new Demonstration(args[1])), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 5:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0),
                         new DynamicShaping(1.0, gamma, new DemonstrationShaping(1.0, gamma, new Demonstration(args[1]))), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 6:
                 learner = new QLambdaAgent(new HATShaping(1.0, gamma, args[1]),
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 7:
                 agent = new LfDAgent(args[1]);
@@ -199,7 +199,7 @@ public class DemonstrationExperiment {
             case 8:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0),
                         new DynamicShaping(1.0, gamma, new DemonstrationShaping(1.0, gamma, new Demonstration(files))), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 9:
                 learners = new QLambdaAgent[files.length];

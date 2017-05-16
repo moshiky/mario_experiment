@@ -82,27 +82,27 @@ public class InitExperiment {
             case 0:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 1:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 1.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 2:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, -1.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 3:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 10.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 4:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, -10.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 5:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0),
@@ -110,7 +110,7 @@ public class InitExperiment {
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_reward_weights.csv",
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_component_means.csv",
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_component_covariance_matrices.csv")), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
             case 6:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 1.0),
@@ -118,7 +118,7 @@ public class InitExperiment {
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_reward_weights.csv",
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_component_means.csv",
                         "IRL/multi_reward_mario_data_09282015/alg2_mario_component_covariance_matrices.csv")), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, epsilon);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, epsilon);
                 break;
         }
 

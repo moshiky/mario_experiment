@@ -78,31 +78,31 @@ public class ShapingExperiment {
             case 0:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 1:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 1.0), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 2:
                 learner = new QLambdaAgent(new HeuristicInitialization(new Integer(args[1]), 1.0, gamma), 
                         new HeuristicShaping(-1, 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 3:
                 learner = new QLambdaAgent(new HeuristicInitialization(-1, 1.0, gamma), 
                         new HeuristicShaping(new Integer(args[1]), 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 4:
                 learner = new QLambdaAgent(new HeuristicShaping(new Integer(args[1]), 1.0, gamma), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
             case 5:
                 learner = new QLambdaAgent(new ConstantInitialization(1.0, gamma, 0.0),
                         new DynamicShaping(1.0, gamma, new HeuristicShaping(new Integer(args[1]), 1.0, gamma)), gamma);
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
                 break;
         }
 

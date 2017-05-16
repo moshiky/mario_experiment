@@ -27,7 +27,7 @@ public class LfDAgent extends EnsembleAgent{
     private final J48 tree;
 
     public LfDAgent(String file) throws Exception {
-        super(new QLambdaAgent[0], 0.0);
+        super(null, new QLambdaAgent[0], 0.0);
         
         source = new ConverterUtils.DataSource(file);
         data = source.getDataSet();

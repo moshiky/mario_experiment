@@ -542,7 +542,7 @@ private static void testT()
 
 
 /**
- * Runs through some text-book utils to check that
+ * Runs through some text-book loggingUtils to check that
  * the statistical tests are working properly.
  */
 

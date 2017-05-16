@@ -72,7 +72,7 @@ public class EnsembleOfEverythingExperiment {
     
     public static QLHash learnSourceTask(){
         QLambdaAgent learner = new QLambdaAgent(new HeuristicShaping(-1, 1.0, 0.9), 0.9);
-        EnsembleAgent agent = new LinearEnsembleAgent(new QLambdaAgent[]{learner}, 0.05);
+        EnsembleAgent agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{learner}, 0.05);
         
         MarioAIOptions marioAIOptions = new MarioAIOptions(new String[]{});
         marioAIOptions.setVisualization(false);
@@ -168,16 +168,16 @@ public class EnsembleOfEverythingExperiment {
         switch (new Integer(args[0])) {
             default:
             case 0:
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{new QLambdaAgent(getShaping(-1, gamma), gamma)}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{new QLambdaAgent(getShaping(-1, gamma), gamma)}, 0.05);
                 break;
             case 1:
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{new QLambdaAgent(getShaping(new Integer(args[1]), gamma), gamma)}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{new QLambdaAgent(getShaping(new Integer(args[1]), gamma), gamma)}, 0.05);
                 break;
             case 2:
-                agent = new LinearEnsembleAgent(new QLambdaAgent[]{new QLambdaAgent(new CombiShaping(shapes, gamma), gamma)}, 0.05);
+                agent = new LinearEnsembleAgent(null, new QLambdaAgent[]{new QLambdaAgent(new CombiShaping(shapes, gamma), gamma)}, 0.05);
                 break;
             case 3:
-                agent = new LinearEnsembleAgent(ensemble, 0.05);
+                agent = new LinearEnsembleAgent(null, ensemble, 0.05);
                 break;
             case 4:
                 agent = new RankingEnsembleAgent(ensemble, 0.05);

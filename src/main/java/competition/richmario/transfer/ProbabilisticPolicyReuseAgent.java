@@ -26,7 +26,7 @@ public class ProbabilisticPolicyReuseAgent extends LinearEnsembleAgent {
     }
     
     public ProbabilisticPolicyReuseAgent(QLambdaAgent agent, QLambdaAgent source, double epsilon, boolean recording){
-        super(new QLambdaAgent[]{agent}, epsilon, recording);
+        super(null, new QLambdaAgent[]{agent}, epsilon, recording);
         this.source = source;
         this.phi = 1.0;
     }
