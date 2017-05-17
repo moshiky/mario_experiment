@@ -54,12 +54,12 @@ import weka.core.Utils;
 public class SimpleExperiment {
 
     private static final boolean DEBUG = true;
-    public static Integer episode = 0;
+
     public static Integer usingSimilarities = 1 ; // 0 = no, 1 = full similarities, 2 = poop
     public static Integer simStage = 0;
     private Double avg = 0.0;
 
-    public static boolean isBasicQLearning;
+    public static AgentType activeAgentType;
 
 
 
@@ -68,6 +68,8 @@ public class SimpleExperiment {
         Logger logger = new Logger("logs/info__" + currentTime + ".log");
         logger.initiateLearningCurveDisplay(currentTime);
 
+        experimentMain(logger);
+        /*
         //for(simStage = 0; simStage <= 5; simStage++) {
             logger.info("Stage: " + simStage);
             for (double sim = 0.3; sim <= 0.3; sim += 0.3) {
@@ -83,29 +85,50 @@ public class SimpleExperiment {
                 logger.info(Arrays.toString(avgs));
             }
         //}
-        System.exit(0);
+        */
     }
 
     public static double[] experimentMain(Logger logger) throws Exception {
 
         double[] resultsSum = null;
-        int runs = 10;
+        int runs = 5;
+        int episodesForRun = 20000;
 
-        for(int i = 0; i < runs; ++i) {
-            double[] result = experiment(logger);
-            logger.info(Arrays.toString(result));
-            if(resultsSum == null) {
-                resultsSum = result;
-            } else {
-                resultsSum = addResults(resultsSum, result);
-            }
-        }
+        AgentType[] agentsToRun = new AgentType[] {
+                AgentType.Similarities,
+                AgentType.BasicQLearning
+        };
 
-        for(int i = 0; i < resultsSum.length; ++i) {
-            resultsSum[i] = resultsSum[i] / runs;
+        for (AgentType agentType : agentsToRun) {
+            runAgentExperiment(logger, agentType, runs, episodesForRun);
         }
 
         return resultsSum;
+    }
+
+    private static void runAgentExperiment(Logger logger, AgentType agentType, int runs, int episodesForRun) throws Exception {
+        SimpleExperiment.activeAgentType = agentType;
+
+        switch (agentType) {
+            case BasicQLearning: {
+                logger.setActiveSeries("Basic Q Learning");
+                break;
+            }
+            case Abstraction: {
+                logger.setActiveSeries("Abstraction");
+                break;
+            }
+            case RewardShaping: {
+                logger.setActiveSeries("Reward Shaping");
+                break;
+            }
+            case Similarities: {
+                logger.setActiveSeries("Similarities");
+                break;
+            }
+        }
+
+        experiment(logger, runs, episodesForRun);
     }
 
     private static double[] addResults(double[] resultsSum, double[] result) {
@@ -119,7 +142,6 @@ public class SimpleExperiment {
 
 
     public static Integer testStepSize = 100;
-    public static int episodes = 20000;
     private static Integer testEpisodes = 250;
 
 
@@ -128,10 +150,7 @@ public class SimpleExperiment {
     private static Integer testEpisodes = 1000;*/
 
 
-    static Date start = null;
-    static Date end = null;
-
-    public static double[] experiment(Logger logger) throws Exception {
+    public static void experiment(Logger logger, int runs, int episodesForRun) throws Exception {
 
         boolean visualize = false;
 
@@ -140,51 +159,64 @@ public class SimpleExperiment {
         double epsilon = 0.05;
         double lambda = 0.5;
 
-        final MarioAIOptions marioAIOptions = new MarioAIOptions(new String[]{});
-        marioAIOptions.setVisualization(false);
+        long startTime = System.currentTimeMillis();
 
-        EnsembleAgent agent;
+        for (int i = 0 ; i < runs ; i++) {
 
-        agent = new LinearEnsembleAgent(logger, new QLambdaAgent[]{new QLambdaAgent(alpha, lambda, new ConstantInitialization(1.0, gamma, 0.0), gamma)}, epsilon);
+            logger.increaseRound();
 
-        final BasicTask basicTask = new BasicTask(marioAIOptions);
-        double[] results = new double[episodes / testStepSize + 1];
-        double rewardTmpSum = 0;
+            final MarioAIOptions marioAIOptions = new MarioAIOptions(new String[]{});
+            marioAIOptions.setVisualization(false);
 
-        for (int i = 0; i <= episodes; ++i) {
+            EnsembleAgent agent =
+                    new LinearEnsembleAgent(
+                            logger,
+                            new QLambdaAgent[]{
+                                    new QLambdaAgent(
+                                            alpha,
+                                            lambda,
+                                            new ConstantInitialization(1.0, gamma, 0.0),
+                                            gamma
+                                    )
+                            },
+                            epsilon
+                    );
 
-            if(i > 0 && i % testStepSize == 0) {
+            final BasicTask basicTask = new BasicTask(marioAIOptions);
+            double rewardTmpSum = 0;
+
+            for (int j = 0; j < episodesForRun; ++j) {
+
+            /*if(i > 0 && i % testStepSize == 0) {
                 Integer stepResultIndex = i / testStepSize;
-                //System.out.println("Test " + stepResultIndex + "  current episode:" + i);
+                System.out.println("Test " + stepResultIndex + "  current episode:" + i);
 
-                //Double testResult = test(agent);
-                //results[stepResultIndex] = testResult;
-                //System.out.println("test result[" + stepResultIndex + "]:" + testResult);
+                Double testResult = test(agent);
+                results[stepResultIndex] = testResult;
+                System.out.println("test result[" + stepResultIndex + "]:" + testResult);
+            }*/
+
+                marioAIOptions.setAgent(agent);
+                marioAIOptions.setLevelDifficulty(0);
+                marioAIOptions.setLevelRandSeed(RNG.randomInt(1000000));
+                marioAIOptions.setMarioMode(RNG.randomInt(3));
+                marioAIOptions.setGapsCount(false);
+                marioAIOptions.setVisualization(visualize);
+                basicTask.setOptionsAndReset(marioAIOptions);
+                agent.newEpisode();
+
+                Double res = basicTask.runSingleEpisode(1, true);
+
+                if (j % logger.LOGGING_INTERVAL == 0) {
+                    logger.info("run[" + i + "]ep[" + j + "] res=" + rewardTmpSum / logger.LOGGING_INTERVAL);
+                    rewardTmpSum = 0;
+                }
+                rewardTmpSum += res;
+                logger.addEpisodeResult(res);
+
             }
-
-            episode = i;
-            marioAIOptions.setAgent(agent);
-            marioAIOptions.setLevelDifficulty(0);
-            marioAIOptions.setLevelRandSeed(RNG.randomInt(1000000));
-            marioAIOptions.setMarioMode(RNG.randomInt(3));
-            marioAIOptions.setGapsCount(false);
-            marioAIOptions.setVisualization(visualize);
-            basicTask.setOptionsAndReset(marioAIOptions);
-            agent.newEpisode();
-
-            Double res = basicTask.runSingleEpisode(1, true);
-
-            if(i % logger.LOGGING_INTERVAL == 0) {
-                logger.info("step #" + i + " res=" + rewardTmpSum/logger.LOGGING_INTERVAL);
-                rewardTmpSum = 0;
-            }
-            rewardTmpSum += res;
-            logger.addEpisodeResult(res);
-
         }
-
-
-        return results;
+        logger.addSeriesTime((System.currentTimeMillis() - startTime) / 1000);
     }
 
 

@@ -1,5 +1,8 @@
 package competition.richmario.experiment;
 
+import competition.richmario.AgentType;
+import competition.richmario.SimpleExperiment;
+
 /**
  * Created by user on 15/05/2017.
  */
@@ -29,6 +32,9 @@ public class ShapingManager {
      */
     public double getShapingReward(int[] previousState, int previousAction, int[] currentState) {
         double rewardShaping = 0.0;
+        if (AgentType.RewardShaping != SimpleExperiment.activeAgentType) {
+            return rewardShaping;
+        }
 
         // *** YOUR CODE HERE **********************************************************************
 

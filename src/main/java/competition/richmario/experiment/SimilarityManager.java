@@ -1,5 +1,7 @@
 package competition.richmario.experiment;
 
+import competition.richmario.AgentType;
+import competition.richmario.SimpleExperiment;
 import org.apache.commons.math3.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,9 @@ public class SimilarityManager {
      */
     public static List<Pair<StateAction, Double>> getSimilarityRecords(int[] previousState, int previousAction) {
         ArrayList<Pair<StateAction, Double>> similarityRecords = new ArrayList<>();
+        if (AgentType.Similarities != SimpleExperiment.activeAgentType) {
+            return similarityRecords;
+        }
 
         // *** YOUR CODE HERE **********************************************************************
 
@@ -49,7 +54,8 @@ public class SimilarityManager {
         similarityRecords.add(new Pair<>(sa.clone(), 1.0));
 
 
-        if(true)/*simStage != 0*/{
+        // simStage != 0
+        if(true) {
             int[] state = sa.getState();
             int action = sa.getAction();
             // !(3,4,5 9,10,11)
@@ -68,7 +74,8 @@ public class SimilarityManager {
         // 3
         Integer size = 0;
 
-        if(true)/*simStage != 1*/{
+        // simStage != 1
+        if(true) {
             size = similarityRecords.size();
             for (int i = 0; i < size; ++i) {
                 Pair<StateAction, Double> tstatePair = similarityRecords.get(i);
@@ -85,8 +92,8 @@ public class SimilarityManager {
             }
         }
 
-
-        if(true)/*simStage != 2*/{
+        // simStage != 2
+        if(true) {
             // MIRROR CLOSE ENEMIES
             size = similarityRecords.size();
             for (int j = 0; j < size; ++j) {
@@ -140,7 +147,8 @@ public class SimilarityManager {
             }
         }
 
-        if(true)/*simStage != 3*/{
+        // simStage != 3
+        if(true) {
 
             // MIRROR MID ENEMIES
             size = similarityRecords.size();
@@ -177,7 +185,8 @@ public class SimilarityManager {
         }
 
 
-        if(true)/*simStage != 4*/{
+        // simStage != 4
+        if(true) {
             int[] state = sa.getState();
 
             // Generate mid-range if there is close-range enemy
@@ -198,7 +207,8 @@ public class SimilarityManager {
             }
         }
 
-        if(true)/*simStage != 5*/{
+        // simStage != 5
+        if(true) {
             // Running similarity
             size = similarityRecords.size();
             for (int i = 0; i < size; ++i) {
