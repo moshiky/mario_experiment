@@ -17,7 +17,7 @@ public class SimilarityManager {
 
     /**
      *
-     * @param previousState represents the state:
+     * @param state represents the state:
      *      [0] can jump?   : 0-1
      *      [1] on ground?  : 0-1
      *      [2] able to shoot?  : 0-1
@@ -37,11 +37,25 @@ public class SimilarityManager {
      *      [8] closest enemy x : 0-21
      *      [9] closest enemy y : 0-21
      *
-     * @param previousAction represent the action:
-     *               <to be completed>
-     * @return
+     * @param action represent the action:
+     *      ** NOTICE: the 'run' key makes mario to shoot fireballs as well, if he in the right mode (white clothes)
+     *
+     *      0   -   do nothing
+     *      1   -   press key:  'go left'
+     *      2   -   press key:  'go right'
+     *      3   -   press key:  'jump'
+     *      4   -   press keys: 'go left' + 'jump'
+     *      5   -   press keys: 'go right' + 'jump'
+     *      6   -   press key:  'run'
+     *      7   -   press keys: 'go left' + 'run'
+     *      8   -   press keys: 'go right'  + 'run'
+     *      9   -   press keys: 'jump' + 'run'
+     *      10  -   press keys: 'go left' + 'jump' + 'run'
+     *      11  -   press keys: 'go right' + 'jump' + 'run'
+     *
+     * @return list of (<state, action>, similarity_factor) pairs
      */
-    public static List<Pair<StateAction, Double>> getSimilarityRecords(int[] previousState, int previousAction) {
+    public static List<Pair<StateAction, Double>> getSimilarityRecords(int[] state, int action) {
         ArrayList<Pair<StateAction, Double>> similarityRecords = new ArrayList<>();
         if (AgentType.Similarities != SimpleExperiment.activeAgentType) {
             return similarityRecords;
@@ -49,189 +63,13 @@ public class SimilarityManager {
 
         // *** YOUR CODE HERE **********************************************************************
 
-        StateAction sa = new StateAction(previousState, previousAction);
-
-        similarityRecords.add(new Pair<>(sa.clone(), 1.0));
-
-
-        // simStage != 0
-        if(true) {
-            int[] state = sa.getState();
-            int action = sa.getAction();
-            // !(3,4,5 9,10,11)
-            // is able to jump -> not able to jump
-            if (action % 6 < 3) {
-                state[state_jump] = state[state_jump] == 0 ? 1 : 0;
-            }
-
-
-            StateAction ssa = new StateAction(state, sa.getExtraState(), action);
-
-            Pair<StateAction, Double> pair = new Pair<StateAction, Double>(ssa, strongSimFactor);
-            similarityRecords.add(pair);
-        }
-
-        // 3
-        Integer size = 0;
-
-        // simStage != 1
-        if(true) {
-            size = similarityRecords.size();
-            for (int i = 0; i < size; ++i) {
-                Pair<StateAction, Double> tstatePair = similarityRecords.get(i);
-                Double tsim = tstatePair.getSecond();
-                StateAction tstateAction = tstatePair.getFirst().clone();
-                int taction = tstateAction.getAction();
-                int[] tstate = tstateAction.getState();
-
-                if (taction <= 6) {
-                    tstate[state_shoot] = tstate[state_shoot] == 0 ? 1 : 0;
-                    StateAction tstateAction2 = new StateAction(tstate, sa.getExtraState(), taction);
-                    similarityRecords.add(new Pair<>(tstateAction2, strongSimFactor * tsim));
-                }
-            }
-        }
-
-        // simStage != 2
-        if(true) {
-            // MIRROR CLOSE ENEMIES
-            size = similarityRecords.size();
-            for (int j = 0; j < size; ++j) {
-                Pair<StateAction, Double> tstatePair = similarityRecords.get(j);
-                Double tsim = tstatePair.getSecond();
-                StateAction tstateAction = tstatePair.getFirst().clone();
-                int taction = tstateAction.getAction();
-                int[] tstate = tstateAction.getState();
-
-                Integer state4 = tstate[4];
-
-
-                short[] state4bits = new short[8];
-                for (int i = 0; i < 8; ++i) {
-                    state4bits[i] = (short) (state4 % 2);
-                    state4 >>= 1;
-                }
-
-
-                swap(state4bits, 0, 1);
-                swap(state4bits, 3, 4);
-                swap(state4bits, 6, 7);
-
-                int newstate4 = 0;
-                for (int i = 0; i < 8; ++i) {
-                    newstate4 += Math.pow(2, i) * state4bits[i];
-                }
-
-                tstate[4] = newstate4;
-
-                int newtaction = 0;
-                switch (taction) {
-                    case 1:
-                        newtaction = 2;
-                        break;
-                    case 4:
-                        newtaction = 5;
-                        break;
-                    case 7:
-                        newtaction = 8;
-                        break;
-                    case 10:
-                        newtaction = 11;
-                        break;
-                    default:
-                        newtaction = taction;
-                }
-
-
-                similarityRecords.add(new Pair<>(new StateAction(tstate, sa.getExtraState(), newtaction), weakSimFactor * tsim));
-            }
-        }
-
-        // simStage != 3
-        if(true) {
-
-            // MIRROR MID ENEMIES
-            size = similarityRecords.size();
-            for (int j = 0; j < size; ++j) {
-                Pair<StateAction, Double> tstatePair = similarityRecords.get(j);
-                Double tsim = tstatePair.getSecond();
-                StateAction tstateAction = tstatePair.getFirst().clone();
-                int taction = tstateAction.getAction();
-                int[] tstate = tstateAction.getState();
-
-                Integer state5 = tstate[5];
-
-
-                short[] state5bits = new short[8];
-                for (int i = 0; i < 8; ++i) {
-                    state5bits[i] = (short) (state5 % 2);
-                    state5 >>= 1;
-                }
-
-
-                swap(state5bits, 0, 1);
-                swap(state5bits, 3, 4);
-                swap(state5bits, 6, 7);
-
-                int newstate5 = 0;
-                for (int i = 0; i < 8; ++i) {
-                    newstate5 += Math.pow(2, i) * state5bits[i];
-                }
-
-                tstate[5] = newstate5;
-
-                similarityRecords.add(new Pair<>(new StateAction(tstate, sa.getExtraState(), taction), weakSimFactor * tsim));
-            }
-        }
-
-
-        // simStage != 4
-        if(true) {
-            int[] state = sa.getState();
-
-            // Generate mid-range if there is close-range enemy
-            if (state[8] >= 9 && state[8] <= 11 &&
-                    state[9] >= 9 && state[9] <= 11) {
-                size = similarityRecords.size();
-                for (int j = 0; j < size; ++j) {
-                    for (int si = 0; si < 15; si++) {
-                        Pair<StateAction, Double> tstatePair = similarityRecords.get(j);
-                        Double tsim = tstatePair.getSecond();
-                        StateAction tstateAction = tstatePair.getFirst().clone();
-                        int taction = tstateAction.getAction();
-                        int[] tstate = tstateAction.getState();
-                        tstate[5] = si;
-                        similarityRecords.add(new Pair<>(new StateAction(tstate, sa.getExtraState(), taction), weakSimFactor * tsim));
-                    }
-                }
-            }
-        }
-
-        // simStage != 5
-        if(true) {
-            // Running similarity
-            size = similarityRecords.size();
-            for (int i = 0; i < size; ++i) {
-                Pair<StateAction, Double> tstatePair = similarityRecords.get(i);
-                Double tsim = tstatePair.getSecond();
-                StateAction tstateAction = tstatePair.getFirst().clone();
-                int taction = tstateAction.getAction();
-                int[] tstate = tstateAction.getState();
-
-                taction = (taction + 6) % 12;
-
-                similarityRecords.add(new Pair<>(new StateAction(tstate, sa.getExtraState(), taction), strongSimFactor * tsim));
-            }
-        }
-
         // *** END OF YOUR CODE ********************************************************************
 
         return similarityRecords;
     }
 
-    private static void swap(short[] state4bits, int i, int i1) {
-        short t = state4bits[i];
-        state4bits[i] = state4bits[i1];
-        state4bits[i1] = t;
-    }
+    // *** YOUR CODE HERE **********************************************************************
+    // Here you can add custom STATIC help functions, if needed
+
+    // *** END OF YOUR CODE ********************************************************************
 }
