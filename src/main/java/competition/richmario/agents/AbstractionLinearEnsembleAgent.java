@@ -10,37 +10,28 @@ import util.Util;
 
 /**
  *
- * @author timbrys
+ * @author moshec
  */
-public class AbstractionLinearEnsembleAgent extends EnsembleAgent {
+public class AbstractionLinearEnsembleAgent extends AbstractionEnsembleAgent {
 
-    public AbstractionLinearEnsembleAgent(Logger logger, QLambdaAgent[] agents, double epsilon) {
+    public AbstractionLinearEnsembleAgent(Logger logger, AbstractionQLambdaAgent[] agents, double epsilon) {
         super(logger, agents, epsilon, false);
     }
 
-    public AbstractionLinearEnsembleAgent(Logger logger, QLambdaAgent[] agents, double epsilon, boolean record) {
+    public AbstractionLinearEnsembleAgent(Logger logger, AbstractionQLambdaAgent[] agents, double epsilon, boolean record) {
         super(logger, agents, epsilon, record);
     }
     
     @Override
-    protected int greedyActionSelection(StateAction sa){
-        double[] Qs = new double[getNumActions()];
-        for (QLambdaAgent agent : agents) {
-            for (int i = 0; i<Qs.length; i++) {
-                sa.setAction(i);
-                Qs[i] += agent.getQ(sa);
+    protected int greedyActionSelection(double[] state){
+        double[] nextQValues = new double[getNumActions()];
+        for (AbstractionQLambdaAgent agent : agents) {
+            for (int i = 0 ; i < nextQValues.length ; i++) {
+                nextQValues[i] += agent.getQ(state, i);
             }
         }
-        return Util.argMax(Qs);
-    }
 
-    @Override
-    protected double getPreference(int i, StateAction sa) {
-        double value = 0.0;
-        for (QLambdaAgent agent : agents) {
-            sa.setAction(i);
-            value += agent.getQ(sa);
-        }
-        return value;
+        return Util.argMax(nextQValues);
     }
 }
+

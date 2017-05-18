@@ -25,8 +25,10 @@ public abstract class Initialization extends Shaping{
         return reward +
                 this.m_shapingManager.getShapingReward(
                         sa1.getState(),
+                        sa1.getExtraState(),
                         sa1.getAction(),
-                        sa2.getState()
+                        sa2.getState(),
+                        sa2.getExtraState()
                 );
     }
     

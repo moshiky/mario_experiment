@@ -31,18 +31,18 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
     protected float[] prevMarioPos;
     private float lastWorldReward;
 
-    protected QLambdaAgent[] agents;
+    protected AbstractionQLambdaAgent[] agents;
 
     protected Demonstration record;
     protected boolean recording;
 
     protected Logger logger;
 
-    public AbstractionEnsembleAgent(Logger logger, QLambdaAgent[] agents, double epsilon) {
+    public AbstractionEnsembleAgent(Logger logger, AbstractionQLambdaAgent[] agents, double epsilon) {
         this(logger, agents, epsilon, false);
     }
 
-    public AbstractionEnsembleAgent(Logger logger, QLambdaAgent[] agents, double epsilon, boolean recording){
+    public AbstractionEnsembleAgent(Logger logger, AbstractionQLambdaAgent[] agents, double epsilon, boolean recording){
         super("AbstractionEnsemble");
 
         this.previousState = StateManager.getInitialState();
@@ -272,185 +272,44 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
     public void giveIntermediateReward(float worldRewardUntilNow) {
         double[] currentState = getState();
 
-        float currentReward = worldRewardUntilNow - lastWorldReward;
-        /*if (runs % this.logger.LOGGING_INTERVAL == 0) {
-            this.logger.info("interval reward mean = " + (rewardTmpSum/this.logger.LOGGING_INTERVAL));
-            rewardTmpSum = 0;
-        }
-        rewardTmpSum += thisreward;*/
+        double actionReward = worldRewardUntilNow - lastWorldReward;
+        this.lastWorldReward = worldRewardUntilNow;
 
-        if(worldRewardUntilNow != lastWorldReward) {
-            int bp = 3;
+        for (AbstractionQLambdaAgent agent : agents) {
+            agent.update(this.previousState, this.previousAction, actionReward, currentState);
         }
 
-        lastWorldReward = worldRewardUntilNow;
+        runs++;
 
-        int selectedNextAction = egreedyActionSelection(currentState);
-
-        if(SimpleExperiment.usingSimilarities != 2) {
-
-            for (QLambdaAgent agent : agents) {
-                // TODO: need to think about generic StateAction that supports both int[] and double state representations
-                agent.update(previousState, previousAction, currentReward, currentState);
-
-                agent.setTraces(currentState);
-
-                List<Pair<StateAction, Double>> similarities = getSimilarities(previousState);
-                //Map<Long, Pair<StateAction, Double>> distinctSimilarities = getDistinctSimilarities(similarities);
-                int size = similarities.size();
-                sizeTotal += size;
-                runs++;
-                /*if (runs % this.logger.LOGGING_INTERVAL == 0) {
-                    this.logger.info("@" + runs + " = " + sizeTotal);
-                }*/
-
-                for (Pair<StateAction, Double> similarity : similarities) {
-                    StateAction ssa = similarity.getFirst();
-                    ssa.setAction(selectedNextAction);
-
-                    agent.setTracesSimilarity(ssa, similarity.getSecond() /*/ Math.pow(SimpleExperiment.episode + 1, 0.02)*/);
-
-                }
-            }
-        }
-
-
-        if(recording){
-            record.record(currentState);
-        }
-
-        previousState = currentState;
-        prevMarioPos = marioFloatPos.clone();
+        this.previousState = currentState;
+        this.previousAction = egreedyActionSelection(currentState);
+        this.prevMarioPos = this.marioFloatPos.clone();
     }
 
-    private Map<Long, Pair<StateAction, Double>> getDistinctSimilarities(List<Pair<StateAction, Double>> similarities) {
-        Map<Long, Pair<StateAction, Double>> sims = new HashMap<>();
-
-        for(Pair<StateAction, Double> sim : similarities) {
-            long key = sim.getFirst().key();
-            Pair<StateAction, Double> existingSim = sims.get(key);
-            if(existingSim != null) {
-                if(existingSim.getSecond() < sim.getSecond()) {
-                    sims.put(key, sim);
-                }
-            } else {
-                sims.put(key, sim);
-            }
-        }
-
-        return sims;
-    }
-
-
-    private void foo(int[] s) {
-        s[3] = 5;
-    }
-
-    private List<Pair<StateAction, Double>> getSimilarities(StateAction prevSA) {
-
-        switch(SimpleExperiment.usingSimilarities) {
-            case 0:
-                return new ArrayList<Pair<StateAction, Double>>();
-            case 1:
-                return getFullSimilarities(prevSA);
-        }
-
-        return null;
-    }
-
-
-    public static Integer state_jump = 0;
-    public static Integer state_shoot = 2;
-
-    /*
-     * State
-     * 0 can jump? 0-1
-     * 1 on ground? 0-1
-     * 2 able to shoot? 0-1
-     * 3 current direction 0-8
-     * 4 close enemies yes or no in 8 directions 0-255
-     * 5 midrange enemies yes or no in 8 directions 0-255
-     * 6 far enemies yes or no in 8 directions 0-255
-     * 7 obstacles in front 0-15
-     * 8 closest enemy x 0-21
-     * 9 closest enemy y 0-21
-     *
-     */
-    public static double strongSimFactor = 0.8;
-    public static double weakSimFactor = strongSimFactor / 2;
-
-    private List<Pair<StateAction, Double>> getFullSimilarities(StateAction prevSA) {
-        return SimilarityManager.getSimilarityRecords(prevSA.getState(), prevSA.getAction());
-    }
-
-    protected void swap(short[] state4bits, int i, int i1) {
-        short t = state4bits[i];
-        state4bits[i] = state4bits[i1];
-        state4bits[i1] = t;
-    }
-
-
-    public int egreedyActionSelection(StateAction sa){
+    public int egreedyActionSelection(double[] state) {
         if(RNG.randomDouble() < epsilon){
             return RNG.randomInt(getNumActions());
         } else {
-            return greedyActionSelection(sa);
+            return greedyActionSelection(state);
         }
-//        double tau = 0.01;
-//
-//        double sum = 0.0;
-//        double[] values = new double[getNumActions()];
-//        double highest = -Double.MAX_VALUE;
-//        for(int i=0; i<getNumActions(); i++){
-//            values[i] = getPreference(i, sa)/tau;
-//            if(values[i] > highest){
-//                highest = values[i];
-//            }
-//        }
-//
-//        for(int i=0; i<getNumActions(); i++){
-//            values[i] = Math.exp(values[i]-highest);
-//            sum += values[i];
-//        }
-//
-//        double threshold = RNG.randomDouble();
-//        double total = 0.0;
-//        for(int i=0; i<getNumActions(); i++){
-//            total += values[i]/sum;
-////            System.out.println(values[i]/sum);
-//            if(total > threshold){
-//                return i;
-//            }
-//        }
-//        return 11;
     }
 
-    protected abstract double getPreference(int i, StateAction sa);
-
-    public QLambdaAgent getAgent(int n){
+    public AbstractionQLambdaAgent getAgent(int n){
         return agents[n];
     }
 
-    public Demonstration getTrajectory(){
-        return record;
-    }
+    abstract protected int greedyActionSelection(double[] state);
 
-    abstract protected int greedyActionSelection(StateAction sa);
-
-    public void newEpisode(){
-        previousState = StateAction.initState();
-        prevMarioPos = new float[]{32.0f,32.0f};
+    public void newEpisode() {
+        previousState = StateManager.getInitialState();
+        previousAction = 0;
+        prevMarioPos = new float[] {32.0f,32.0f};
         lastWorldReward = -1;
+        this.reset();
     }
 
     @Override
-    public void endEpisode() {
-//        System.out.println(agents[0].getSize());
-        StateAction sa = getState();
-        for (QLambdaAgent agent : agents) {
-            agent.endEpisode(previousState, 0.0f, sa);
-        }
-    }
+    public void endEpisode() { }
 
     public boolean isRecording() {
         return recording;

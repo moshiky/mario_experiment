@@ -62,7 +62,8 @@ public class ShapingManager {
      *
      * @return the value of F(s, a, s'), such that R'(s, a, s') = R(s, a, s') + F(s, a, s')
      */
-    public double getShapingReward(int[] previousState, int previousAction, int[] currentState) {
+    public double getShapingReward(int[] previousState, float[] previousMarionPosition, int previousAction,
+                                   int[] currentState, float[] currentMarionPosition) {
         double rewardShaping = 0.0;
         if (AgentType.RewardShaping != SimpleExperiment.activeAgentType) {
             return rewardShaping;

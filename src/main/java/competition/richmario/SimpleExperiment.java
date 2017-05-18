@@ -26,15 +26,12 @@
  */
 package competition.richmario;
 
+import ch.idsia.agents.controllers.BasicMarioAIAgent;
+import competition.richmario.agents.*;
 import competition.richmario.shapings.*;
 import ch.idsia.agents.Agent;
 import ch.idsia.benchmark.tasks.BasicTask;
 import ch.idsia.tools.MarioAIOptions;
-import competition.richmario.agents.EnsembleAgent;
-import competition.richmario.agents.LinearEnsembleAgent;
-import competition.richmario.agents.QLambdaAgent;
-import competition.richmario.agents.RankingEnsembleAgent;
-import competition.richmario.agents.VotingEnsembleAgent;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,11 +88,11 @@ public class SimpleExperiment {
     public static double[] experimentMain(Logger logger) throws Exception {
 
         double[] resultsSum = null;
-        int runs = 5;
-        int episodesForRun = 20000;
+        int runs = 1;
+        int episodesForRun = 5000;
 
         AgentType[] agentsToRun = new AgentType[] {
-                AgentType.Similarities,
+                AgentType.RewardShaping,
                 AgentType.BasicQLearning
         };
 
@@ -124,6 +121,10 @@ public class SimpleExperiment {
             }
             case Similarities: {
                 logger.setActiveSeries("Similarities");
+                break;
+            }
+            case AbstractionBasicQLearning: {
+                logger.setActiveSeries("AbstractionBasicQLearning");
                 break;
             }
         }
@@ -168,7 +169,26 @@ public class SimpleExperiment {
             final MarioAIOptions marioAIOptions = new MarioAIOptions(new String[]{});
             marioAIOptions.setVisualization(false);
 
-            EnsembleAgent agent =
+            BasicMarioAIAgent agent;
+            if (AgentType.Abstraction == SimpleExperiment.activeAgentType
+                    || AgentType.AbstractionBasicQLearning == SimpleExperiment.activeAgentType) {
+
+                agent =
+                        new AbstractionLinearEnsembleAgent(
+                                logger,
+                                new AbstractionQLambdaAgent[]{
+                                        new AbstractionQLambdaAgent(
+                                                alpha,
+                                                lambda,
+                                                new ConstantInitialization(1.0, gamma, 0.0),
+                                                gamma
+                                        )
+                                },
+                                epsilon
+                        );
+            }
+            else {
+                agent =
                     new LinearEnsembleAgent(
                             logger,
                             new QLambdaAgent[]{
@@ -181,6 +201,7 @@ public class SimpleExperiment {
                             },
                             epsilon
                     );
+            }
 
             final BasicTask basicTask = new BasicTask(marioAIOptions);
             double rewardTmpSum = 0;
@@ -203,7 +224,15 @@ public class SimpleExperiment {
                 marioAIOptions.setGapsCount(false);
                 marioAIOptions.setVisualization(visualize);
                 basicTask.setOptionsAndReset(marioAIOptions);
-                agent.newEpisode();
+
+                if (AgentType.Abstraction == SimpleExperiment.activeAgentType
+                        || AgentType.AbstractionBasicQLearning == SimpleExperiment.activeAgentType) {
+                    ((AbstractionEnsembleAgent)agent).newEpisode();
+                }
+                else {
+                    ((EnsembleAgent)agent).newEpisode();
+                }
+
 
                 Double res = basicTask.runSingleEpisode(1, true);
 

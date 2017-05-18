@@ -1,14 +1,18 @@
 package competition.richmario.tableImplementations;
 
+import java.util.Arrays;
+
 /**
  * Created by Dev on 04/05/2017.
  */
 public class AvlTreeBasedQTable implements IQTable {
 
     private AvlTree m_tree;
+    private int m_numberOfActions;
 
-    public AvlTreeBasedQTable() {
+    public AvlTreeBasedQTable(int numberOfActions) {
         this.m_tree = new AvlTree();
+        this.m_numberOfActions = numberOfActions;
     }
 
     public double getKeyValue(double[] state, int action) {
@@ -57,7 +61,8 @@ public class AvlTreeBasedQTable implements IQTable {
 
     private void verifyActionArrayInitialized(AvlNode node) {
         if (node.actionValues == null) {
-            node.actionValues = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
+            node.actionValues = new double[m_numberOfActions];
+            Arrays.fill(node.actionValues, 0);
         }
     }
 
@@ -70,22 +75,4 @@ public class AvlTreeBasedQTable implements IQTable {
         this.verifyActionArrayInitialized(node);
         node.actionValues[action] = value;
     }
-
-    public void decay() {
-        // traces not supported
-    }
-
-    public void resetEs() {
-        // traces not supported
-    }
-
-    public void setTraces(double[] state, int action) {
-        // traces not supported
-    }
-
-    public void update(double delta) {
-        // update code
-    }
-
-    public int getSize() { return 0; }
 }
