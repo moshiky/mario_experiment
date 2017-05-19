@@ -88,8 +88,8 @@ public class SimpleExperiment {
     public static double[] experimentMain(Logger logger) throws Exception {
 
         double[] resultsSum = null;
-        int runs = 1;
-        int episodesForRun = 1000;
+        int runs = 2;
+        int episodesForRun = 2000;
 
         AgentType[] agentsToRun = new AgentType[] {
                 AgentType.AbstractionBasicQLearning,
@@ -236,8 +236,8 @@ public class SimpleExperiment {
 
                 Double res = basicTask.runSingleEpisode(1, true);
 
-                if (j % logger.LOGGING_INTERVAL == 0) {
-                    logger.info("run[" + i + "]ep[" + j + "] res=" + rewardTmpSum / logger.LOGGING_INTERVAL);
+                if ((j+1) % logger.LOGGING_INTERVAL == 0) {
+                    logger.info("run[" + i + "]ep[" + (j+1) + "] res=" + rewardTmpSum / logger.LOGGING_INTERVAL);
                     rewardTmpSum = 0;
                 }
                 rewardTmpSum += res;

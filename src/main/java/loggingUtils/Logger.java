@@ -94,6 +94,7 @@ public class Logger {
     }
 
     public void addSeriesTime(long timeInSecs) {
+        this.info("Total time: " + timeInSecs + " secs");
         this.m_learningCurveDisplay.addSeriesTime(timeInSecs);
     }
 

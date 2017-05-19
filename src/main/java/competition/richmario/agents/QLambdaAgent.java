@@ -124,7 +124,7 @@ public class QLambdaAgent{
 
     }
 
-    public void setTraces(StateAction action) { cmac.resetEs(); cmac.setTraces(action); }
+    public void setTraces(StateAction action) { cmac.setTraces(action); }
 
     public void setTracesSimilarity(StateAction action, Double similarity) {
         double q = getQ(action);
@@ -134,7 +134,7 @@ public class QLambdaAgent{
 
 
     public double getDeltaR(StateAction previous, float reward, StateAction next) {
-        double deltaR = reward; //shape.shape(previous, next, reward);
+        double deltaR = shape.shape(previous, next, reward);
         deltaR -= getQ(previous);
         return deltaR;
     }
