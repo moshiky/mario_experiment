@@ -89,10 +89,10 @@ public class SimpleExperiment {
 
         double[] resultsSum = null;
         int runs = 1;
-        int episodesForRun = 5000;
+        int episodesForRun = 1000;
 
         AgentType[] agentsToRun = new AgentType[] {
-                AgentType.RewardShaping,
+                AgentType.AbstractionBasicQLearning,
                 AgentType.BasicQLearning
         };
 

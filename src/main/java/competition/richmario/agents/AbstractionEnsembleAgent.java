@@ -85,7 +85,7 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
         }
         else {
             // other agent type
-            double[] state = new double[12];
+            double[] state = new double[10];
 
             // CLOSEST TWO ENEMIES
             state[0] = isMarioAbleToJump ? 1 : 0;
@@ -111,8 +111,8 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
                 state[9] = 21;
             }
 
-            state[10] = marioFloatPos[0];
-            state[11] = marioFloatPos[1];
+            //state[10] = marioFloatPos[0];
+            //state[11] = marioFloatPos[1];
 
             return state;
         }
@@ -305,7 +305,6 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
         previousAction = 0;
         prevMarioPos = new float[] {32.0f,32.0f};
         lastWorldReward = -1;
-        this.reset();
     }
 
     @Override

@@ -91,9 +91,12 @@ public class AbstractionQLambdaAgent {
         double previousStateQValue = this.getQ(previousState, previousAction);
 
         // calculate delta
-        double delta = actionReward + this.gamma * bestNextQValue - previousStateQValue;
+        double delta = actionReward + (this.gamma * bestNextQValue) - previousStateQValue;
 
         // update previous state q value
-        this.qTable.setKeyValue(previousState, previousAction, delta);
+        double newQValue = previousStateQValue + (alpha * delta);
+        if (newQValue != previousStateQValue) {
+            this.qTable.setKeyValue(previousState, previousAction, newQValue);
+        }
     }
 }
