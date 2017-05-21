@@ -81,7 +81,7 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
     public double[] getState(){
         if (AgentType.Abstraction == SimpleExperiment.activeAgentType) {
             // Abstraction agent type
-            return StateManager.getStateRepresentation();
+            return StateManager.getStateRepresentation(this.marioState, this.marioFloatPos, this.prevMarioPos);
         }
         else {
             // other agent type
