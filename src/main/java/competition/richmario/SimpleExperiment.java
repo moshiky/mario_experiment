@@ -92,7 +92,7 @@ public class SimpleExperiment {
         int episodesForRun = 10000;
 
         AgentType[] agentsToRun = new AgentType[] {
-                AgentType.BasicQLearning,
+                //AgentType.BasicQLearning,
                 AgentType.AbstractionBasicQLearning
         };
 
@@ -153,7 +153,7 @@ public class SimpleExperiment {
 
     public static void experiment(Logger logger, int runs, int episodesForRun) throws Exception {
 
-        boolean visualize = false;
+        boolean visualize = true;
 
         double alpha = 0.01;
         double gamma = 0.9;

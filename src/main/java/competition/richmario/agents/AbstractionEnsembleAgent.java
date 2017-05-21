@@ -81,9 +81,11 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
     public double[] getState(){
         if (AgentType.Abstraction == SimpleExperiment.activeAgentType) {
             // Abstraction agent type
-            return StateManager.getStateRepresentation(this.marioState, this.marioFloatPos, this.prevMarioPos);
+            return this.getCustomState();
         }
         else {
+            // System.out.println("E[" + marioEgoPos[0] + "," + marioEgoPos[1] + "] F[" + marioFloatPos[0] + "," + marioFloatPos[1] + "]");
+
             // other agent type
             double[] state = new double[10];
 
@@ -316,5 +318,81 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
 
     public void setRecording(boolean recording) {
         this.recording = recording;
+    }
+
+
+
+
+
+
+    /**
+     *  You have access to:
+     *
+     *  >>  this.marionState:   represents current mario state
+     *      [0]     Mario Status    [Mario.STATUS_DEAD, Mario.STATUS_WIN, Mario.STATUS_RUNNING]
+     *      [1]     Mario Mode      [0= small, 1= large, 2= large+able to shoot fireballs]
+     *      [2]     Is mario on ground  [0= no, 1= yes]
+     *      [3]     Is mario able to jump   [0= no, 1= yes]
+     *      [4]     Is mario able to shoot  [0= no, 1= yes]
+     *      [5]     Is mario carried on top of something (e.g. a Bullet or other creature)  [0= no, 1= yes]
+     *      [6]     Killed creatures total so far    [int >= 0]
+     *      [7]     Killed creatures by Mario's fireballs total so far   [int >= 0]
+     *      [8]     Killed creatures by Mario stomping them total so far    [int >= 0]
+     *      [9]     Killed creatures by shell hits total so far    [int >= 0]
+     *      [10]    Left time for current episode
+     *
+     *  >>  this.marioFloatPos:  represents mario current position
+     *      [0]     position x value
+     *      [1]     position y value
+     *
+     *  >>  this.prevMarioPos:  represents mario previous position
+     *      [0]     position x value
+     *      [1]     position y value
+     *
+     *  >>  method     int enemies(int out, int in)
+     *                  returns one or sum of few of the following numbers:
+     *                      1   64  8
+     *                      4   M   32
+     *                      2   128 16
+     *
+     *                      for instance, in case there is an enemy on the right of mario, 32 will be returned.
+     *                      in case there is an enemy both at the left of mario and above him, 68 will be returned (the
+     *                      sum of 64 and 4).
+     *                      zero will be returned in case there are no enemies in mario immediate surrounding.
+     *
+     *  >>  method     int obstacle()   -   how far is the closest obstacle (lower = closer)
+     *                  returns one or sum of few of the following numbers:
+     *                      0   -   no obstacles in mario immediate surrounding
+     *                      1   -   mario touching an obstacle (standing on it not considered 'touching')
+     *                      2   -   obstacle in the very close surrounding of mario (below him not considered)
+     *                      4   -   obstacle in the close surrounding of mario (below him not considered)
+     *                      8   -   obstacle in the surrounding of mario, but not very close (below him not considered)
+     *
+     *                      8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
+     *                      8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
+     *                      8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
+     *                      8 8 8 4 4 4 4 4 4 4 4 4 8 8 8
+     *                      8 8 8 4 4 4 4 4 4 4 4 4 8 8 8
+     *                      8 8 8 4 4 2 2 2 2 2 4 4 8 8 8
+     *                      8 8 8 4 4 2 1 1 1 2 4 4 8 8 8
+     *                      8 8 8 4 4 2 1   1 2 4 4 8 8 8
+     *                      #############################
+     *
+     *                      for instance, in case there is an obstacle very close to mario 2 will be returned.
+     *                      in case both mario touching an obstacle and there is another one not very close to him 9
+     *                      will be returned (the sum of 1 and 8).
+     *
+     *  >>  method     int[] closestEnemy()
+     *                  returns (xDist, yDist) where:
+     *                      xDist   =   the 
+     */
+    private double[] getCustomState() {
+        double[] state = null;
+
+        // *** YOUR CODE HERE **********************************************************************
+
+        // *** END OF YOUR CODE ********************************************************************
+
+        return state;
     }
 }
