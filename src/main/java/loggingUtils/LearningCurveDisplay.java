@@ -36,10 +36,10 @@ public class LearningCurveDisplay {
     private String m_activeSeriesName;
 
     private int m_round;
-    private long m_currentTime;
+    private String m_timeStamp;
 
 
-    public LearningCurveDisplay(long currentTime, int updateInterval) {
+    public LearningCurveDisplay(String timeStamp, int updateInterval) {
 
         this.m_updateInterval = updateInterval;
 
@@ -50,7 +50,7 @@ public class LearningCurveDisplay {
         this.m_seriesData = new HashMap<>();
 
         this.m_round = 0;
-        this.m_currentTime = currentTime;
+        this.m_timeStamp = timeStamp;
 
         this.setActiveSeries(this.m_activeSeriesName);
 
@@ -165,7 +165,7 @@ public class LearningCurveDisplay {
         try {
             ScreenImage.writeImage(
                     ScreenImage.createImage(this.chartPanel),
-                    "graphs/graph_" + this.m_currentTime + ".jpg"
+                    "graphs/graph__" + this.m_timeStamp + ".jpg"
             );
         } catch (IOException e) {
             e.printStackTrace();

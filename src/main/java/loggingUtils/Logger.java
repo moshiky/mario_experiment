@@ -63,9 +63,9 @@ public class Logger {
         }
     }
 
-    public void initiateLearningCurveDisplay(long currentTime) {
+    public void initiateLearningCurveDisplay(String timeStamp) {
         this.m_curveDisplay = new JFrame("Learning Curve Display");
-        this.m_learningCurveDisplay = new LearningCurveDisplay(currentTime, this.LOGGING_INTERVAL);
+        this.m_learningCurveDisplay = new LearningCurveDisplay(timeStamp, this.LOGGING_INTERVAL);
 
         this.m_curveDisplay.add(this.m_learningCurveDisplay.getPanel());
         this.m_curveDisplay.setSize(1400, 800);

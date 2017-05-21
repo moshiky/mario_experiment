@@ -61,9 +61,9 @@ public class SimpleExperiment {
 
 
     public static void main(String[] args) throws Exception {
-        long currentTime = System.currentTimeMillis();
-        Logger logger = new Logger("logs/info__" + currentTime + ".log");
-        logger.initiateLearningCurveDisplay(currentTime);
+        String timeStamp = new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss").format(new java.util.Date());
+        Logger logger = new Logger("logs/info__" + timeStamp + ".log");
+        logger.initiateLearningCurveDisplay(timeStamp);
 
         experimentMain(logger);
         /*
@@ -88,12 +88,12 @@ public class SimpleExperiment {
     public static double[] experimentMain(Logger logger) throws Exception {
 
         double[] resultsSum = null;
-        int runs = 2;
-        int episodesForRun = 2000;
+        int runs = 10;
+        int episodesForRun = 10000;
 
         AgentType[] agentsToRun = new AgentType[] {
-                AgentType.AbstractionBasicQLearning,
-                AgentType.BasicQLearning
+                AgentType.BasicQLearning,
+                AgentType.AbstractionBasicQLearning
         };
 
         for (AgentType agentType : agentsToRun) {

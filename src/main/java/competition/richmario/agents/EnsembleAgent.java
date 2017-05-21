@@ -409,22 +409,19 @@ abstract public class EnsembleAgent extends BasicMarioAIAgent implements Agent {
 
                 agent.setTraces(sa);
 
-                /*List<Pair<StateAction, Double>> similarities = getSimilarities(prevSA);
+                List<Pair<StateAction, Double>> similarities = getSimilarities(prevSA);
                 //Map<Long, Pair<StateAction, Double>> distinctSimilarities = getDistinctSimilarities(similarities);
                 int size = similarities.size();
                 sizeTotal += size;
                 runs++;
-                if (runs % this.logger.LOGGING_INTERVAL == 0) {
-                    this.logger.info("@" + runs + " = " + sizeTotal);
-                }
 
                 for (Pair<StateAction, Double> similarity : similarities) {
                     StateAction ssa = similarity.getFirst();
                     ssa.setAction(action);
 
-                    agent.setTracesSimilarity(ssa, similarity.getSecond() /* Math.pow(SimpleExperiment.episode + 1, 0.02)*);
+                    agent.setTracesSimilarity(ssa, similarity.getSecond());
 
-                }*/
+                }
             }
         }
 
