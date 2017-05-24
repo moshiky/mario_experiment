@@ -44,6 +44,10 @@ public class ShapingManager {
      *      [8] closest enemy x : 0-21
      *      [9] closest enemy y : 0-21
      *
+     * @param previousMarionPosition and currentMarionPosition represent Mario's position in the world:
+     *      [0] Mario's x coordinate
+     *      [1] Mario's y coordinate
+     *
      * @param previousAction represent the action taken:
      *      ** NOTICE: the 'run' key makes mario to shoot fireballs as well, if he in the right mode (white clothes)
      *
@@ -59,8 +63,6 @@ public class ShapingManager {
      *      9   -   press keys: 'jump' + 'run'
      *      10  -   press keys: 'go left' + 'jump' + 'run'
      *      11  -   press keys: 'go right' + 'jump' + 'run'
-     *
-     *  >>>>>>>> Add missing parameters documentation- previousMarionPosition and currentMarionPosition
      *
      * @return the value of F(s, a, s'), such that R'(s, a, s') = R(s, a, s') + F(s, a, s')
      */
