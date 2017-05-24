@@ -60,6 +60,8 @@ public class ShapingManager {
      *      10  -   press keys: 'go left' + 'jump' + 'run'
      *      11  -   press keys: 'go right' + 'jump' + 'run'
      *
+     *  >>>>>>>> Add missing parameters documentation- previousMarionPosition and currentMarionPosition
+     *
      * @return the value of F(s, a, s'), such that R'(s, a, s') = R(s, a, s') + F(s, a, s')
      */
     public double getShapingReward(int[] previousState, float[] previousMarionPosition, int previousAction,

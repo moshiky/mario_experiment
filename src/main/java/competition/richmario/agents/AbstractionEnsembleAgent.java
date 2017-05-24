@@ -382,9 +382,10 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *                      in case both mario touching an obstacle and there is another one not very close to him 9
      *                      will be returned (the sum of 1 and 8).
      *
+     * >>>>>>>> COMPLETE DOCUMENTATION
      *  >>  method     int[] closestEnemy()
      *                  returns (xDist, yDist) where:
-     *                      xDist   =   the 
+     *                      xDist   =   the
      */
     private double[] getCustomState() {
         double[] state = null;
