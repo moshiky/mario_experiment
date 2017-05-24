@@ -9,12 +9,8 @@ import ch.idsia.agents.controllers.BasicMarioAIAgent;
 import ch.idsia.benchmark.mario.engine.sprites.Mario;
 import competition.richmario.AgentType;
 import competition.richmario.SimpleExperiment;
-import competition.richmario.StateAction;
 import competition.richmario.demonstrations.Demonstration;
-import competition.richmario.experiment.SimilarityManager;
-import competition.richmario.experiment.StateManager;
 import loggingUtils.Logger;
-import org.apache.commons.math3.util.Pair;
 import util.RNG;
 
 import java.util.*;
@@ -45,7 +41,11 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
     public AbstractionEnsembleAgent(Logger logger, AbstractionQLambdaAgent[] agents, double epsilon, boolean recording){
         super("AbstractionEnsemble");
 
-        this.previousState = StateManager.getInitialState();
+        if (AgentType.Abstraction != SimpleExperiment.activeAgentType) {
+            this.stateLength = 10;
+        }
+
+        this.previousState = this.getInitialState();
         this.previousAction = 0;
         this.prevMarioPos = new float[]{32.0f,32.0f};
         this.lastWorldReward = -1;
@@ -303,7 +303,7 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
     abstract protected int greedyActionSelection(double[] state);
 
     public void newEpisode() {
-        previousState = StateManager.getInitialState();
+        previousState = this.getInitialState();
         previousAction = 0;
         prevMarioPos = new float[] {32.0f,32.0f};
         lastWorldReward = -1;
@@ -323,7 +323,11 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
 
 
 
-
+    private double[] getInitialState() {
+        double[] initialState = new double[this.stateLength];
+        Arrays.fill(initialState, 0);
+        return initialState;
+    }
 
     /**
      *  You have access to:
@@ -349,46 +353,73 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *      [0]     position x value
      *      [1]     position y value
      *
-     *  >>  method     int enemies(int out, int in)
-     *                  returns one or sum of few of the following numbers:
-     *                      1   64  8
-     *                      4   M   32
-     *                      2   128 16
+     *  >>  this.levelScene:    represents all the objects around mario, in a 19x19 grid (mario is at the center- [9,9])
+     *      each cell can get one of the following values:
+     *      -60 =   something that mario can't go through
+     *      0   =   nothing
+     *      2   =   coin
+     *      5   =   princess
+     *      1   =   something else (usually that mario can't pass, like ground)
      *
-     *                      for instance, in case there is an enemy on the right of mario, 32 will be returned.
-     *                      in case there is an enemy both at the left of mario and above him, 68 will be returned (the
-     *                      sum of 64 and 4).
-     *                      zero will be returned in case there are no enemies in mario immediate surrounding.
+     *  >>  this.enemiesFloatPos:   represents the types and locations of all enemies that are currently on the screen
+     *      structure- enemy i represented using cells [i, i+1, i+2] in the following order:
+     *      [i] =   enemy i type. possible values:
+     *                Sprite.GOOMBA
+     *                Sprite.BULLET_BILL
+     *                Sprite.ENEMY_FLOWER
+     *                Sprite.GOOMBA_WINGED
+     *                Sprite.GREEN_KOOPA
+     *                Sprite.GREEN_KOOPA_WINGED
+     *                Sprite.RED_KOOPA
+     *                Sprite.RED_KOOPA_WINGED
+     *                Sprite.SPIKY
+     *                Sprite.SPIKY_WINGED
+     *                Sprite.SHELL
+     *      [i+1] =  (enemy_i.x - mario.x)
+     *      [i+2] =  (enemy_i.x - mario.x)
+     *
+     *  >>  method     int enemies(int out, int in)
+     *      returns one or sum of few of the following numbers:
+     *          1   64  8
+     *          4   M   32
+     *          2   128 16
+     *
+     *      for instance, in case there is an enemy on the right of mario, 32 will be returned.
+     *      in case there is an enemy both at the left of mario and above him, 68 will be returned (the
+     *      sum of 64 and 4).
+     *      zero will be returned in case there are no enemies in mario immediate surrounding.
      *
      *  >>  method     int obstacle()   -   how far is the closest obstacle (lower = closer)
-     *                  returns one or sum of few of the following numbers:
-     *                      0   -   no obstacles in mario immediate surrounding
-     *                      1   -   mario touching an obstacle (standing on it not considered 'touching')
-     *                      2   -   obstacle in the very close surrounding of mario (below him not considered)
-     *                      4   -   obstacle in the close surrounding of mario (below him not considered)
-     *                      8   -   obstacle in the surrounding of mario, but not very close (below him not considered)
+     *      returns one or sum of few of the following numbers:
+     *          0   -   no obstacles in mario immediate surrounding
+     *          1   -   mario touching an obstacle (standing on it not considered 'touching')
+     *          2   -   obstacle in the very close surrounding of mario (below him not considered)
+     *          4   -   obstacle in the close surrounding of mario (below him not considered)
+     *          8   -   obstacle in the surrounding of mario, but not very close (below him not considered)
      *
-     *                      8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
-     *                      8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
-     *                      8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
-     *                      8 8 8 4 4 4 4 4 4 4 4 4 8 8 8
-     *                      8 8 8 4 4 4 4 4 4 4 4 4 8 8 8
-     *                      8 8 8 4 4 2 2 2 2 2 4 4 8 8 8
-     *                      8 8 8 4 4 2 1 1 1 2 4 4 8 8 8
-     *                      8 8 8 4 4 2 1   1 2 4 4 8 8 8
-     *                      #############################
+     *          8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
+     *          8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
+     *          8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
+     *          8 8 8 4 4 4 4 4 4 4 4 4 8 8 8
+     *          8 8 8 4 4 4 4 4 4 4 4 4 8 8 8
+     *          8 8 8 4 4 2 2 2 2 2 4 4 8 8 8
+     *          8 8 8 4 4 2 1 1 1 2 4 4 8 8 8
+     *          8 8 8 4 4 2 1   1 2 4 4 8 8 8
+     *          #############################
      *
-     *                      for instance, in case there is an obstacle very close to mario 2 will be returned.
-     *                      in case both mario touching an obstacle and there is another one not very close to him 9
-     *                      will be returned (the sum of 1 and 8).
+     *      for instance, in case there is an obstacle very close to mario 2 will be returned.
+     *      in case both mario touching an obstacle and there is another one not very close to him 9
+     *      will be returned (the sum of 1 and 8).
      *
      * >>>>>>>> COMPLETE DOCUMENTATION
      *  >>  method     int[] closestEnemy()
-     *                  returns (xDist, yDist) where:
-     *                      xDist   =   the
+     *      returns [xDist, yDist] where:
+     *          xDist   =   {closest_enemy}.x - mario.x
+     *          yDist   =   {closest_enemy}.y - mario.y
      */
+    private int stateLength = 10;   // NOTICE: remember to change this to your state length!
     private double[] getCustomState() {
-        double[] state = null;
+        double[] state = new double[this.stateLength];
 
         // *** YOUR CODE HERE **********************************************************************
 
