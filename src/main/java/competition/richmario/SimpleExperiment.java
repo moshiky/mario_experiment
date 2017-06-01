@@ -92,11 +92,8 @@ public class SimpleExperiment {
         int episodesForRun = 7500;
 
         AgentType[] agentsToRun = new AgentType[] {
-                AgentType.BasicQLearning,
-                AgentType.AbstractionBasicQLearning,
-                AgentType.Abstraction,
                 AgentType.Similarities,
-                AgentType.RewardShaping
+                AgentType.BasicQLearning
         };
 
         for (AgentType agentType : agentsToRun) {
