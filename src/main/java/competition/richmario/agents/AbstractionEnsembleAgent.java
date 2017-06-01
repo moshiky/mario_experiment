@@ -385,6 +385,16 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *          4   M   32
      *          2   128 16
      *
+     *      result can also be analyzed as byte:
+     *          LSB     [0]     up-left
+     *                  [1]     down-left
+     *                  [2]     left
+     *                  [3]     up-right
+     *                  [4]     down-right
+     *                  [5]     right
+     *                  [6]     up
+     *          MSB     [7]     down
+     *
      *      for instance, in case there is an enemy on the right of mario, 32 will be returned.
      *      in case there is an enemy both at the left of mario and above him, 68 will be returned (the
      *      sum of 64 and 4).
@@ -412,7 +422,6 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *      in case both mario touching an obstacle and there is another one not very close to him 9
      *      will be returned (the sum of 1 and 8).
      *
-     * >>>>>>>> COMPLETE DOCUMENTATION
      *  >>  method     int[] closestEnemy()
      *      returns [xDist, yDist] where:
      *          xDist   =   {closest_enemy}.x - mario.x
