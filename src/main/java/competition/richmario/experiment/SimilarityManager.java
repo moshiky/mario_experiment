@@ -62,6 +62,31 @@ public class SimilarityManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
+        int[] newState = null;
+
+        // can jump - similar by 0.7
+        newState = state.clone();
+        newState[0] = 1 - newState[0];
+        similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.7));
+
+        // on ground - similar by 0.5
+        newState = state.clone();
+        newState[1] = 1 - newState[1];
+        similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.5));
+
+        // able to shoot - similar by 0.6
+        newState = state.clone();
+        newState[2] = 1 - newState[2];
+        similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.6));
+
+        // directions - similar by 0.2
+        for (int i = 0 ; i < 9 ; i++) {
+            if (i != newState[3]) {
+                newState = state.clone();
+                newState[3] = i;
+                similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.2));
+            }
+        }
 
         // *** END OF YOUR CODE ********************************************************************
 
