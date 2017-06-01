@@ -432,7 +432,7 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
         double[] state = new double[this.stateLength];
 
         // *** YOUR CODE HERE **********************************************************************
-
+// new code
         // *** END OF YOUR CODE ********************************************************************
 
         return state;
