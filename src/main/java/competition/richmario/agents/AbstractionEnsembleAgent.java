@@ -290,8 +290,14 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
 
     public int egreedyActionSelection(double[] state) {
         if(RNG.randomDouble() < epsilon){
+            for (AbstractionQLambdaAgent agent : agents) {
+                agent.resetTraces();
+            }
             return RNG.randomInt(getNumActions());
         } else {
+            for (AbstractionQLambdaAgent agent : agents) {
+                agent.decayTraces();
+            }
             return greedyActionSelection(state);
         }
     }

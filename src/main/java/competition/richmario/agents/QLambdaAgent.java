@@ -125,7 +125,7 @@ public class QLambdaAgent{
     }
 
     public void setTraces(StateAction action) {
-        cmac.resetEs(); // this in order to disable the traces
+        //cmac.resetEs(); // this in order to disable the traces
         cmac.setTraces(action);
     }
 

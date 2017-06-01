@@ -94,9 +94,19 @@ public class AbstractionQLambdaAgent {
         double delta = actionReward + (this.gamma * bestNextQValue) - previousStateQValue;
 
         // update previous state q value
-        double newQValue = previousStateQValue + (alpha * delta);
+        /*double newQValue = previousStateQValue + (alpha * delta);
         if (newQValue != previousStateQValue) {
             this.qTable.setKeyValue(previousState, previousAction, newQValue);
-        }
+        }*/
+        this.qTable.setKeyTrace(previousState, previousAction, 1.0);
+        this.qTable.updateByTraces(alpha, delta);
+    }
+
+    public void decayTraces() {
+        this.qTable.decayTraces(this.gamma * this.lambda);
+    }
+
+    public void resetTraces() {
+        this.qTable.resetTraces();
     }
 }
