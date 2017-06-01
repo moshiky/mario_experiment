@@ -31,9 +31,49 @@ public class SimilarityManager {
      *                  0   1   2
      *
      *      [4] close enemies yes or no in 8 directions : 0-255
+     *      returns one or sum of few of the following numbers:
+     *          1   64  8
+     *          4   M   32
+     *          2   128 16
+     *
+     *      result can also be analyzed as byte:
+     *          LSB     [0]     up-left
+     *                  [1]     down-left
+     *                  [2]     left
+     *                  [3]     up-right
+     *                  [4]     down-right
+     *                  [5]     right
+     *                  [6]     up
+     *          MSB     [7]     down
+     *
      *      [5] mid-range enemies yes or no in 8 directions : 0-255
+     *          <same encoding as [4]]>
+     *
      *      [6] far enemies yes or no in 8 directions   : 0-255
+     *          <same encoding as [4]]>
+     *
      *      [7] obstacles in front  : 0-15
+     *          the sum of one or few of the following numbers:
+     *          0   -   no obstacles in mario immediate surrounding
+     *          1   -   mario touching an obstacle (standing on it not considered 'touching')
+     *          2   -   obstacle in the very close surrounding of mario (below him not considered)
+     *          4   -   obstacle in the close surrounding of mario (below him not considered)
+     *          8   -   obstacle in the surrounding of mario, but not very close (below him not considered)
+     *
+     *          8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
+     *          8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
+     *          8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
+     *          8 8 8 4 4 4 4 4 4 4 4 4 8 8 8
+     *          8 8 8 4 4 4 4 4 4 4 4 4 8 8 8
+     *          8 8 8 4 4 2 2 2 2 2 4 4 8 8 8
+     *          8 8 8 4 4 2 1 1 1 2 4 4 8 8 8
+     *          8 8 8 4 4 2 1   1 2 4 4 8 8 8
+     *          #############################
+     *
+     *          for instance, in case there is an obstacle very close to Mario, the value will be 2.
+     *          in case both Mario touching an obstacle and there is another one not very close to him
+     *          the value will be 9 (the sum of 1 and 8).
+     *
      *      [8] closest enemy x : 0-21
      *      [9] closest enemy y : 0-21
      *
