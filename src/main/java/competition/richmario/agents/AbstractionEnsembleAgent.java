@@ -277,27 +277,22 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
         double actionReward = worldRewardUntilNow - lastWorldReward;
         this.lastWorldReward = worldRewardUntilNow;
 
+        int nextAction = egreedyActionSelection(currentState);
         for (AbstractionQLambdaAgent agent : agents) {
-            agent.update(this.previousState, this.previousAction, actionReward, currentState);
+            agent.update(this.previousState, this.previousAction, actionReward, currentState, nextAction);
         }
 
         runs++;
 
         this.previousState = currentState;
-        this.previousAction = egreedyActionSelection(currentState);
+        this.previousAction = nextAction;
         this.prevMarioPos = this.marioFloatPos.clone();
     }
 
     public int egreedyActionSelection(double[] state) {
-        if(RNG.randomDouble() < epsilon){
-            for (AbstractionQLambdaAgent agent : agents) {
-                agent.resetTraces();
-            }
+        if(RNG.randomDouble() < epsilon) {
             return RNG.randomInt(getNumActions());
         } else {
-            for (AbstractionQLambdaAgent agent : agents) {
-                agent.decayTraces();
-            }
             return greedyActionSelection(state);
         }
     }

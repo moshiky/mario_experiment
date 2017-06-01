@@ -74,16 +74,19 @@ public class AbstractionQLambdaAgent {
         return qTable.getKeyValue(state, action);
     }
 
-    public void update(double[] previousState, int previousAction, double actionReward, double[] currentState) {
+    public void update(double[] previousState, int previousAction, double actionReward, double[] currentState,
+                       int nextAction) {
 
         // find best next q value
         double[] nextQValues = new double[getNumActions()];
         double bestNextQValue = -Double.MAX_VALUE;
+        int bestAction = 0;
 
         for (int i = 0 ; i < getNumActions() ; i++) {
             nextQValues[i] = getQ(currentState, i);
             if (nextQValues[i] > bestNextQValue){
                 bestNextQValue = nextQValues[i];
+                bestAction = i;
             }
         }
 
@@ -94,19 +97,15 @@ public class AbstractionQLambdaAgent {
         double delta = actionReward + (this.gamma * bestNextQValue) - previousStateQValue;
 
         // update previous state q value
-        /*double newQValue = previousStateQValue + (alpha * delta);
-        if (newQValue != previousStateQValue) {
-            this.qTable.setKeyValue(previousState, previousAction, newQValue);
-        }*/
         this.qTable.setKeyTrace(previousState, previousAction, 1.0);
         this.qTable.updateByTraces(alpha, delta);
-    }
 
-    public void decayTraces() {
-        this.qTable.decayTraces(this.gamma * this.lambda);
-    }
-
-    public void resetTraces() {
-        this.qTable.resetTraces();
+        // decay or reset
+        if (nextAction == bestAction) {
+            this.qTable.decayTraces(this.gamma * this.lambda);
+        }
+        else {
+            this.qTable.resetTraces();
+        }
     }
 }
