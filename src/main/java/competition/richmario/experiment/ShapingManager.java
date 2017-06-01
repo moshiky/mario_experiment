@@ -38,8 +38,27 @@ public class ShapingManager {
      *                  0   1   2
      *
      *      [4] close enemies yes or no in 8 directions : 0-255
+     *      returns one or sum of few of the following numbers:
+     *          1   64  8
+     *          4   M   32
+     *          2   128 16
+     *
+     *      result can also be analyzed as byte:
+     *          LSB     [0]     up-left
+     *                  [1]     down-left
+     *                  [2]     left
+     *                  [3]     up-right
+     *                  [4]     down-right
+     *                  [5]     right
+     *                  [6]     up
+     *          MSB     [7]     down
+     *
      *      [5] mid-range enemies yes or no in 8 directions : 0-255
+     *          <same encoding as [4]]>
+     *
      *      [6] far enemies yes or no in 8 directions   : 0-255
+     *          <same encoding as [4]]>
+     *
      *      [7] obstacles in front  : 0-15
      *      [8] closest enemy x : 0-21
      *      [9] closest enemy y : 0-21
@@ -74,6 +93,47 @@ public class ShapingManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
+
+        boolean rightKeyPressed =
+                (previousAction == 2) || (previousAction == 5) || (previousAction == 8) || (previousAction == 11);
+        boolean leftKeyPressed =
+                (previousAction == 1) || (previousAction == 4) || (previousAction == 7) || (previousAction == 10);
+        boolean jumpKeyPressed =
+                (previousAction == 3) || (previousAction == 4) || (previousAction == 5) || (previousAction == 9)
+                        || (previousAction == 10) || (previousAction == 11);
+        boolean runKeyPressed =
+                (previousAction == 6) || (previousAction == 7) || (previousAction == 8) || (previousAction == 9)
+                        || (previousAction == 10) || (previousAction == 11);
+/*
+        // wrong right up move
+        if ((previousState[3] == 8) && ((previousState[4] & 8) == 8) && rightKeyPressed) {
+            rewardShaping -= 5;
+        }
+
+        // wrong right move
+        else if ((previousState[3] == 5) && ((previousState[4] & 32) == 32) && rightKeyPressed && !jumpKeyPressed) {
+            rewardShaping -= 5;
+        }
+
+        // prefer moving right
+        else if (rightKeyPressed) {
+            rewardShaping += 5;
+        }
+
+        // wrong left up move
+        if ((previousState[3] == 6) && ((previousState[4] & 1) == 1) && leftKeyPressed) {
+            rewardShaping -= 5;
+        }
+
+        // wrong left move
+        if ((previousState[3] == 3) && ((previousState[4] & 4) == 4) && leftKeyPressed && !jumpKeyPressed) {
+            rewardShaping -= 5;
+        }
+*/
+        // always prefer to shoot
+        if ((previousState[2] == 1) && runKeyPressed && (previousState[4] != 0)) {
+            rewardShaping += 0.5;
+        }
 
         // *** END OF YOUR CODE ********************************************************************
 

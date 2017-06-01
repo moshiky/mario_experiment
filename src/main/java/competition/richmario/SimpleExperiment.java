@@ -88,12 +88,12 @@ public class SimpleExperiment {
     public static double[] experimentMain(Logger logger) throws Exception {
 
         double[] resultsSum = null;
-        int runs = 15;
-        int episodesForRun = 10000;
+        int runs = 1;
+        int episodesForRun = 5000;
 
         AgentType[] agentsToRun = new AgentType[] {
-                AgentType.BasicQLearning,
-                AgentType.AbstractionBasicQLearning
+                AgentType.RewardShaping,
+                AgentType.BasicQLearning
         };
 
         for (AgentType agentType : agentsToRun) {
