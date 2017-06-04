@@ -115,6 +115,44 @@ public class ShapingManager {
 
         // *** YOUR CODE HERE **********************************************************************
 
+        // If close enemy on x axis from the right, please jump
+        // before: mario can jump and on ground, current direction is right, close enemy on X on ground from right, enemy is 0 dist on Y
+        // after: can't jump (which means he jumped)
+        if((previousState[0] == 1) && (previousState[1] == 1) && (previousState[3] == 5) && (previousState[4] == 32) && (previousState[9] == 0))
+        {
+            // if right + jump  or jump -> reward
+            if((previousAction == 3) || (previousAction == 5))
+            {
+                rewardShaping = 15;
+            }
+
+            // if continues right -> unreward
+            if((previousAction == 2) || (previousAction == 6) || (previousAction == 8))
+            {
+                rewardShaping = -15;
+            }
+        }
+/*
+        Note: testing the opposite case resulted in bad results somehow, so I commented it out.
+
+        // If close enemy on x axis from the left, please jump
+        // before: mario can jump and on ground, current direction is left, close enemy on X on ground from left, enemy is 0 dist on Y
+        // after: can't jump (which means he jumped)
+        if((previousState[0] == 1) && (previousState[1] == 1) && (previousState[3] == 3) && (previousState[4] == 4) && (previousState[9] == 0))
+        {
+            // if left + jump  or jump -> reward
+            if((previousAction == 3) || (previousAction == 4))
+            {
+                rewardShaping = 15;
+            }
+
+            // if continues left -> unreward
+            if((previousAction == 1) || (previousAction == 6) || (previousAction == 7))
+            {
+                rewardShaping = -15;
+            }
+        }
+*/
         // *** END OF YOUR CODE ********************************************************************
 
         return rewardShaping;
