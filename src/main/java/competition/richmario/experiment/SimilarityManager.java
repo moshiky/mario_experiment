@@ -103,6 +103,33 @@ public class SimilarityManager {
 
         // *** YOUR CODE HERE **********************************************************************
 
+        int maskOptions[] = {0,0x1,0x11,0x01,0x111,0x101,0x011,0x1111,0x1011,0x1101,0x1001,0x0011,0x11111,0x10111,0x11011,0x11101,0x10011,0x11001,0x10001,
+                0x101111,0x110111,0x111011,0x111011,0x111101,0x100111,0x110011,0x111001,0x100011,0x110001,0x100001,0x1111111,0x1011111,0x1101111,0x1110111,0x1111011,0x1111101,0x1001111,
+                0x1100111,0x1110011,0x1111001,0x1000111,0x1100011,0x1110001,0x1010101,0x1001101,0x1011001};
+
+        if (state[4] == 0)//&&(state[5] == 0))
+        {
+            for (int i=0;i<maskOptions.length;i++) {
+                int[] newState = state.clone();
+                newState[6] = maskOptions[i];
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(newState, action), 0.8));
+            }
+
+            if ((state[8] > 10) && (state[9] > 10))
+            {
+                int[] newState = state.clone();
+                if (state[2]==1)
+                    newState[2]=0;
+                else
+                    newState[2]=1;
+
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(newState, action), 1.0));
+            }
+        }
+
+
+
+
         // *** END OF YOUR CODE ********************************************************************
 
         return similarityRecords;
