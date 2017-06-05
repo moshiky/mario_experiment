@@ -377,7 +377,7 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *                Sprite.SPIKY_WINGED
      *                Sprite.SHELL
      *      [i+1] =  (enemy_i.x - mario.x)
-     *      [i+2] =  (enemy_i.x - mario.x)
+     *      [i+2] =  (enemy_i.y - mario.y)
      *
      *  >>  method     int enemies(int out, int in)
      *      returns one or sum of few of the following numbers:
@@ -432,9 +432,51 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
         double[] state = new double[this.stateLength];
 
         // *** YOUR CODE HERE **********************************************************************
+        state[0] = isMarioAbleToJump ? 1 : 0;
+        state[1] = isMarioOnGround ? 1 : 0;
+        state[2] = isMarioAbleToShoot ? 1 : 0;//marioMode;//
+        float xdiff = marioFloatPos[0] - prevMarioPos[0];
+        float ydiff = marioFloatPos[1] - prevMarioPos[1];
+        state[3] = xdiff < 0 ? 0 : (xdiff == 0 ? 1 : 2);
+        state[3] += 3*(ydiff < 0 ? 0 : (ydiff == 0 ? 1 : 2));
+        int[] closestCoin = this.closestCoins();
+        state[4] = closestCoin[0];
+        state[5] = closestCoin[1];
+        state[6] = enemies(3, 0);
 
+        state[7] = obstacle();
+
+        int[] enemy = closestEnemy();
+        if(Math.abs(enemy[0]) < 11 && Math.abs(enemy[1]) < 11){
+            state[8] = enemy[0]+10;
+            state[9] = enemy[1]+10;
+        } else {
+            state[8] = 21;
+            state[9] = 21;
+        }
         // *** END OF YOUR CODE ********************************************************************
 
         return state;
     }
+
+    public int[] closestCoins(){
+
+            int[] nearestCoin = new int[] {21,21};
+            double distance, bestDistance = Double.MAX_VALUE;
+
+            for(int i=0; i<this.levelScene.length; i++){
+                for(int j=0; j<this.levelScene.length; j++){
+                    if(this.levelScene[i][j] == (byte)2){
+                        distance = Math.sqrt(Math.pow(9-i,2)+Math.pow(9-j,2));
+                        if(distance < bestDistance){
+                            nearestCoin[0] = i;
+                            nearestCoin[1] = j;
+                            bestDistance = distance;
+                        }
+                    }
+                }
+            }
+        return nearestCoin;
+    }
+
 }
