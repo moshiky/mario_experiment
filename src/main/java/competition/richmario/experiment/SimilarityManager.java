@@ -3,7 +3,10 @@ package competition.richmario.experiment;
 import competition.richmario.AgentType;
 import competition.richmario.SimpleExperiment;
 import org.apache.commons.math3.util.Pair;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import competition.richmario.StateAction;
@@ -101,8 +104,63 @@ public class SimilarityManager {
             return similarityRecords;
         }
 
-        // *** YOUR CODE HERE **********************************************************************
+        int[] newState1 = state.clone();
+        newState1[5] = state[4];
+        similarityRecords.add(new Pair<>(new StateAction(newState1, 0), 0.66));
 
+        int[] newState2 = state.clone();
+        newState2[6] = state[4];
+        similarityRecords.add(new Pair<>(new StateAction(newState2, 0), 0.33));
+
+        int[] newState3 = state.clone();
+        newState3[6] = state[5];
+        similarityRecords.add(new Pair<>(new StateAction(newState3, 0), 0.5));
+
+        // *** YOUR CODE HERE **********************************************************************
+        if (state[8] == 1 && (state[4] == 4)) {
+            similarityRecords.add(new Pair<>(new StateAction(state, 0), 0.5));
+            similarityRecords.add(new Pair<>(new StateAction(state, 1), 1.));
+            similarityRecords.add(new Pair<>(new StateAction(state, 2), 0.));
+            similarityRecords.add(new Pair<>(new StateAction(state, 3), 0.1));
+            similarityRecords.add(new Pair<>(new StateAction(state, 4), 1.));
+            similarityRecords.add(new Pair<>(new StateAction(state, 5), 0.));
+            if (state[2] == 1) {
+                similarityRecords.add(new Pair<>(new StateAction(state, 6), 0.));
+            } else {
+                similarityRecords.add(new Pair<>(new StateAction(state, 6), 0.5));
+            }
+            similarityRecords.add(new Pair<>(new StateAction(state, 7), 1.));
+            similarityRecords.add(new Pair<>(new StateAction(state, 8), 0.));
+            if (state[2] == 1) {
+                similarityRecords.add(new Pair<>(new StateAction(state, 9), 0.1));
+            } else {
+                similarityRecords.add(new Pair<>(new StateAction(state, 9), 0.5));
+            }
+            similarityRecords.add(new Pair<>(new StateAction(state, 10), 1.));
+            similarityRecords.add(new Pair<>(new StateAction(state, 10), 0.));
+        }
+        if (state[8] == 1 && (state[4] == 32)) {
+            similarityRecords.add(new Pair<>(new StateAction(state, 0), 0.5));
+            similarityRecords.add(new Pair<>(new StateAction(state, 1), 0.));
+            similarityRecords.add(new Pair<>(new StateAction(state, 2), 1.));
+            similarityRecords.add(new Pair<>(new StateAction(state, 3), 0.1));
+            similarityRecords.add(new Pair<>(new StateAction(state, 4), 0.));
+            similarityRecords.add(new Pair<>(new StateAction(state, 5), 1.));
+            if (state[2] == 1) {
+                similarityRecords.add(new Pair<>(new StateAction(state, 6), 0.));
+            } else {
+                similarityRecords.add(new Pair<>(new StateAction(state, 6), 0.5));
+            }
+            similarityRecords.add(new Pair<>(new StateAction(state, 7), 0.));
+            similarityRecords.add(new Pair<>(new StateAction(state, 8), 1.));
+            if (state[2] == 1) {
+                similarityRecords.add(new Pair<>(new StateAction(state, 9), 0.1));
+            } else {
+                similarityRecords.add(new Pair<>(new StateAction(state, 9), 0.5));
+            }
+            similarityRecords.add(new Pair<>(new StateAction(state, 10), 0.));
+            similarityRecords.add(new Pair<>(new StateAction(state, 10), 1.));
+        }
         // *** END OF YOUR CODE ********************************************************************
 
         return similarityRecords;
