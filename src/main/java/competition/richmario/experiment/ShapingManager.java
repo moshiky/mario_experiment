@@ -113,16 +113,51 @@ public class ShapingManager {
             return rewardShaping;
         }
 
-        // *** YOUR CODE HERE **********************************************************************
 
+        // *** YOUR CODE HERE **********************************************************************
+        //go right and close enemy
+        if (previousState[4] == 32 && (previousAction == 1 || previousAction==7))
+            rewardShaping -= 10.0;
+        //go right and close enemy
+        if (previousState[4] == 4 && (previousAction == 2 || previousAction==8))
+            rewardShaping -= 10.0;
+
+        //above an enemy and going down
+        if (previousState[4] >=128 && previousAction<=2)
+            rewardShaping+=5;
+//
+//        if (rewardShaping += 2;!canShoot(previousState) && canShoot(currentState))
+//            rewardShaping += 2;
+//
+//        if (canShoot(previousState) && !canShoot(currentState))
+//            rewardShaping -= 2;
+
+//        if (canShoot(previousState) && isRunning(previousAction))
+//            rewardShaping += 3;
+
+        if (previousMarionPosition[0] < currentMarionPosition[0])
+            rewardShaping+=2;
         // *** END OF YOUR CODE ********************************************************************
 
+        if (rewardShaping > 10)
+            rewardShaping=10;
+        if (rewardShaping < -10)
+            rewardShaping =-10;
         return rewardShaping;
     }
 
+
     // *** YOUR CODE HERE **********************************************************************
     // Here you can add custom help functions, if needed
+    boolean canShoot(int [] state) {
+        if (state[2] == 1 )
+            return true;
+        return state[2] == 1;
+    }
 
+    boolean isRunning(int action){
+        return action>=6;
+    }
     // *** END OF YOUR CODE ********************************************************************
 
 }
