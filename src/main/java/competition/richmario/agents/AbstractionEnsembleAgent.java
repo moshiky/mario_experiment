@@ -427,11 +427,69 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *          xDist   =   {closest_enemy}.x - mario.x
      *          yDist   =   {closest_enemy}.y - mario.y
      */
-    private int stateLength = 10;   // NOTICE: remember to change this to your state length!
+    private int stateLength = 13;   // NOTICE: remember to change this to your state length!
     private double[] getCustomState() {
         double[] state = new double[this.stateLength];
 
         // *** YOUR CODE HERE **********************************************************************
+
+
+        // CLOSEST TWO ENEMIES
+        state[0] = isMarioAbleToJump ? 1 : 0;
+
+        // is there something get points from?
+        int isCoinInScene = 0;
+        int isPrincessInScene = 0;
+        for (int i = 0; i< 19; i++){
+            for (int j = 0; j < 19; j++){
+                if (levelScene[i][j] == 2)
+                    isCoinInScene = 1;
+                else if (levelScene[i][j] == 5)
+                    isPrincessInScene = 1;
+            }
+        }
+        //state[0] = isCoinInScene;
+        //state[1] = isPrincessInScene;
+
+        // check what is his mode
+
+        //boolean isEnemyBehind =  enemies(3,1) < 8 ? true : false;
+        int enemiesOutSum = enemies(1,0);
+        boolean isEnemyClose = enemiesOutSum > 0;
+        boolean isEnemyInFrontAndClose = isEnemyClose && (enemiesOutSum > 7 && enemiesOutSum < 57);
+
+        //boolean isEnemyInFrontAndClose = !isEnemyBehind && (enemies(1,0));
+
+        state[1] = isMarioOnGround ? 1 : 0;
+        state[2] = isMarioAbleToShoot ? 1 : 0;//marioMode;//
+        float xdiff = marioFloatPos[0] - prevMarioPos[0];
+        float ydiff = marioFloatPos[1] - prevMarioPos[1];
+        state[3] = xdiff < 0 ? 0 : (xdiff == 0 ? 1 : 2);
+        state[3] += 3*(ydiff < 0 ? 0 : (ydiff == 0 ? 1 : 2));
+
+        state[4] = enemies(1, 0);
+        //state[4] = isEnemyInFrontAndClose == true ? 1 : 0;
+        state[5] = enemies(3, 1);
+        //state[5] = isCoinInScene;
+        state[6] = 0;//enemies(5, 3);
+        //state[6] = isPrincessInScene;
+
+        state[7] = obstacle();
+
+        int[] enemy = closestEnemy();
+        if(Math.abs(enemy[0]) < 11 && Math.abs(enemy[1]) < 11){
+            state[8] = enemy[0]+10;
+            state[9] = enemy[1]+10;
+        } else {
+            state[8] = 21;
+            state[9] = 21;
+        }
+        state[10] = isPrincessInScene;
+        state[11] = isCoinInScene;
+        state[12] = isEnemyInFrontAndClose == true ? 1 : 0;
+
+        //state[10] = marioFloatPos[0];
+        //state[11] = marioFloatPos[1];
 
         // *** END OF YOUR CODE ********************************************************************
 
