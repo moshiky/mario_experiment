@@ -112,9 +112,36 @@ public class ShapingManager {
         if (AgentType.RewardShaping != SimpleExperiment.activeAgentType) {
             return rewardShaping;
         }
+        int up_left = 0;
+        int down_left = 1;
+        int left = 2;
+        int up_right = 3;
+        int down_right = 4;
+        int right = 5;
+        int up = 6;
+        int down = 7;
 
         // *** YOUR CODE HERE **********************************************************************
+        // enemy in front then jump
+        if (((previousState[5] & right) == right) &&
+                (previousAction == 5) &&
+                currentState[8] < 4 &&
+                currentState[9] > 0)
+            rewardShaping += 50;
 
+        // touching enemy is bad
+        if (previousState[8] < 2 &&
+                !(previousAction == 5 || previousAction == 11))
+            rewardShaping -= 50;
+
+        // jump over obstacle
+        if (((previousState[7] & 1) == 1 || (previousState[7] & 2) == 2) &&
+                (previousAction == 5))
+            rewardShaping += 30;
+
+        // reward going forward
+        if (previousState[3] == 8 || previousState[3] == 5)
+            rewardShaping += 2;
         // *** END OF YOUR CODE ********************************************************************
 
         return rewardShaping;
