@@ -115,6 +115,56 @@ public class ShapingManager {
 
         // *** YOUR CODE HERE **********************************************************************
 
+
+        double dis_0 = Math.sqrt(Math.pow(previousMarionPosition[0]-previousState[8],2)+Math.pow(previousMarionPosition[1]-previousState[9],2));
+        double dis_1 = Math.sqrt(Math.pow(currentMarionPosition[0]-currentState[8],2)+Math.pow(currentMarionPosition[1]-currentState[9],2));
+        double distanceEnemy = Math.abs(dis_0-dis_1);
+
+        double numberPreObstacle = 0;
+        if((previousState[7]&1)==1){
+            numberPreObstacle += 2;
+        }
+        if((previousState[7]&2)==2){
+            numberPreObstacle += 1.5;
+        }
+        if((previousState[7]&4)==4){
+            numberPreObstacle += 1;
+        }
+        if((previousState[7]&8)==8){
+            numberPreObstacle += 0.5;
+        }
+
+        double numberCurrObstacle = 0;
+        if((currentState[7]&1)==1){
+            numberCurrObstacle += 2;
+        }
+        if((currentState[7]&2)==2){
+            numberCurrObstacle += 1.5;
+        }
+        if((currentState[7]&4)==4){
+            numberCurrObstacle += 1;
+        }
+        if((currentState[7]&8)==8){
+            numberCurrObstacle += 0.5;
+        }
+
+        double deltaObstacle = numberCurrObstacle-numberPreObstacle;
+
+
+        double actionReward;
+        if(previousAction == 1 || previousAction == 4 || previousAction == 7 || previousAction == 10){
+            actionReward = -5;
+            rewardShaping = actionReward/distanceEnemy + deltaObstacle;
+
+        } else if(previousAction == 2 || previousAction == 5 || previousAction == 8 || previousAction == 11){
+            actionReward = 5;
+            rewardShaping = actionReward*distanceEnemy + deltaObstacle;
+
+        } else {
+            rewardShaping = distanceEnemy + deltaObstacle;
+        }
+
+
         // *** END OF YOUR CODE ********************************************************************
 
         return rewardShaping;
