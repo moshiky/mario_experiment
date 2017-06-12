@@ -102,6 +102,83 @@ public class SimilarityManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
+        //sim 0 when in air
+        int[] s = state.clone();
+        int a = action;
+        StateAction sa;
+        Pair p;
+//        if(s[0]==0){
+//            s[0]=1;
+//            sa = new StateAction(s,a);
+//            p = new Pair<StateAction,Double>(sa,new Double(0.01));
+//            similarityRecords.add(p);
+//        }
+
+        Double sim_decay=0.05;
+        //sim of distances from enemy x axis
+        if(3<=state[8]) {
+            int buffer = 10;
+
+            for (int i = state[8]; i < 20-state[8] ; i++) {
+                s = state.clone();
+                a = action;
+                s[8] = i;
+                sa = new StateAction(s, a);
+                Double similarity = (1.0-(sim_decay*i)) ;
+                p = new Pair(sa, new Double(similarity));
+                similarityRecords.add(p);
+            }
+        }
+
+        //sim of distances from enemy y axis
+        //assuming action interval similarity in y axis is 1-5,6-10 other irrelevant
+        if((1<=state[9])&&(state[9]<=5)){
+            Double similarity;
+            for(int i=1;i<5;i++){
+                s = state.clone();
+                a = action;
+                s[9] = i;
+                sa = new StateAction(s, a);
+                //becoming more similar
+                if(i<state[9]){
+                    similarity = (0.5-(sim_decay*i));
+                    if(1.0<similarity){
+                        similarity=1.0;
+                    }
+                }else{
+                    similarity = (1.0-(sim_decay*i));
+                    if(similarity<0.0){
+                        similarity=0.0;
+                    }
+                }
+
+                p = new Pair(sa, new Double(similarity));
+                similarityRecords.add(p);
+            }
+        } else if((6<=state[9])&&(state[9]<=10)){
+            Double similarity;
+            for(int i=6;i<10;i++){
+                s = state.clone();
+                a = action;
+                s[9] = i;
+                sa = new StateAction(s, a);
+                //becoming more similar
+                if(i<state[9]){
+                    similarity = (0.5-(sim_decay*i));
+                    if(1.0<similarity){
+                        similarity=1.0;
+                    }
+                }else{
+                    similarity = (1.0-(sim_decay*i));
+                    if(similarity<0.0){
+                        similarity=0.0;
+                    }
+                }
+
+                p = new Pair(sa, new Double(similarity));
+                similarityRecords.add(p);
+            }
+        }
 
         // *** END OF YOUR CODE ********************************************************************
 
