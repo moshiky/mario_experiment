@@ -10,6 +10,8 @@ public class ShapingManager {
 
     // *** YOUR CODE HERE **********************************************************************
     // Here you can add custom members, if needed
+    float LOWER_SCORE = -20;
+    float HIGHEST_SCORE = 20;
 
     // *** END OF YOUR CODE ********************************************************************
 
@@ -114,6 +116,36 @@ public class ShapingManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
+        // don't move to close emeny:
+        // if i got close to an enemy, not good:
+        switch (previousAction)
+        {
+            case 1: //left
+            case 7: //L+Run
+                if ((currentState[4] & 0x4) == 0x4) //got too close to an enemy
+                    rewardShaping = LOWER_SCORE * 0.5;
+                break;
+            case 2: //right
+            case 8: //R+run
+                if ((currentState[4] & 0x20) == 0x20) //got too close to an enemy
+                    rewardShaping = LOWER_SCORE * 0.5;
+                break;
+            case 3: //jump
+                break;
+            case 4: //L+jump
+                if (((currentState[4] & 0x2) == 0x2) && ((currentState[7]&0x1) ==0)) //avoided enemy or obstacle
+                    rewardShaping = HIGHEST_SCORE * 0.5;
+                break;
+            case 5: //R+jump
+                if (((currentState[4] & 0x10) == 0x10) && ((currentState[7]&0x1) ==0)) //avoided enemy or obstacle
+                    rewardShaping = HIGHEST_SCORE * 0.5;
+                break;
+            case 6: break;
+
+            case 9: break;
+            case 10: break;
+            case 11: break;
+        }
 
         // *** END OF YOUR CODE ********************************************************************
 
