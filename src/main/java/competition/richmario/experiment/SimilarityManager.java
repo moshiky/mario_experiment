@@ -60,15 +60,10 @@ public class SimilarityManager {
      *          4   -   obstacle in the close surrounding of mario (below him not considered)
      *          8   -   obstacle in the surrounding of mario, but not very close (below him not considered)
      *
-     *          8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
-     *          8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
-     *          8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
-     *          8 8 8 4 4 4 4 4 4 4 4 4 8 8 8
-     *          8 8 8 4 4 4 4 4 4 4 4 4 8 8 8
-     *          8 8 8 4 4 2 2 2 2 2 4 4 8 8 8
-     *          8 8 8 4 4 2 1 1 1 2 4 4 8 8 8
-     *          8 8 8 4 4 2 1   1 2 4 4 8 8 8
-     *          #############################
+     *                    8
+     *                    4
+     *                    2
+     *                  M 1
      *
      *          for instance, in case there is an obstacle very close to Mario, the value will be 2.
      *          in case both Mario touching an obstacle and there is another one not very close to him
