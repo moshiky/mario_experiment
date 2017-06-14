@@ -60,15 +60,10 @@ public class SimilarityManager {
      *          4   -   obstacle in the close surrounding of mario (below him not considered)
      *          8   -   obstacle in the surrounding of mario, but not very close (below him not considered)
      *
-     *          8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
-     *          8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
-     *          8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
-     *          8 8 8 4 4 4 4 4 4 4 4 4 8 8 8
-     *          8 8 8 4 4 4 4 4 4 4 4 4 8 8 8
-     *          8 8 8 4 4 2 2 2 2 2 4 4 8 8 8
-     *          8 8 8 4 4 2 1 1 1 2 4 4 8 8 8
-     *          8 8 8 4 4 2 1   1 2 4 4 8 8 8
-     *          #############################
+     *              8
+     *              4
+     *              2
+     *            M 1
      *
      *          for instance, in case there is an obstacle very close to Mario, the value will be 2.
      *          in case both Mario touching an obstacle and there is another one not very close to him
@@ -102,7 +97,47 @@ public class SimilarityManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
+//        int[] newState = state.clone();
+        if (state[0] == 1){
+            if (state[1] == 1){
+                int[] newState = state.clone();
+                newState[1] = 0;
+                similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.9));
+            }
+            else{
+                int[] newState = state.clone();
+                newState[1] = 1;
+                similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.9));
+            }
+            if (state[2] == 1){
+                int[] newState = state.clone();
+                newState[2] = 0;
+                similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.9));
+            }
+            else{
+                int[] newState = state.clone();
+                newState[2] = 1;
+                similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.9));
+            }
 
+        }
+        if (state[1] == 0){
+            int[] newState = state.clone();
+            newState[1] = 1;
+            similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.9));
+        }
+        else{
+            int[] newState = state.clone();
+            newState[1] = 0;
+            similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.9));
+        }
+
+//        if (state[3] == 8 && action == 5){
+//            int[] newState = state.clone();
+//            newState[3] = 6;
+//            similarityRecords.add(new Pair<>(new StateAction(newState, 4), 1.0));
+//        }
+//        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), factor));
         // *** END OF YOUR CODE ********************************************************************
 
         return similarityRecords;
