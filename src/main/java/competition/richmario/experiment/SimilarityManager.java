@@ -96,11 +96,101 @@ public class SimilarityManager {
             return similarityRecords;
         }
 
+        for (int i =1; i< 10; i++){
+            int[] arr00 = {state[0],state[1],state[2],state[3],state[4],state[5],state[6],state[7],state[8],state[9]};
+            int action00 = GetClosestState(action);
+            double factor00 = 0.8;
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(arr00, action00), factor00));
+        }
+
+
+
+
+        int[] arr1 = {state[0],state[1],state[2],state[3],state[4],state[5],state[6],state[7],state[8] + 1,state[9]};
+        double factor1 = 0.95;
+
+        int[] arr2 = {state[0],state[1],state[2],state[3],state[4],state[5],state[6],state[7],state[8],state[9]+1};
+        double factor2 = 0.95;
+
+        int[] arr3 = {state[0],state[1],state[2],state[3],state[4],state[5],state[6],state[7],state[8]-1,state[9]};
+        double factor3 = 0.95;
+
+        int[] arr4 = {state[0],state[1],state[2],state[3],state[4],state[5],state[6],state[7],state[8],state[9]-1};
+        double factor4 = 0.95;
+
+        similarityRecords.add(new Pair<StateAction, Double>(new StateAction(arr1, action), factor1));
+        similarityRecords.add(new Pair<StateAction, Double>(new StateAction(arr2, action), factor2));
+        similarityRecords.add(new Pair<StateAction, Double>(new StateAction(arr3, action), factor3));
+        similarityRecords.add(new Pair<StateAction, Double>(new StateAction(arr4, action), factor4));
+
+        int[] arr5 = {state[0],state[1],(state[2] == 0 ? 1 : 0),state[3],state[4],state[5],state[6],state[7],state[8],state[9]};
+        double factor5 = 0.9;
+        similarityRecords.add(new Pair<StateAction, Double>(new StateAction(arr5, action), factor5));
+
+        int[] arr6 = {(state[0] == 0 ? 1 : 0),state[1],state[2],state[3],state[4],state[5],state[6],state[7],state[8],state[9]};
+        double factor6 = 0.9;
+        similarityRecords.add(new Pair<StateAction, Double>(new StateAction(arr6, action), factor6));
+
+        int[] arr7 = {state[0],(state[1] == 0 ? 1 : 0),state[2],state[3],state[4],state[5],state[6],state[7],state[8],state[9]};
+        double factor7 = 0.9;
+        similarityRecords.add(new Pair<StateAction, Double>(new StateAction(arr7, action), factor7));
+
+        int[] arr8 = {state[0],state[1],state[2],GetClosestMoveDirection(state[3]),state[4],state[5],state[6],state[7],state[8],state[9]};
+        double factor8 = 0.87;
+        similarityRecords.add(new Pair<StateAction, Double>(new StateAction(arr8, action), factor8));
+
+
+
+
         // *** YOUR CODE HERE **********************************************************************
+
+        //similarityRecords.add(new Pair<StateAction, Double>(new StateAction(newState, newAction), factor));
 
         // *** END OF YOUR CODE ********************************************************************
 
         return similarityRecords;
+    }
+
+    public static int GetClosestMoveDirection(int direction){
+        if (direction == 5 || direction == 2 || direction == 8)
+            return  5;
+        if (direction == 7 ||  direction == 6 || direction == 8 )
+            return  7;
+        if (direction == 3 || direction == 0 || direction == 6)
+            return  3;
+        if (direction == 1 || direction == 2 || direction == 0 )
+            return  1;
+
+        return  0;
+    }
+
+
+    public static int GetClosestState(int action){
+        switch (action){
+            case(1):
+                return  7;
+            case(2):
+                return  8;
+            case(3):
+                return  9;
+            case(4):
+                return  10;
+            case(5):
+                return  11;
+            case(6):
+                return  9;
+            case(7):
+                return  10;
+            case(8):
+                return  11;
+            case(9):
+                return  3;
+            case(10):
+                return  4;
+            case(11):
+                return  5;
+        }
+        return 0;
     }
 
     // *** YOUR CODE HERE **********************************************************************
