@@ -95,6 +95,54 @@ public class SimilarityManager {
         if (AgentType.Similarities != SimpleExperiment.activeAgentType) {
             return similarityRecords;
         }
+        int[] similarState;
+        int similarAction;
+        //enemy on the right and move towards it
+        if(state[4] == 32 && (action ==2 || action == 8)) {
+            similarState = state.clone();
+            similarState[4] = 4;
+            similarAction=1;
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(similarState,similarAction),0.8));
+            similarAction=7;
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(similarState,similarAction),0.5));
+        }
+
+        //no close enemies similar to no enemies at all
+        if(state[4] ==0){
+            similarState = state.clone();
+            similarState[5]=0;
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(similarState,action),1.0));
+
+            similarState[6]=0;
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(similarState,action),1.0));
+        }
+        //no obstacles
+        if(state[7] ==8){
+            similarState = state.clone();
+            similarState[7] =0;
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(similarState,action),5.0));
+        }
+//
+//        //run + side equals to side
+//        if(action == 1){
+//            similarState = state.clone();
+//            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(similarState,7),0.5));
+//        }
+//
+//        if(action == 2){
+//            similarState = state.clone();
+//            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(similarState,8),0.5));
+//        }
+
+
+//        if(state[4] == 64 || state[4] ==8){
+//            similarState = state.clone();
+//
+//            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(similarState,4),1.0));
+//            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(similarState,5),1.0));
+//
+//        }
+
 
         // *** YOUR CODE HERE **********************************************************************
 
