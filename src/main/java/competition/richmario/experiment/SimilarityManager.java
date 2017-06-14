@@ -97,7 +97,14 @@ public class SimilarityManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
+        List<Integer> actions = getSimilarActions(action);
+        List<int[]> states = getSimilarStates(state);
 
+        for (int[] stt : states) {
+            for (Integer act : actions) {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(stt, act), 1.0));
+            }
+        }
         // *** END OF YOUR CODE ********************************************************************
 
         return similarityRecords;
@@ -105,6 +112,37 @@ public class SimilarityManager {
 
     // *** YOUR CODE HERE **********************************************************************
     // Here you can add custom STATIC help functions, if needed
+    public static List<Integer> getSimilarActions(int action) {
+        List<Integer> actions = new ArrayList<>();
+        if (action == 1 || action == 4 || action == 7 || action == 10) {
+            actions.add(1);
+            actions.add(4);
+            actions.add(7);
+            actions.add(10);
+        } else if (action == 2 || action == 5 || action == 8 || action == 11) {
+            actions.add(2);
+            actions.add(5);
+            actions.add(8);
+            actions.add(11);
+        } else if (action == 0 || action == 3 || action == 6 || action == 9) {
+            actions.add(0);
+            actions.add(3);
+            actions.add(6);
+            actions.add(9);
+        }
+        return actions;
+    }
 
+    public static List<int[]> getSimilarStates(int[] state) {
+        List<int[]> states = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            if (i % 3 == state[3]) {
+                int[] newState = state.clone();
+                newState[3] = i;
+                states.add(newState);
+            }
+        }
+        return states;
+    }
     // *** END OF YOUR CODE ********************************************************************
 }
