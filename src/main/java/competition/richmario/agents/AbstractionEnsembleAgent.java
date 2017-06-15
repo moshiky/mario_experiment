@@ -428,8 +428,47 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
 
         // *** YOUR CODE HERE **********************************************************************
 
+        state[0] = isMarioOnGround ? 0 : 1;
+        state[1] = isMarioAbleToShoot ? 0 : 1;
+        state[2] = enemies(3, 1);
+        float xDiff = marioFloatPos[0] - prevMarioPos[0];
+        state[3] = xDiff < 0 ? -1 : (xDiff == 0 ? 0 : 1);
+        state[4] = isPrincessAround() ? 1 : 0;
+        state[5] = obstacle();
+        state[6] = marioState[1];
+        state[7] = marioState[10];
+        int[] enemyDistance = closestEnemy();
+        double distance = Math.sqrt(Math.pow(enemyDistance[0], 2) + Math.pow(enemyDistance[1], 2));
+        state[8] = distance > 13 ? 1 : 0;
+        state[9] = coinsAround();
+
         // *** END OF YOUR CODE ********************************************************************
 
         return state;
+    }
+
+    private boolean isPrincessAround() {
+        for (int i = 0; i < levelScene.length; i++) {
+            for (int j = 0; j < levelScene[0].length; j++) {
+                if (levelScene[i][j] == 5) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private int coinsAround() {
+        int numOfCoins = 0;
+        for (int i = 0; i < levelScene.length; i++) {
+            for (int j = 0; j < levelScene[0].length; j++) {
+                if (levelScene[i][j] == 2) {
+                    numOfCoins++;
+                }
+            }
+        }
+
+        return numOfCoins;
     }
 }
