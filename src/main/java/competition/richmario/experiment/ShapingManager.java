@@ -109,7 +109,52 @@ public class ShapingManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
-
+        //stay in place
+        if (previousAction == 0) {
+            rewardShaping -= 1;
+        }
+        // can't jump and in air
+        if (previousState[0] == 0 && (previousAction == 3)) {
+            rewardShaping -= 1;
+        }
+        // jump and not on ground
+        if (previousState[1] == 0 && previousAction == 3) {
+            rewardShaping -= 1;
+        }
+        //
+        // enemy in right and go right
+        if (((previousState[4] & 32) == 32) && (previousAction == 2 || previousAction == 8)) {
+            rewardShaping -= 5;
+        }
+        // enemy in right and go right
+        if (((previousState[4] & 32) == 32) && (previousAction != 2 && previousAction != 8)) {
+            rewardShaping += 5;
+        }
+        // enemy in left and go left
+        if (((previousState[4] & 4) == 4) && (previousAction == 7 || previousAction == 1)) {
+            rewardShaping -= 5;
+        }
+        if (((previousState[4] & 4) == 4) && (previousAction != 7 && previousAction != 1)) {
+            rewardShaping += 5;
+        }
+        if (((previousState[4] & 1) == 1) && (previousAction != 4)) {
+            rewardShaping += 5;
+        }
+        if (((previousState[4] & 1) == 1) && (previousAction == 4)) {
+            rewardShaping -= 5;
+        }
+        if (((previousState[4] & 8) == 8) && (previousAction != 5)) {
+            rewardShaping += 5;
+        }
+        if (((previousState[4] & 8) == 8) && (previousAction == 5)) {
+            rewardShaping -= 5;
+        }
+        if (((previousState[4] & 64) == 64) && (previousAction != 3)) {
+            rewardShaping += 5;
+        }
+        if (((previousState[4] & 64) == 64) && (previousAction == 3)) {
+            rewardShaping -= 5;
+        }
         // *** END OF YOUR CODE ********************************************************************
 
         return rewardShaping;
