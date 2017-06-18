@@ -422,11 +422,37 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *          xDist   =   {closest_enemy}.x - mario.x
      *          yDist   =   {closest_enemy}.y - mario.y
      */
-    private int stateLength = 10;   // NOTICE: remember to change this to your state length!
+    private int stateLength = 8;   // NOTICE: remember to change this to your state length!
     private double[] getCustomState() {
         double[] state = new double[this.stateLength];
 
         // *** YOUR CODE HERE **********************************************************************
+        boolean is_moving_right = (this.marioFloatPos[0] - this.prevMarioPos[0]) > 0;
+        state[0] = is_moving_right? 1:0;
+
+        // obstacle on the right
+        boolean should_mario_jump_right = (((obstacle() & 1) == 1) || ((obstacle() & 2) == 2));
+        state[1] = should_mario_jump_right? 1:0;
+
+        // enemies on the right close
+        state[2] = ((enemies(3, 0) & 32) == 32)? 1:0;
+
+        // coin above
+        for(int i = 10; i < 13; ++i){
+            state[3] = (this.levelScene[i][9] == 2)? 1:0;
+        }
+
+        // mario size
+        state[4] = this.marioState[1];
+
+        // mario on ground
+        state[5] = this.marioState[2];
+
+        // mario able to jump
+        state[6] = this.marioState[3];
+
+        // is jumping
+        state[7] = ((this.marioFloatPos[1] - this.prevMarioPos[1]) > 0)? 1:0;
 
         // *** END OF YOUR CODE ********************************************************************
 
