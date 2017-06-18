@@ -107,11 +107,23 @@ public class ShapingManager {
         if (AgentType.RewardShaping != SimpleExperiment.activeAgentType) {
             return rewardShaping;
         }
-
         // *** YOUR CODE HERE **********************************************************************
 
-        // *** END OF YOUR CODE ********************************************************************
 
+        boolean enemyOnLeft = previousState[4] == 4;
+        boolean enemyOnRight = previousState[4] == 32;
+        boolean movingRight = previousAction == 2 || previousAction == 8;
+        boolean movingLeft = previousAction == 1 || previousAction == 7;
+
+        if (previousState[4] > 0 && currentState[4] == 0) {
+            rewardShaping = 1;
+        }
+
+        if ((enemyOnRight && movingRight) || (enemyOnLeft && movingLeft)) {
+            rewardShaping = -1;
+        }
+
+        // *** END OF YOUR CODE ********************************************************************
         return rewardShaping;
     }
 
