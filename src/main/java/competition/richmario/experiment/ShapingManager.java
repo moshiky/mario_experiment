@@ -13,7 +13,6 @@ public class ShapingManager {
 
     // *** END OF YOUR CODE ********************************************************************
 
-
     public ShapingManager () {
 
         // *** YOUR CODE HERE **********************************************************************
@@ -108,9 +107,22 @@ public class ShapingManager {
             return rewardShaping;
         }
 
-        // *** YOUR CODE HERE **********************************************************************
+        // Obstacles
+        if ((currentState[7] & 0x1) > 0) {
+            // Going straight into the obstacle
+            if (currentState[3] == 5) return -10;
+            // Going over the obstacle
+            if (currentState[3] == 8) return 10;
+        }
 
-        // *** END OF YOUR CODE ********************************************************************
+        // Has fire, going straight and has enemy
+        if (currentState[2] == 1 && currentState[1] == 1 && currentState[3] == 5) {
+            if ((currentState[4] & 0x20) > 0) return 100;
+            if ((currentState[5] & 0x20) > 0) return 50;
+            if ((currentState[6] & 0x20) > 0) return 10;
+        }
+
+
 
         return rewardShaping;
     }
