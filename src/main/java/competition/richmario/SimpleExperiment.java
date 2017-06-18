@@ -89,7 +89,7 @@ public class SimpleExperiment {
 
         double[] resultsSum = null;
         int runs = 1;
-        int episodesForRun = 7500;
+        int episodesForRun = 10000;
 
         AgentType[] agentsToRun = new AgentType[] {
                 AgentType.Abstraction,

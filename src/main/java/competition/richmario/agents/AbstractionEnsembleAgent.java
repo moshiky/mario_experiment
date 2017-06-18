@@ -422,12 +422,34 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *          xDist   =   {closest_enemy}.x - mario.x
      *          yDist   =   {closest_enemy}.y - mario.y
      */
-    private int stateLength = 10;   // NOTICE: remember to change this to your state length!
+    private int stateLength = 7;   // NOTICE: remember to change this to your state length!
     private double[] getCustomState() {
         double[] state = new double[this.stateLength];
 
         // *** YOUR CODE HERE **********************************************************************
 
+        // step 1: removed 5,6 --> size is 8
+        // step 2: removed 4 --> size is 7
+
+        // CLOSEST TWO ENEMIES
+        state[0] = isMarioAbleToJump ? 1 : 0;
+        state[1] = isMarioOnGround ? 1 : 0;
+        state[2] = isMarioAbleToShoot ? 1 : 0;//marioMode;//
+        float xdiff = marioFloatPos[0] - prevMarioPos[0];
+        float ydiff = marioFloatPos[1] - prevMarioPos[1];
+        state[3] = xdiff < 0 ? 0 : (xdiff == 0 ? 1 : 2);
+        state[3] += 3*(ydiff < 0 ? 0 : (ydiff == 0 ? 1 : 2));
+
+        state[4] = obstacle();
+
+        int[] enemy = closestEnemy();
+        if(Math.abs(enemy[0]) < 11 && Math.abs(enemy[1]) < 11){
+            state[5] = enemy[0]+10;
+            state[6] = enemy[1]+10;
+        } else {
+            state[5] = 21;
+            state[6] = 21;
+        }
         // *** END OF YOUR CODE ********************************************************************
 
         return state;
