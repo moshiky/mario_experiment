@@ -3,6 +3,8 @@ package competition.richmario.experiment;
 import competition.richmario.AgentType;
 import competition.richmario.SimpleExperiment;
 
+import java.util.LinkedList;
+
 /**
  * Created by user on 15/05/2017.
  */
@@ -109,6 +111,50 @@ public class ShapingManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
+
+        LinkedList<Integer> enemyAbove = new LinkedList<Integer>();
+        enemyAbove.add(1);
+        enemyAbove.add(9);
+        enemyAbove.add(65);
+        enemyAbove.add(72);
+        enemyAbove.add(73);
+
+        LinkedList<Integer> enemyBelow = new LinkedList<Integer>();
+        enemyBelow.add(2);
+        enemyBelow.add(18);
+        enemyBelow.add(128);
+        enemyBelow.add(130);
+        enemyBelow.add(156);
+
+     
+        //bad to jump into enemy
+        //good to jump over enemy
+        //involves a jump
+
+
+        if((previousAction==3)||(previousAction==5)||(previousAction==11)){
+
+            if((currentState[9]-previousState[9])<=0)
+            //far to medium
+            if((enemyAbove.contains(currentState[5]))&&(enemyAbove.contains(previousState[6]))){
+                rewardShaping-=0.2;
+            }
+            //medium to close
+            if((enemyAbove.contains(currentState[4]))&&(enemyAbove.contains(previousState[5]))){
+                rewardShaping-=0.7;
+            }
+            else {
+                //close to medium
+                if ((enemyBelow.contains(currentState[5])) && (enemyBelow.contains(previousState[4]))) {
+                    rewardShaping += 0.2;
+                }
+                //medium to far
+                if ((enemyAbove.contains(currentState[6])) && (enemyAbove.contains(previousState[5]))) {
+                    rewardShaping += 0.7;
+                }
+            }
+        }
+
 
         // *** END OF YOUR CODE ********************************************************************
 
