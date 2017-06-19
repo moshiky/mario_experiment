@@ -107,13 +107,52 @@ public class ShapingManager {
         if (AgentType.RewardShaping != SimpleExperiment.activeAgentType) {
             return rewardShaping;
         }
-
         // *** YOUR CODE HERE **********************************************************************
+
+        // got left and there is enemy left
+        if(previousAction==1 && getIBit(previousState[4],2) == 1) {
+            rewardShaping -= 5.0;
+        }
+        // right
+        else if(previousAction==2 && getIBit(previousState[4],5) == 1) {
+            rewardShaping -= 5.0;
+        }
+        // up (jump)
+        else if(previousAction==3 && getIBit(previousState[4],6) == 1) {
+            rewardShaping -= 5.0;
+        }
+        // up-left
+        else if(previousAction==4 && getIBit(previousState[4],0) == 1) {
+            rewardShaping -= 5.0;
+        }
+        // up-right
+        else if(previousAction==5 && getIBit(previousState[4],3) == 1) {
+            rewardShaping -= 5.0;
+        }
+
+        /***
+         * This code add a positive reward if we have got far fro mthe enemy and add negative to reward if we got closer to the enemy
+         */
+//        double distanceFromPreviousEnemy =  Math.sqrt(previousState[8]*previousState[8] + previousState[9]*previousState[9]);
+//        double distanceFromCurrentEnemy =  Math.sqrt(currentState[8]*currentState[8] + currentState[9]*currentState[9]);
+//        if(distanceFromPreviousEnemy > distanceFromCurrentEnemy) {
+//            rewardShaping -= 0.25;
+//        }
+//        else if(distanceFromPreviousEnemy < distanceFromCurrentEnemy) {
+//            rewardShaping += 3.0;
+//        }
+
 
         // *** END OF YOUR CODE ********************************************************************
 
         return rewardShaping;
     }
+
+    public int getIBit(int binaryNumber, int index) {
+        return (binaryNumber >> index) & 00000001;
+    }
+
+
 
     // *** YOUR CODE HERE **********************************************************************
     // Here you can add custom help functions, if needed
