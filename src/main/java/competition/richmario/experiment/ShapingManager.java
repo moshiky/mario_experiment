@@ -109,7 +109,21 @@ public class ShapingManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
+        if (previousState[9]<5 && previousState[8]>10 && previousState[0]==1 && isPrevActionJump(previousAction))
+            rewardShaping +=1;
 
+    /*    if (previousState[2] == 1 &&  currentState[2] == 1)
+            rewardShaping +=0;
+
+        if (previousState[2] == 0 &&  currentState[2] == 1)
+            rewardShaping +=0;
+*/
+        if (previousState[4] == 32 && currentState[3]==8)
+            rewardShaping +=3;
+
+  /*      if (previousState[4] <= 4 && (currentState[3]==8 || currentState[3]==5 || currentState[3]==2))
+            rewardShaping +=0;
+            */
         // *** END OF YOUR CODE ********************************************************************
 
         return rewardShaping;
@@ -117,7 +131,22 @@ public class ShapingManager {
 
     // *** YOUR CODE HERE **********************************************************************
     // Here you can add custom help functions, if needed
+    public boolean isPrevActionJump(int previousAction) {
+        switch (previousAction)
+        {
+            case 3:
+            case 4:
+            case 5:
+            case 9:
+            case 10:
+            case 11:
+                return true;
+            default:
+                break;
 
+        }
+        return false;
+    }
     // *** END OF YOUR CODE ********************************************************************
 
 }
