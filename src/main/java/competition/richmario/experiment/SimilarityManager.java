@@ -98,6 +98,92 @@ public class SimilarityManager {
 
         // *** YOUR CODE HERE **********************************************************************
 
+
+        //all states in which closest enemy is within range of 1 are very similar (0.9)
+        //within 2 are 0.8
+        //within 3 are 0.7
+
+        double[][] basicScores = {{1, 0.9},{2, 0.8},{3, 0.7}};
+
+        for (int i=0; i<3; i++) {
+
+            if (state[8] - basicScores[i][0] >= 0)
+            {
+                //minus in x
+                int[] s = copyState(state);
+                s[8] -= basicScores[i][0];
+                int a = action;
+                double sim = basicScores[i][1];
+
+                addtolist(similarityRecords, s, a, sim);
+
+            }
+
+            if (state[8] + basicScores[i][0] <= 21)
+            {
+                //plus in x
+                int[] s = copyState(state);
+                s[8] += basicScores[i][0];
+                int a = action;
+                double sim = basicScores[i][1];
+
+                addtolist(similarityRecords, s, a, sim);
+            }
+
+            if (state[9] - basicScores[i][0] >= 0)
+            {
+                //minus in y
+                int[] s = copyState(state);
+                s[9] -= basicScores[i][0];
+                int a = action;
+                double sim = basicScores[i][1];
+
+                addtolist(similarityRecords, s, a, sim);
+            }
+
+            if (state[9] + basicScores[i][0] <= 21)
+            {
+                //plus in y
+                int[] s = copyState(state);
+                s[9] += basicScores[i][0];
+                int a = action;
+                double sim = basicScores[i][1];
+
+                addtolist(similarityRecords, s, a, sim);
+            }
+        }
+
+        //look at all states in which Mario touches an obstacle: in this case, the similarity is 0.9
+        int[] masks = {0x01, 0x3, 0x5, 0x9, 0xB, 0xD};
+        for (int i=0; i<6; i++)
+        {
+            if ((state[7]&masks[i]) != state[7])    //don't do this for the identical state
+            {
+                //plus in y
+                int[] s = copyState(state);
+                s[7] &= masks[i];
+                int a = action;
+                double sim = 0.9;
+
+                addtolist(similarityRecords, s, a, sim);
+            }
+        }
+
+        {
+            //add the identical state in which Mario can or can't shoot
+            int[] s = copyState(state);
+            int a = action;
+            double sim = 0.9;
+            if (s[2] == 0)
+                s[2] = 1;
+            else
+                s[2] = 0;
+
+            addtolist(similarityRecords, s, a, sim);
+        }
+
+        
+
         // *** END OF YOUR CODE ********************************************************************
 
         return similarityRecords;
@@ -105,6 +191,24 @@ public class SimilarityManager {
 
     // *** YOUR CODE HERE **********************************************************************
     // Here you can add custom STATIC help functions, if needed
+    static int[] copyState(int[] state)
+    {
+        int[] newstate = new int[10];
+        for (int i=0; i<10; i++)
+        {
+            newstate[i] = state[i];
+        }
+
+        return newstate;
+    }
+
+    static void addtolist(ArrayList<Pair<StateAction, Double>> similarityRecords, int[] s, int a, double sim)
+    {
+        StateAction sa = new StateAction(s, a);
+        Double simrec = new Double(sim);
+        Pair p = new Pair<StateAction, Double>(sa, simrec);
+        similarityRecords.add(p);
+    }
 
     // *** END OF YOUR CODE ********************************************************************
 }
