@@ -109,7 +109,27 @@ public class ShapingManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
-
+//        if (currentState[8] == 0 || currentState[9] == 0){
+//            return -5;
+//        }
+//        if ((previousState[8] < 21 && currentState[8] == 21) || (previousState[9] < 21 && currentState[9] == 21)){
+//            rewardShaping += 2;
+//        }
+//        if (previousState[9] < currentState[9]){
+//            rewardShaping += 1;
+//        }
+        if (previousState[4] < currentState[4]-92 && (previousAction == 5 || previousAction == 11)){
+            rewardShaping += 5;
+        }
+        if (previousState[5] < currentState[5]-92 && (previousAction == 5 || previousAction == 11)){
+            rewardShaping += 5;
+        }
+        if (previousState[4] < currentState[4]-92 && (previousAction == 5 || previousAction == 11)){
+            rewardShaping += 5;
+        }
+//        if (previousState[5] > currentState[5]){
+//            rewardShaping += 2;
+//        }
         // *** END OF YOUR CODE ********************************************************************
 
         return rewardShaping;
