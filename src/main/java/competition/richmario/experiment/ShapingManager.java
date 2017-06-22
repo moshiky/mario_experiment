@@ -109,8 +109,31 @@ public class ShapingManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
+        double hurtReductionValue = 0.0;
+        double escapingFromEnemiesValue = 0.0;
+        double jumpingAboveEnemiesValue = 0.0;
+        double distanceFromEnemieValue = 0.0;
+        double samePositionAsEnemie = 0.0;
+
+        if (previousState[2] == 1 && currentState[2] == 0)
+            hurtReductionValue = -3;
+        if (previousState[4] > 0 && currentState[4] == 0)
+            escapingFromEnemiesValue = 2;
+        if (previousState[5] > 0 && previousState[5] <= 56 && currentState[5] >= 128)
+           jumpingAboveEnemiesValue = 1;
+        if (previousState[8] > 0 && previousState[9] == 0 && currentState[8] == 0 && currentState[9] > 0)
+           distanceFromEnemieValue = 4;
+        if ((previousState[8] > 0 || previousState[9] >0) && currentState[8] == 0 && currentState[9] == 0)
+            samePositionAsEnemie = -4;
+
 
         // *** END OF YOUR CODE ********************************************************************
+        rewardShaping += hurtReductionValue;
+        rewardShaping += escapingFromEnemiesValue;
+        rewardShaping += jumpingAboveEnemiesValue;
+        rewardShaping += distanceFromEnemieValue;
+        rewardShaping += samePositionAsEnemie;
+
 
         return rewardShaping;
     }
