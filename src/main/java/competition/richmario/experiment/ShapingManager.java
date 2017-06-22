@@ -110,9 +110,55 @@ public class ShapingManager {
 
         // *** YOUR CODE HERE **********************************************************************
 
+        if (previousState[8] > currentState[8] && previousState[9] > currentState[9]) {
+            rewardShaping -= 20;
+        } else if (previousState[8] < currentState[8] || previousState[9] < currentState[9]) {
+            rewardShaping += 20;
+        }
+
+        if (previousState[0] == 1 && isInArray(previousAction, new int[] {3, 4, 5, 9, 10, 11})) {
+            rewardShaping += 20;
+        }
+
+        if (previousState[1] == 1 && isInArray(previousAction, new int[] {6, 7, 8, 9, 10, 11})) {
+            rewardShaping += 30;
+        } else {
+            rewardShaping -= 30;
+        }
+
+        if (isInArray(previousState[3], new int[] {2, 5, 8})) {
+            rewardShaping += 40;
+        }
+
+        if (getNumOfBitsInNumber(previousState[4]) < getNumOfBitsInNumber(currentState[4])) {
+            rewardShaping -= 10;
+        }
+
         // *** END OF YOUR CODE ********************************************************************
 
         return rewardShaping;
+    }
+
+    private boolean isInArray(int num, int[] arr) {
+        for (int n : arr) {
+            if (num == n) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private int getNumOfBitsInNumber(int num) {
+        int bitsCounter = 0;
+        while (num != 0) {
+            if (num % 2 == 1) {
+                bitsCounter++;
+            }
+            num /= 2;
+        }
+
+        return bitsCounter;
     }
 
     // *** YOUR CODE HERE **********************************************************************
