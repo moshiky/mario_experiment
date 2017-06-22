@@ -333,7 +333,7 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
     /**
      *  You have access to:
      *
-     *  >>  this.marionState:   represents current mario state
+     *  >>  this.marioState:   represents current mario state
      *      [0]     Mario Status    [Mario.STATUS_DEAD, Mario.STATUS_WIN, Mario.STATUS_RUNNING]
      *      [1]     Mario Mode      [0= small, 1= large, 2= large+able to shoot fireballs]
      *      [2]     Is mario on ground  [0= no, 1= yes]
@@ -422,14 +422,58 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *          xDist   =   {closest_enemy}.x - mario.x
      *          yDist   =   {closest_enemy}.y - mario.y
      */
-    private int stateLength = 10;   // NOTICE: remember to change this to your state length!
+    private int stateLength = 11;   // NOTICE: remember to change this to your state length!
     private double[] getCustomState() {
         double[] state = new double[this.stateLength];
 
         // *** YOUR CODE HERE **********************************************************************
+        //double[] state = new double[10];
+
+        // CLOSEST TWO ENEMIES
+        state[0] = isMarioAbleToJump ? 1 : 0;
+        state[1] = isMarioOnGround ? 1 : 0;
+        state[2] = isMarioAbleToShoot ? 1 : 0;//marioMode;//
+        float xdiff = marioFloatPos[0] - prevMarioPos[0];
+        float ydiff = marioFloatPos[1] - prevMarioPos[1];
+        state[3] = xdiff < 0 ? 0 : (xdiff == 0 ? 1 : 2);
+        state[3] += 3*(ydiff < 0 ? 0 : (ydiff == 0 ? 1 : 2));
+
+        state[4] = enemies(1, 0);
+        state[5] = enemies(3, 1);
+        state[6] = 0;//enemies(5, 3);
+
+
+        state[7] = obstacle();
+
+        int[] enemy = closestEnemy();
+        if(Math.abs(enemy[0]) < 11 && Math.abs(enemy[1]) < 11){
+            state[8] = enemy[0]+10;
+            state[9] = enemy[1]+10;
+        } else {
+            state[8] = 21;
+            state[9] = 21;
+        }
+        //state[1] = getCoin();
+        //state[10] = this.prevMarioPos[0];
+        //state[11] = this.
+        state[10] = getCoin();
+        //state[10] = marioFloatPos[0];
+        //state[11] = marioFloatPos[1];
 
         // *** END OF YOUR CODE ********************************************************************
 
         return state;
+    }
+
+    private double getCoin() {
+        double current = 0.0;
+        for (int i=0;i<3;i++) {
+          for (int j=0;j<3;j++) {
+              if (this.levelScene[i+9][j+9] == 5) {
+                  current += Math.pow(2, (i + j));
+              }
+          }
+        }
+        return current;
     }
 }
