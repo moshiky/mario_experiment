@@ -4,6 +4,7 @@ import competition.richmario.AgentType;
 import competition.richmario.SimpleExperiment;
 import org.apache.commons.math3.util.Pair;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import competition.richmario.StateAction;
@@ -96,11 +97,31 @@ public class SimilarityManager {
             return similarityRecords;
         }
 
-        // *** YOUR CODE HERE **********************************************************************
+        // Going to die:
+        int[] suicidalActions = {0, 2, 5, 6, 7, 8, 11};
+        if (state[0] == 0 && state[1] == 1 && state[2] == 0 && state[8] == 1 && between(state[9], 0, 3) && contains(suicidalActions, action)){
+            for (int x: suicidalActions) {
+                similarityRecords.add(new Pair<>(new StateAction(state, x), 1.0));
+            }
+        }
 
-        // *** END OF YOUR CODE ********************************************************************
+        // Going to overcome enemy by fire:
+        if (state[0] == 1 && state[1] == 1 && state[9] == 0 && between(state[8], 1, 3) && action == 8){
+            // Avoiding the enemy
+            similarityRecords.add(new Pair<>(new StateAction(state, 5), 0.8));
+            // Firing at them while running
+            similarityRecords.add(new Pair<>(new StateAction(state, 11), 1.0));
+        }
 
         return similarityRecords;
+    }
+
+    private static boolean between(int x, int a, int b){
+        return x >= a && x <= b;
+    }
+
+    private static boolean contains( int a[], int x){
+        return a != null && Arrays.binarySearch(a, x) != -1;
     }
 
     // *** YOUR CODE HERE **********************************************************************
