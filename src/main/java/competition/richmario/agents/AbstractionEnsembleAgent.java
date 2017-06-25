@@ -13,6 +13,7 @@ import competition.richmario.demonstrations.Demonstration;
 import loggingUtils.Logger;
 import util.RNG;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -422,9 +423,26 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *          xDist   =   {closest_enemy}.x - mario.x
      *          yDist   =   {closest_enemy}.y - mario.y
      */
-    private int stateLength = 10;   // NOTICE: remember to change this to your state length!
+    private int stateLength = 50;   // NOTICE: remember to change this to your state length!
     private double[] getCustomState() {
+        List<Double> result = new ArrayList<Double>();
         double[] state = new double[this.stateLength];
+        state[0] =(this.marioState[2]);
+        state[1]=((int)(this.marioFloatPos[0]/3));
+        state[2]=((int)(this.marioFloatPos[1]/3));
+        state[3] = (obstacle() == 1)?1:0;
+        state[4] = (closestEnemy()[0]/5);
+        state[5] = (closestEnemy()[1]/5);
+        state[6] = enemies(1,5)>=1 ?1:0;
+        state[7] = this.marioState[2];
+        state[8] =(this.marioState[1]);
+        for (int i=0,j=0;i<this.enemiesFloatPos.length  ;i+=3,j+=2) {
+            state[9+j] = ((double)this.enemiesFloatPos[i + 1]);
+            state[10+j] = ((double)this.enemiesFloatPos[i + 2]);
+        }
+
+
+
 
         // *** YOUR CODE HERE **********************************************************************
 
