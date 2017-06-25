@@ -333,7 +333,7 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
     /**
      *  You have access to:
      *
-     *  >>  this.marionState:   represents current mario state
+     *  >>  this.marioState:   represents current mario state
      *      [0]     Mario Status    [Mario.STATUS_DEAD, Mario.STATUS_WIN, Mario.STATUS_RUNNING]
      *      [1]     Mario Mode      [0= small, 1= large, 2= large+able to shoot fireballs]
      *      [2]     Is mario on ground  [0= no, 1= yes]
@@ -422,11 +422,42 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *          xDist   =   {closest_enemy}.x - mario.x
      *          yDist   =   {closest_enemy}.y - mario.y
      */
-    private int stateLength = 10;   // NOTICE: remember to change this to your state length!
+    private int stateLength = 7;   // NOTICE: remember to change this to your state length!
     private double[] getCustomState() {
         double[] state = new double[this.stateLength];
 
         // *** YOUR CODE HERE **********************************************************************
+
+        int response =0;
+        if(isMarioAbleToJump){
+            response+=2;
+        }
+        if(isMarioAbleToShoot){
+            response+=2;
+        }
+
+        state[0] = response;
+
+        float xdiff = marioFloatPos[0] - prevMarioPos[0];
+        float ydiff = marioFloatPos[1] - prevMarioPos[1];
+        state[1] = xdiff < 0 ? 0 : (xdiff == 0 ? 1 : 2);
+        state[1] += 3*(ydiff < 0 ? 0 : (ydiff == 0 ? 1 : 2));
+
+        state[2] = enemies(1, 0);
+        state[3] = enemies(5, 1);
+        //state[5] = enemies(5, 3);
+
+
+        state[4] = obstacle();
+
+        int[] enemy = closestEnemy();
+        if(Math.abs(enemy[0]) < 11 && Math.abs(enemy[1]) < 11){
+            state[5] = enemy[0]+10;
+            state[6] = enemy[1]+10;
+        } else {
+            state[5] = 21;
+            state[6] = 21;
+        }
 
         // *** END OF YOUR CODE ********************************************************************
 
