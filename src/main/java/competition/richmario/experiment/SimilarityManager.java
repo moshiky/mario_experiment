@@ -97,6 +97,80 @@ public class SimilarityManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
+        // if user is already in a jump
+        if(state[0] == 0)
+        {
+            // if user pressed jump(3) == it's like do nothing(0)
+            if(action == 3)
+            {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(state, 0), 1.0));
+            }
+            // if user pressed nothing(0) == it's like do jump(3)
+            else if(action == 0)
+            {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(state, 3), 1.0));
+            }
+
+
+            // if user pressed left(1) == it's like left+jump(4)
+            else if(action == 1)
+            {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(state, 4), 1.0));
+            }
+            // if user pressed left+jump(4) == it's like left(1)
+            else if(action == 4)
+            {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(state, 1), 1.0));
+            }
+
+
+            // if user pressed right(2) == it's like right+jump(5)
+            else if(action == 2)
+            {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(state, 5), 1.0));
+            }
+            // if user pressed right+jump(5) == it's like left(2)
+            else if(action == 5)
+            {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(state, 2), 1.0));
+            }
+
+            // if user pressed run(6) == it's like run+jump(9)
+            else if(action == 6)
+            {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(state, 9), 1.0));
+            }
+            // if user pressed run+jump(9) == it's like run(6)
+            else if(action == 9)
+            {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(state, 6), 1.0));
+            }
+
+            // if user pressed left+run(7) == it's like left+run+jump(10)
+            else if(action == 7)
+            {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(state, 10), 1.0));
+            }
+            // if user pressed left+run+jump(10) == it's like left+run(7)
+            else if(action == 10)
+            {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(state, 7), 1.0));
+            }
+
+
+            // if user pressed right+run(7) == it's like right+run+jump(10)
+            else if(action == 8)
+            {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(state, 11), 1.0));
+            }
+            // if user pressed right+run+jump(10) == it's like right+run(7)
+            else if(action == 11)
+            {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(state, 8), 1.0));
+            }
+        }
+
+        //similarityRecords.add(new Pair<StateAction, Double>(new StateAction(newState, newAction), factor));
 
         // *** END OF YOUR CODE ********************************************************************
 
