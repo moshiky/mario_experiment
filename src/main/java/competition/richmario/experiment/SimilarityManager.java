@@ -97,7 +97,38 @@ public class SimilarityManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
-
+        // running and walking is the same
+        if (action == 7)
+            similarityRecords.add(new Pair<>(new StateAction(state, 2), 1.0));
+        if (action == 11)
+            similarityRecords.add(new Pair<>(new StateAction(state, 5), 1.0));
+        // close by enemies
+        if (state[8] <= 3) {
+            state[8] = 3;
+            similarityRecords.add(new Pair<>(new StateAction(state.clone(), action), 1.0));
+            state[8] = 2;
+            similarityRecords.add(new Pair<>(new StateAction(state.clone(), action), 1.0));
+            state[8] = 1;
+            similarityRecords.add(new Pair<>(new StateAction(state.clone(), action), 1.0));
+        }
+        // close by obstacles
+        if (((state[7] & 2) == 2)) {
+            state[7] = 14 & state[7] + 1;
+            similarityRecords.add(new Pair<>(new StateAction(state.clone(), action), 1.0));
+        }
+        if (((state[7] & 1) == 1)) {
+            state[7] = 13 & state[7] + 2;
+            similarityRecords.add(new Pair<>(new StateAction(state.clone(), action), 1.0));
+        }
+        // similar directions
+        if (state[3] == 8 || state[3] == 5 || state[3] == 2) {
+            state[3] = 5;
+            similarityRecords.add(new Pair<>(new StateAction(state.clone(), action), 1.0));
+            state[3] = 2;
+            similarityRecords.add(new Pair<>(new StateAction(state.clone(), action), 1.0));
+            state[3] = 8;
+            similarityRecords.add(new Pair<>(new StateAction(state.clone(), action), 1.0));
+        }
         // *** END OF YOUR CODE ********************************************************************
 
         return similarityRecords;
