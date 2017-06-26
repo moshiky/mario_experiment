@@ -3,10 +3,19 @@ package competition.richmario.experiment;
 import competition.richmario.AgentType;
 import competition.richmario.SimpleExperiment;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by user on 15/05/2017.
  */
 public class ShapingManager {
+    private static final int JUMP_RUNNING_RIGHT = 11;
+    private static final int RUN_RIGHT = 8;
+    private static final int GO_RIGHT = 2;
+    private static final int JUMP_RIGHT = 5;
+    private static final int DO_NOTHING = 0;
+    private static final int JUMP = 3;
 
     // *** YOUR CODE HERE **********************************************************************
     // Here you can add custom members, if needed
@@ -110,9 +119,81 @@ public class ShapingManager {
 
         // *** YOUR CODE HERE **********************************************************************
 
+        rewardShaping += rewardForGoingForward(previousAction);
+        rewardShaping += punishForStayingInSameSpot(previousMarionPosition, currentMarionPosition);
+        rewardShaping += punishForDoingNothing(previousAction);
+        rewardShaping += rewardForJumpingIfThereIsSomethingAbove();
+        rewardShaping += rewardForJumpingIfThereIsACloseBlock();
+        rewardShaping += rewardForJumpingIfThereIsACloseEnemy(previousState, previousAction);
+        rewardShaping += rewardForRunJumpingIfThereIsAMediumLengthEnemy(previousState, previousAction);
+        rewardShaping += rewardJumpToObsticle(previousState, previousAction);
+        //punishForDeath(); // Unneeded. This is automatic in the game.
         // *** END OF YOUR CODE ********************************************************************
 
         return rewardShaping;
+    }
+
+    private double rewardJumpToObsticle(int[] previousState, int previousAction) {
+        if(previousState[7] == 4 || previousState[7] == 8)
+        {
+            return 0.5;
+        }
+
+        return 0;
+    }
+
+    private double rewardForJumpingIfThereIsACloseEnemy(int[] previousState, int previousAction) {
+//        int closeEnemies = previousState[4];
+//
+//        if(closeEnemies == 32 && (previousAction == JUMP_RIGHT || previousAction == JUMP)) {
+//            return 0.5;
+//        }
+
+        return 0;
+    }
+
+    private double rewardForRunJumpingIfThereIsAMediumLengthEnemy(int[] previousState, int previousAction) {
+        int notSoCloseEnemies = previousState[5];
+
+        if(notSoCloseEnemies == 32 && (previousAction == JUMP_RIGHT || previousAction == JUMP_RUNNING_RIGHT)) {
+            return 0.2;
+        }
+
+        return 0;
+    }
+
+    private double punishForDoingNothing(int previousAction) {
+        return previousAction == DO_NOTHING ? -0.5 : 0;
+//        return 0;
+    }
+
+    private double rewardForJumpingIfThereIsACloseBlock() {
+        return 0;
+    }
+
+    private double rewardForJumpingIfThereIsSomethingAbove() {
+        return 0;
+    }
+
+    private double punishForStayingInSameSpot(float[] previousMarionPosition, float[] currentMarionPosition) {
+//        if(Arrays.equals(previousMarionPosition, currentMarionPosition))
+//        {
+//            return -0.3;
+//        }
+//
+        return 0;
+    }
+
+    private double rewardForGoingForward(int previousAction) {
+        List<Integer> goingForwardActions = Arrays.asList(GO_RIGHT, JUMP_RIGHT, RUN_RIGHT, JUMP_RUNNING_RIGHT);
+        List<Integer> involveRunning = Arrays.asList(RUN_RIGHT, JUMP_RUNNING_RIGHT);
+
+        if(goingForwardActions.contains(previousAction))
+        {
+            return involveRunning.contains(previousAction) ? 0.9 : 0.5;
+        }
+
+        return 0;
     }
 
     // *** YOUR CODE HERE **********************************************************************
