@@ -8,8 +8,6 @@ import java.util.List;
 
 import competition.richmario.StateAction;
 
-import static competition.richmario.agents.EnsembleAgent.*;
-
 /**
  * Created by user on 15/05/2017.
  */
@@ -98,9 +96,39 @@ public class SimilarityManager {
 
         // *** YOUR CODE HERE **********************************************************************
 
+        int[] tempState;
+        for(int jumpIndex=0 ; jumpIndex <=1 ; jumpIndex++) {
+            tempState = duplicateState(state);
+            for(int groundIndex=0 ; groundIndex<=1 ; groundIndex++) {
+                for(int fireIndex=0 ; fireIndex<=1 ; fireIndex++) {
+//                    for(int direction=0 ; direction<=8 ; direction++) {
+                        tempState[0] = jumpIndex;
+                        tempState[1] = groundIndex;
+                        tempState[2] = fireIndex;
+//                        tempState[3] = direction;
+                        for(int actionTag=0 ; actionTag<=11 ; actionTag++) {
+                            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(tempState,action),0.5));
+                        }
+//                    }
+                }
+            }
+        }
+
+
+
+
         // *** END OF YOUR CODE ********************************************************************
 
         return similarityRecords;
+    }
+
+    private static int[] duplicateState(int state[]) {
+        int duplicateState[] = new int[state.length];
+        for(int i=0 ; i<state.length ;) {
+            duplicateState[i] = state[i++];
+        }
+
+        return duplicateState;
     }
 
     // *** YOUR CODE HERE **********************************************************************
