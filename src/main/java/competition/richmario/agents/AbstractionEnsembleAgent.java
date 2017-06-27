@@ -333,7 +333,7 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
     /**
      *  You have access to:
      *
-     *  >>  this.marionState:   represents current mario state
+     *  >>  this.marioState:   represents current mario state
      *      [0]     Mario Status    [Mario.STATUS_DEAD, Mario.STATUS_WIN, Mario.STATUS_RUNNING]
      *      [1]     Mario Mode      [0= small, 1= large, 2= large+able to shoot fireballs]
      *      [2]     Is mario on ground  [0= no, 1= yes]
@@ -377,7 +377,7 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *                Sprite.SPIKY_WINGED
      *                Sprite.SHELL
      *      [i+1] =  (enemy_i.x - mario.x)
-     *      [i+2] =  (enemy_i.x - mario.x)
+     *      [i+2] =  (enemy_i.y - mario.y)
      *
      *  >>  method     int enemies(int out, int in)
      *      returns one or sum of few of the following numbers:
@@ -422,14 +422,63 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *          xDist   =   {closest_enemy}.x - mario.x
      *          yDist   =   {closest_enemy}.y - mario.y
      */
-    private int stateLength = 10;   // NOTICE: remember to change this to your state length!
+    private int stateLength = 7;   // NOTICE: remember to change this to your state length!
     private double[] getCustomState() {
         double[] state = new double[this.stateLength];
 
         // *** YOUR CODE HERE **********************************************************************
 
+        // CLOSEST TWO ENEMIES
+        int i=0;
+
+        state[i++] = isMarioAbleToJump ? 1 : 0;
+        state[i++] = isMarioOnGround ? 1 : 0;
+        state[i++] = isMarioAbleToShoot ? 1 : 0;//marioMode;//
+        float xdiff = marioFloatPos[0] - prevMarioPos[0];
+        float ydiff = marioFloatPos[1] - prevMarioPos[1];
+        double temp = xdiff < 0 ? 0 : (xdiff == 0 ? 1 : 2);
+        state[i++] = temp + 3*(ydiff < 0 ? 0 : (ydiff == 0 ? 1 : 2));
+
+        state[i++] = enemies(1, 0);
+        state[i++] = enemies(3, 1);
+
+        state[i++] = obstacle();
+/*
+        int[] enemy = closestEnemy();
+        if(Math.abs(enemy[0]) < 11 && Math.abs(enemy[1]) < 11){
+            state[i++] = enemy[0]+10;
+            state[i++] = enemy[1]+10;
+        } else {
+            state[i++] = 21;
+            state[i++] = 21;
+        }
+*/
+/*
+        double[] coins = closestCoin();
+        state[i++] = coins[0];
+        state[i++] = coins[1];
+*/
         // *** END OF YOUR CODE ********************************************************************
 
         return state;
+    }
+
+    public double[] closestCoin(){
+        //look at this.levelScene for coins
+        double[] xy = {21, 21};
+        for (int i=0; i<9; i++)
+        {
+            for (int j=0; j<9; j++)
+            {
+                if (this.levelScene[i][j] == 2)
+                {
+                    xy[0] = i;
+                    xy[1] = j;
+                    return xy;
+                }
+
+            }
+        }
+        return xy;
     }
 }
