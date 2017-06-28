@@ -19,14 +19,14 @@ public class Logger {
 
     public final int LOGGING_INTERVAL = 100;
     private String m_infoLogFilePath;
-    private JFrame m_curveDisplay;
-    private LearningCurveDisplay m_learningCurveDisplay;
+    // private JFrame m_curveDisplay;
+    // private LearningCurveDisplay m_learningCurveDisplay;
 
     public Logger(String infoLogFilePath) {
         try {
             this.m_infoLogFilePath = infoLogFilePath;
-            this.m_curveDisplay = null;
-            this.m_learningCurveDisplay = null;
+            // this.m_curveDisplay = null;
+            // this.m_learningCurveDisplay = null;
 
             // create info file
             if (Files.notExists(FileSystems.getDefault().getPath("logs"))) {
@@ -63,43 +63,43 @@ public class Logger {
         }
     }
 
-    public void initiateLearningCurveDisplay(String timeStamp) {
-        this.m_curveDisplay = new JFrame("Learning Curve Display");
-        this.m_learningCurveDisplay = new LearningCurveDisplay(timeStamp, this.LOGGING_INTERVAL);
+//    public void initiateLearningCurveDisplay(String timeStamp) {
+//        this.m_curveDisplay = new JFrame("Learning Curve Display");
+//        this.m_learningCurveDisplay = new LearningCurveDisplay(timeStamp, this.LOGGING_INTERVAL);
+//
+//        this.m_curveDisplay.add(this.m_learningCurveDisplay.getPanel());
+//        this.m_curveDisplay.setSize(1400, 800);
+//        this.m_curveDisplay.setLocationRelativeTo(null);
+//
+//        this.m_curveDisplay.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        this.m_curveDisplay.addWindowListener(
+//                new WindowAdapter() {
+//                    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+//                        m_learningCurveDisplay.saveChart();
+//                        System.exit(0);
+//                    }
+//                }
+//        );
+//
+//        this.m_curveDisplay.setVisible(true);
+//    }
 
-        this.m_curveDisplay.add(this.m_learningCurveDisplay.getPanel());
-        this.m_curveDisplay.setSize(1400, 800);
-        this.m_curveDisplay.setLocationRelativeTo(null);
-
-        this.m_curveDisplay.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.m_curveDisplay.addWindowListener(
-                new WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                        m_learningCurveDisplay.saveChart();
-                        System.exit(0);
-                    }
-                }
-        );
-
-        this.m_curveDisplay.setVisible(true);
-    }
-
-    public void addEpisodeResult(double result) {
-        this.m_learningCurveDisplay.addSample(result);
-    }
+//    public void addEpisodeResult(double result) {
+//        this.m_learningCurveDisplay.addSample(result);
+//    }
 
     public void setActiveSeries(String seriesName) {
         this.info(seriesName);
-        this.m_learningCurveDisplay.setActiveSeries(seriesName);
+//        this.m_learningCurveDisplay.setActiveSeries(seriesName);
     }
 
     public void addSeriesTime(long timeInSecs) {
         this.info("Total time: " + timeInSecs + " secs");
-        this.m_learningCurveDisplay.addSeriesTime(timeInSecs);
+//        this.m_learningCurveDisplay.addSeriesTime(timeInSecs);
     }
 
-    public void increaseRound() {
-        this.m_learningCurveDisplay.increaseRound();
-        this.m_learningCurveDisplay.resetRound();
-    }
+//    public void increaseRound() {
+//        this.m_learningCurveDisplay.increaseRound();
+//        this.m_learningCurveDisplay.resetRound();
+//    }
 }

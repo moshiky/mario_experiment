@@ -63,7 +63,7 @@ public class SimpleExperiment {
     public static void main(String[] args) throws Exception {
         String timeStamp = new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss").format(new java.util.Date());
         Logger logger = new Logger("logs/info__" + timeStamp + ".log");
-        logger.initiateLearningCurveDisplay(timeStamp);
+        // logger.initiateLearningCurveDisplay(timeStamp);
 
         experimentMain(logger);
         /*
@@ -92,7 +92,7 @@ public class SimpleExperiment {
         int episodesForRun = 7500;
 
         AgentType[] agentsToRun = new AgentType[] {
-                AgentType.Abstraction
+                AgentType.Similarities
         };
 
         for (AgentType agentType : agentsToRun) {
@@ -152,6 +152,7 @@ public class SimpleExperiment {
 
     public static void experiment(Logger logger, int runs, int episodesForRun) throws Exception {
 
+        int evaluationEpisodes = 1000;
         boolean visualize = false;
 
         double alpha = 0.01;
@@ -163,7 +164,7 @@ public class SimpleExperiment {
 
         for (int i = 0 ; i < runs ; i++) {
 
-            logger.increaseRound();
+//            logger.increaseRound();
 
             final MarioAIOptions marioAIOptions = new MarioAIOptions(new String[]{});
             marioAIOptions.setVisualization(false);
@@ -236,12 +237,37 @@ public class SimpleExperiment {
                 Double res = basicTask.runSingleEpisode(1, true);
 
                 if ((j+1) % logger.LOGGING_INTERVAL == 0) {
-                    logger.info("run[" + i + "]ep[" + (j+1) + "] res=" + rewardTmpSum / logger.LOGGING_INTERVAL);
+                    logger.info("ex[" + i + "]ep[" + (j+1) + "] mean: " + rewardTmpSum / logger.LOGGING_INTERVAL);
                     rewardTmpSum = 0;
                 }
                 rewardTmpSum += res;
-                logger.addEpisodeResult(res);
+//                logger.addEpisodeResult(res);
+            }
 
+            // 2. run evaluation session
+
+            for (int j = 0; j < evaluationEpisodes; ++j) {
+
+                marioAIOptions.setAgent(agent);
+                marioAIOptions.setLevelDifficulty(0);
+                marioAIOptions.setLevelRandSeed(RNG.randomInt(1000000));
+                marioAIOptions.setMarioMode(RNG.randomInt(3));
+                marioAIOptions.setGapsCount(false);
+                marioAIOptions.setVisualization(visualize);
+                basicTask.setOptionsAndReset(marioAIOptions);
+
+                if (AgentType.Abstraction == SimpleExperiment.activeAgentType
+                        || AgentType.AbstractionBasicQLearning == SimpleExperiment.activeAgentType) {
+                    ((AbstractionEnsembleAgent)agent).newEpisode();
+                }
+                else {
+                    ((EnsembleAgent)agent).newEpisode();
+                }
+
+
+                Double res = basicTask.runSingleEpisode(1, false);
+                logger.info("ex[" + i + "]eval_ep[" + (j+1) + "]: " + res);
+//                logger.addEpisodeResult(res);
             }
         }
         logger.addSeriesTime((System.currentTimeMillis() - startTime) / 1000);

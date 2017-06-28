@@ -64,6 +64,7 @@ public class LearningCurveDisplay {
 
         chartPanel = new ChartPanel(scatterChart);
 
+        panel = new JPanel();
         panel.add(chartPanel);
         panel.validate();
     }
