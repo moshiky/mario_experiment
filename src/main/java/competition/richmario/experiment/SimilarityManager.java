@@ -98,6 +98,73 @@ public class SimilarityManager {
 
         // *** YOUR CODE HERE **********************************************************************
 
+        if (state[0] ==0){//cannot jump
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(state,3), 1.));
+        }
+        if (state[3] ==4){//stays in place
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(state,0), 1.));
+        }
+        if (state[3] ==3 && action ==2){//left direction and go right action
+            int[] newState = state.clone();
+            newState[3] =4;
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(newState,0), 1.));
+        }
+        if (state[3] ==5 && action ==1){//right direction and go left action
+            int[] newState = state.clone();
+            newState[3] =4;
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(newState,0), 1.));
+        }
+
+        if (state[3] ==5 && action ==1){//right direction and go left action
+            int[] newState = state.clone();
+            newState[3] =4;
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(newState,0), 1.));
+        }
+        if (state[3] ==1 && action ==3){//right direction and go left action
+            int[] newState = state.clone();
+            newState[3] =4;
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(newState,0), 1.));
+        }
+
+        if (state[3] ==6 && action ==2){//right direction and go left action
+            int[] newState = state.clone();
+            newState[3] =7;
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(newState,0), 1.));
+        }
+
+        if (state[3] ==8 && action ==1){
+            int[] newState = state.clone();
+            newState[3] =7;
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(newState,0), 1.));
+        }
+
+        if (state[3] ==8 && action ==1){
+            int[] newState = state.clone();
+            newState[3] =7;
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(newState,0), 1.));
+        }
+
+        if ((state[6] >7 && state[6] < 57)  && (action == 1 ||action ==  4 ||action ==  7  ||action == 10) ) {//enemy in right direction
+            int[] newState = state.clone();
+            newState[6] = 0;
+            for (int i = 0; i < 7; ++i) {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(newState, i), 0.9));
+            }
+        }
+
+        if ((state[6] >0 && state[6] < 8)  && (action ==2 ||action ==  5 ||action ==  8  ||action == 11) ) {//enemy in right direction
+            int[] newState = state.clone();
+            newState[6] = 0;
+            for (int i = 0; i < 7; ++i) {
+                similarityRecords.add(new Pair<StateAction, Double>(new StateAction(newState, i), 0.9));
+            }
+        }
+
+        if (state[7] <=3 && action ==2){
+            int[] newState = state.clone();
+            newState[3] =4;
+            similarityRecords.add(new Pair<StateAction, Double>(new StateAction(newState,0), 1.));
+        }
         // *** END OF YOUR CODE ********************************************************************
 
         return similarityRecords;
