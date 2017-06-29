@@ -98,9 +98,91 @@ public class SimilarityManager {
 
         // *** YOUR CODE HERE **********************************************************************
 
+        // If there are far enemies, it's not that important where they are
+        for (int[] newState : getAllStatesOfGivenColumn(state, 6)) {
+            similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.7));
+        }
+
+        // Trying to make all the states where mario cannot jump similar
+        /*if (state[0] == 0 && contains(new int[] {3, 4, 5, 9, 10, 11}, action)) {
+            for (int[] newState : getAllStatesOfGivenColumn(state, 4)) {
+                similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.7));
+            }
+            for (int[] newState : getAllStatesOfGivenColumn(state, 5)) {
+                similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.7));
+            }
+            for (int[] newState : getAllStatesOfGivenColumn(state, 6)) {
+                similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.7));
+            }
+            for (int[] newState : getAllStatesOfGivenColumn(state, 7)) {
+                similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.7));
+            }
+            for (int[] newState : getAllStatesOfGivenColumn(state, 8)) {
+                similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.7));
+            }
+            for (int[] newState : getAllStatesOfGivenColumn(state, 9)) {
+                similarityRecords.add(new Pair<>(new StateAction(newState, action), 0.7));
+            }
+        }*/
+
+
+
         // *** END OF YOUR CODE ********************************************************************
 
         return similarityRecords;
+    }
+
+    private static boolean contains(int[] arr, int num) {
+        for (int n : arr) {
+            if (n == num) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return all of the states with the same values in columns which are not the given column
+     * @param originalState The state
+     * @param column        The column in the state to change
+     */
+    private static List<int[]> getAllStatesOfGivenColumn(int[] originalState, int column) {
+        List<int[]> list = new ArrayList<>();
+        int range = 0;
+        switch (column) {
+            case 0:
+            case 1:
+            case 2:
+                range = 1;
+                break;
+            case 3:
+                range = 8;
+                break;
+            case 4:
+            case 5:
+            case 6:
+                range = 255;
+                break;
+            case 7:
+                range = 15;
+            case 8:
+            case 9:
+                range = 21;
+                break;
+        }
+
+        for (int i = 0; i < range; i++) {
+            if (i == originalState[column]) {
+                continue;
+            }
+
+            int[] newState = originalState.clone();
+            newState[column] = i;
+            list.add(newState);
+        }
+
+        return list;
     }
 
     // *** YOUR CODE HERE **********************************************************************
