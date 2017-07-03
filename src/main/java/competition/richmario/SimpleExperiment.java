@@ -160,9 +160,12 @@ public class SimpleExperiment {
         double epsilon = 0.05;
         double lambda = 0.5;
 
+        double[] trainMeanResults = new double[episodesForRun];
+        double[] evaluationMeanResults = new double[evaluationEpisodes];
+
         long startTime = System.currentTimeMillis();
 
-        for (int i = 0 ; i < runs ; i++) {
+        for (int run_id = 0 ; run_id < runs ; run_id++) {
 
 //            logger.increaseRound();
 
@@ -203,10 +206,12 @@ public class SimpleExperiment {
                     );
             }
 
+            logger.info("=== Experiment #" + run_id + " ===");
+
             final BasicTask basicTask = new BasicTask(marioAIOptions);
             double rewardTmpSum = 0;
 
-            for (int j = 0; j < episodesForRun; ++j) {
+            for (int ep = 0; ep < episodesForRun; ++ep) {
 
             /*if(i > 0 && i % testStepSize == 0) {
                 Integer stepResultIndex = i / testStepSize;
@@ -234,19 +239,20 @@ public class SimpleExperiment {
                 }
 
 
-                Double res = basicTask.runSingleEpisode(1, true);
+                Double episodeResult = basicTask.runSingleEpisode(1, true);
+                trainMeanResults[ep] = ((trainMeanResults[ep] * run_id) + episodeResult) / (run_id + 1.0);
 
-                if ((j+1) % logger.LOGGING_INTERVAL == 0) {
-                    logger.info("ex[" + i + "]ep[" + (j+1) + "] mean: " + rewardTmpSum / logger.LOGGING_INTERVAL);
+                if ((ep+1) % logger.LOGGING_INTERVAL == 0) {
+                    logger.info("ex" + run_id + "ep" + (ep+1) + " mean: " + rewardTmpSum / logger.LOGGING_INTERVAL);
                     rewardTmpSum = 0;
                 }
-                rewardTmpSum += res;
+                rewardTmpSum += episodeResult;
 //                logger.addEpisodeResult(res);
             }
 
             // 2. run evaluation session
 
-            for (int j = 0; j < evaluationEpisodes; ++j) {
+            for (int ep = 0; ep < evaluationEpisodes; ++ep) {
 
                 marioAIOptions.setAgent(agent);
                 marioAIOptions.setLevelDifficulty(0);
@@ -265,14 +271,31 @@ public class SimpleExperiment {
                 }
 
 
-                Double res = basicTask.runSingleEpisode(1, false);
-                logger.info("ex[" + i + "]eval_ep[" + (j+1) + "]: " + res);
+                Double episodeResult = basicTask.runSingleEpisode(1, false);
+                logger.info("ex" + run_id + "eval_ep" + ep + ": " + episodeResult);
+                evaluationMeanResults[ep] = ((evaluationMeanResults[ep] * run_id) + episodeResult) / (run_id + 1.0);
 //                logger.addEpisodeResult(res);
             }
         }
-        logger.addSeriesTime((System.currentTimeMillis() - startTime) / 1000);
+
+        long totalTime = (System.currentTimeMillis() - startTime) / 1000;
+        logger.info("total time: " + totalTime + " secs");
+        logger.addSeriesTime(totalTime);
+
+        logger.info("ex_eval_mean:" + SimpleExperiment.mean(evaluationMeanResults));
+
+        logger.info(">> Train episodes mean: " + Arrays.toString(trainMeanResults));
+        logger.info(">> Train experiments mean: " + SimpleExperiment.mean(trainMeanResults));
     }
 
+    private static double mean(double[] stats) {
+        double means = 0.0;
+        for (int i = 0; i < stats.length; i++) {
+            means += stats[i];
+        }
+        means = 1.0 * means / (stats.length);
+        return means;
+    }
 
     private static Double test(EnsembleAgent agent) {
         Integer episodes = testEpisodes;
