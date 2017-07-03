@@ -109,6 +109,24 @@ public class ShapingManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
+        if (previousState[7] != 0 && currentState[7] == 0) {
+            rewardShaping += 1;
+        }
+        if (previousState[2] == 0 && currentState[2] == 1) {
+            rewardShaping += 20;
+        }
+        if (previousState[2] == 1 && currentState[2] == 0) {
+            rewardShaping -= 20;
+        }
+        if (currentState[3] == 2 || currentState[3] == 5 || currentState[3] == 8) {
+            rewardShaping += 5;
+        }
+        if (currentState[3] == 0 || currentState[3] == 3 || currentState[3] == 6) {
+            rewardShaping -= 5;
+        }
+        if (previousAction >= 6) {
+            rewardShaping += 1;
+        }
 
         // *** END OF YOUR CODE ********************************************************************
 
