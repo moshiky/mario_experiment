@@ -43,7 +43,7 @@ public class Logger {
     }
 
     public void info(String message) {
-        this.info(message, true);
+        this.info(message, false);
     }
 
     public void error(String message) {
