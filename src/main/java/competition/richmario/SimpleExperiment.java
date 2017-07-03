@@ -124,6 +124,10 @@ public class SimpleExperiment {
                 logger.setActiveSeries("AbstractionBasicQLearning");
                 break;
             }
+            case SimilaritiesOnRewardShaping: {
+                logger.setActiveSeries("SimilaritiesOnRewardShaping");
+                break;
+            }
         }
 
         experiment(logger, runs, episodesForRun);
