@@ -91,9 +91,7 @@ public class SimpleExperiment {
         int runs = 1;
         int episodesForRun = 7500;
 
-        AgentType[] agentsToRun = new AgentType[] {
-                AgentType.Similarities
-        };
+        AgentType[] agentsToRun = new AgentType[] { AgentType.Similarities };
 
         for (AgentType agentType : agentsToRun) {
             runAgentExperiment(logger, agentType, runs, episodesForRun);
