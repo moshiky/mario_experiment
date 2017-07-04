@@ -302,7 +302,7 @@ public class InitQLambdaAgent extends BasicMarioAIAgent implements Agent {
         return cmac[c].getValue(Fa);
     }
     
-    public void giveIntermediateReward(float reward) {
+    public void giveIntermediateReward(float reward, boolean update) {
         
         double[] state = getState();
         

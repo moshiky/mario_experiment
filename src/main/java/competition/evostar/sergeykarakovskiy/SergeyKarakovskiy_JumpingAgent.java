@@ -99,7 +99,7 @@ public void integrateObservation(Environment environment)
     getKillsByShell = marioState[9];
 }
 
-public void giveIntermediateReward(float intermediateReward)
+public void giveIntermediateReward(float intermediateReward, boolean update)
 {
 
 }

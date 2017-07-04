@@ -201,7 +201,7 @@ public class SimpleAgent extends BasicMarioAIAgent implements Agent {
         return demonstration;
     }
     
-    public void giveIntermediateReward(float reward) {
+    public void giveIntermediateReward(float reward, boolean update) {
         
         int[] state = getState();
 //        prevAction = new int[]{2,5,11}[RNG.randomInt(3)];

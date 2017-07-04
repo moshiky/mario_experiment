@@ -309,7 +309,7 @@ public class QLambdaPolicyTransferAgent extends BasicMarioAIAgent implements Age
         return Qs;
     }
     
-    public void giveIntermediateReward(float reward) {
+    public void giveIntermediateReward(float reward, boolean update) {
         
         int[] state = getState();
         

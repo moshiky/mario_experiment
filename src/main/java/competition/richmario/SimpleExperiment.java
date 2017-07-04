@@ -88,10 +88,10 @@ public class SimpleExperiment {
     public static double[] experimentMain(Logger logger) throws Exception {
 
         double[] resultsSum = null;
-        int runs = 1;
-        int episodesForRun = 7500;
+        int runs = 10;
+        int episodesForRun = 1000000;
 
-        AgentType[] agentsToRun = new AgentType[] { AgentType.Similarities };
+        AgentType[] agentsToRun = new AgentType[] { AgentType.BasicQLearning };
 
         for (AgentType agentType : agentsToRun) {
             runAgentExperiment(logger, agentType, runs, episodesForRun);

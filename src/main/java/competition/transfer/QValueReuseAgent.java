@@ -267,7 +267,7 @@ public class QValueReuseAgent extends BasicMarioAIAgent implements Agent {
         }
     }
     
-    public void giveIntermediateReward(float reward) {
+    public void giveIntermediateReward(float reward, boolean update) {
         
         int[] state = getState();
         

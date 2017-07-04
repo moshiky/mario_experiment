@@ -57,7 +57,7 @@ public void integrateObservation(Environment environment)
     //To change body of implemented methods use File | Settings | File Templates.
 }
 
-public void giveIntermediateReward(float intermediateReward)
+public void giveIntermediateReward(float intermediateReward, boolean update)
 {
 
 }

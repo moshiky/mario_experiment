@@ -379,7 +379,7 @@ abstract public class EnsembleAgent extends BasicMarioAIAgent implements Agent {
     static int sizeTotal = 0;
     static double rewardTmpSum = 0;
 
-    public void giveIntermediateReward(float reward) {
+    public void giveIntermediateReward(float reward, boolean update) {
         StateAction sa = getState();
 
         float thisreward = reward - lastReward;
@@ -399,7 +399,7 @@ abstract public class EnsembleAgent extends BasicMarioAIAgent implements Agent {
         int action = egreedyActionSelection(sa);
         sa.setAction(action);
 
-        if(SimpleExperiment.usingSimilarities != 2) {
+        if((SimpleExperiment.usingSimilarities != 2) && update) {
 
             for (QLambdaAgent agent : agents) {
                 //double deltaR = agent.getDeltaR(prevSA, thisreward, sa);

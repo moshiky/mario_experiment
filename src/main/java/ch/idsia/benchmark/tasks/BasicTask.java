@@ -121,13 +121,7 @@ public double runSingleEpisode(final int repetitionsOfSingleEpisode, Boolean upd
                 c = System.currentTimeMillis();
                 agent.integrateObservation(environment);
 
-                if(update) {
-//                agent.giveIntermediateReward(environment.getEvaluationInfo().computeWeightedFitness());
-                    agent.giveIntermediateReward(environment.getIntermediateReward());
-//                System.out.println(environment.getIntermediateReward());
-//                System.out.println();
-                }
-
+                agent.giveIntermediateReward(environment.getIntermediateReward(), update);
 
                 boolean[] action = agent.getAction();
 //                if (System.currentTimeMillis() - c > COMPUTATION_TIME_BOUND){

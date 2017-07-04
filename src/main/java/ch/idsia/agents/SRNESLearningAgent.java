@@ -120,9 +120,9 @@ public void integrateObservation(final Environment environment)
     agent.integrateObservation(environment);
 }
 
-public void giveIntermediateReward(final float intermediateReward)
+public void giveIntermediateReward(final float intermediateReward, boolean update)
 {
-    agent.giveIntermediateReward(intermediateReward);
+    agent.giveIntermediateReward(intermediateReward, update);
 }
 
 /**

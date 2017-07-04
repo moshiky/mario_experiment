@@ -127,7 +127,7 @@ public void integrateObservation(Environment environment)
     time = environment.getTimeSpent();
 }
 
-public void giveIntermediateReward(float intermediateReward)
+public void giveIntermediateReward(float intermediateReward, boolean update)
 {
 
 }

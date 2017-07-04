@@ -42,7 +42,7 @@ boolean[] getAction();
 
 void integrateObservation(Environment environment);
 
-void giveIntermediateReward(float intermediateReward);
+void giveIntermediateReward(float intermediateReward, boolean update);
 
 /**
  * clears all dynamic data, such as hidden layers in recurrent networks

@@ -273,7 +273,7 @@ public class PolicyReuseQLambdaAgent extends BasicMarioAIAgent implements Agent 
         return mappedState;
     }
     
-    public void giveIntermediateReward(float reward) {
+    public void giveIntermediateReward(float reward, boolean update) {
         
         int[] state = getState();
         

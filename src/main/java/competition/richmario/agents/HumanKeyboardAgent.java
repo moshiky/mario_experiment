@@ -296,7 +296,7 @@ public class HumanKeyboardAgent extends BasicMarioAIAgent implements Agent {
         return demonstration;
     }
     
-    public void giveIntermediateReward(float reward) {
+    public void giveIntermediateReward(float reward, boolean update) {
         
         StateAction state = getState();
         state.setAction(reverseEngineerAction());

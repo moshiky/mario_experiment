@@ -295,7 +295,7 @@ public class DSLinearQLambdaPolicyTransferAgent extends BasicMarioAIAgent implem
         return Qs;
     }
     
-    public void giveIntermediateReward(float reward) {
+    public void giveIntermediateReward(float reward, boolean update) {
         
         int[] state = getState();
         

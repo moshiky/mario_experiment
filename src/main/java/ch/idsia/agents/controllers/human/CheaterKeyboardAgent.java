@@ -72,7 +72,7 @@ public boolean[] getAction()
 
 public void integrateObservation(Environment environment) { }
 
-public void giveIntermediateReward(float intermediateReward)
+public void giveIntermediateReward(float intermediateReward, boolean update)
 {}
 
 public void reset()

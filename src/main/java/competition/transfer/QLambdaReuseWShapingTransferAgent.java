@@ -302,7 +302,7 @@ public class QLambdaReuseWShapingTransferAgent extends BasicMarioAIAgent impleme
         return Qs;
     }
     
-    public void giveIntermediateReward(float reward) {
+    public void giveIntermediateReward(float reward, boolean update) {
         
         int[] state = getState();
         

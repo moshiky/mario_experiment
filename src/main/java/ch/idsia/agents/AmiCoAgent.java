@@ -101,7 +101,7 @@ public void integrateObservation(Environment environment)
     this.env = environment;
 }
 
-public void giveIntermediateReward(float intermediateReward)
+public void giveIntermediateReward(float intermediateReward, boolean update)
 {
     amicoJavaPy.giveIntermediateReward(intermediateReward);
 }

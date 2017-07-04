@@ -293,7 +293,7 @@ public class DSQLambdaPolicyTransferAgent extends BasicMarioAIAgent implements A
         return Qs;
     }
     
-    public void giveIntermediateReward(float reward) {
+    public void giveIntermediateReward(float reward, boolean update) {
         
         int[] state = getState();
         

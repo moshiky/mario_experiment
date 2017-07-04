@@ -200,7 +200,7 @@ public class LfDAgent extends BasicMarioAIAgent implements Agent {
         this.name = Name;
     }
     
-    public void giveIntermediateReward(float reward) {
+    public void giveIntermediateReward(float reward, boolean update) {
         prevAction = actionSelection(getState());
     }
     

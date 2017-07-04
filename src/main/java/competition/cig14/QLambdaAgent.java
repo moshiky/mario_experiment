@@ -275,7 +275,7 @@ public class QLambdaAgent extends BasicMarioAIAgent implements Agent {
 
     public static int type = 3;
     
-    public void giveIntermediateReward(float reward) {
+    public void giveIntermediateReward(float reward, boolean update) {
         
         double[] state = getState();
         

@@ -271,15 +271,17 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
     static int sizeTotal = 0;
     static double rewardTmpSum = 0;
 
-    public void giveIntermediateReward(float worldRewardUntilNow) {
+    public void giveIntermediateReward(float worldRewardUntilNow, boolean update) {
         double[] currentState = getState();
 
         double actionReward = worldRewardUntilNow - lastWorldReward;
         this.lastWorldReward = worldRewardUntilNow;
 
         int nextAction = egreedyActionSelection(currentState);
-        for (AbstractionQLambdaAgent agent : agents) {
-            agent.update(this.previousState, this.previousAction, actionReward, currentState, nextAction);
+        if (update) {
+            for (AbstractionQLambdaAgent agent : agents) {
+                agent.update(this.previousState, this.previousAction, actionReward, currentState, nextAction);
+            }
         }
 
         runs++;
