@@ -91,7 +91,7 @@ public class SimpleExperiment {
         int runs = 10;
         int episodesForRun = 1000000;
 
-        AgentType[] agentsToRun = new AgentType[] { AgentType.BasicQLearning };
+        AgentType[] agentsToRun = new AgentType[] { AgentType.Similarities };
 
         for (AgentType agentType : agentsToRun) {
             runAgentExperiment(logger, agentType, runs, episodesForRun);
