@@ -333,7 +333,7 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
     /**
      *  You have access to:
      *
-     *  >>  this.marionState:   represents current mario state
+     *  >>  this.marioState:   represents current mario state
      *      [0]     Mario Status    [Mario.STATUS_DEAD, Mario.STATUS_WIN, Mario.STATUS_RUNNING]
      *      [1]     Mario Mode      [0= small, 1= large, 2= large+able to shoot fireballs]
      *      [2]     Is mario on ground  [0= no, 1= yes]
@@ -377,7 +377,7 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *                Sprite.SPIKY_WINGED
      *                Sprite.SHELL
      *      [i+1] =  (enemy_i.x - mario.x)
-     *      [i+2] =  (enemy_i.x - mario.x)
+     *      [i+2] =  (enemy_i.y - mario.y)
      *
      *  >>  method     int enemies(int out, int in)
      *      returns one or sum of few of the following numbers:
@@ -427,7 +427,28 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
         double[] state = new double[this.stateLength];
 
         // *** YOUR CODE HERE **********************************************************************
+        state[0] = isMarioAbleToJump ? 1 : 0;
+        state[1] = isMarioOnGround ? 1 : 0;
+        state[2] = isMarioAbleToShoot ? 1 : 0;//marioMode;//
+        float xdiff = marioFloatPos[0] - prevMarioPos[0];
+        float ydiff = marioFloatPos[1] - prevMarioPos[1];
+        state[3] = xdiff < 0 ? 0 : (xdiff == 0 ? 1 : 2);
+        state[3] += 3*(ydiff < 0 ? 0 : (ydiff == 0 ? 1 : 2));
 
+        state[4] = enemies(3, 0);
+        state[5] = 0; //enemies(3, 1);
+        state[6] = 0; //enemies(5, 3);
+
+        state[7] = obstacle();
+
+        int[] enemy = closestEnemy();
+        if(Math.abs(enemy[0]) < 11 && Math.abs(enemy[1]) < 11){
+            state[8] = enemy[0]+10;
+            state[9] = enemy[1]+10;
+        } else {
+            state[8] = 21;
+            state[9] = 21;
+        }
         // *** END OF YOUR CODE ********************************************************************
 
         return state;
