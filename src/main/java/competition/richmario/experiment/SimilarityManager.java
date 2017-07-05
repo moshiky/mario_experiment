@@ -97,6 +97,115 @@ public class SimilarityManager {
         }
 
         // *** YOUR CODE HERE **********************************************************************
+        int newAction = 0;
+        int[] newState = state.clone();
+        if (action == 1 && state[0] == 0) {
+            newAction = 4;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 1.0));
+        if (action == 1 && state[0] == 0) {
+            newAction = 10;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.8));
+        if (action == 2 && state[0] == 0) {
+            newAction = 5;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 1.0));
+        if (action == 2 && state[0] == 0) {
+            newAction = 11;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.8));
+
+
+        if (action == 4 && state[0] == 0) {
+            newAction = 1;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 1.0));
+        if (action == 10 && state[0] == 0) {
+            newAction = 1;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.8));
+        if (action == 5 && state[0] == 0) {
+            newAction = 2;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 1.0));
+        if (action == 11 && state[0] == 0) {
+            newAction = 2;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.8));
+
+/*
+        if (state[8] > 50) {
+            for (int i = 50; i < 200; i++) {
+                if (i!=state[8]) {
+                    newState = state.clone();
+                    newState[8] = i;
+                    similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.9));
+                }
+            }
+        }*/
+        /*newState = state.clone();
+        if (state[2] == 0 && action == 6) {
+            similarityRecords.add(new Pair<>(new StateAction(newState, 0), 1.0));
+        }
+        if (state[2] == 0 && action == 0) {
+            similarityRecords.add(new Pair<>(new StateAction(newState, 6), 1.0));
+        }*/
+
+        newState = state.clone();
+        if (action == 1) {
+            newAction = 4;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.6));
+        if (action == 1) {
+            newAction = 7;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.6));
+        if (action == 1) {
+            newAction = 10;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.5));
+
+
+        if (action == 4) {
+            newAction = 1;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.6));
+        if (action == 7) {
+            newAction = 1;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.6));
+        if (action == 10) {
+            newAction = 1;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.5));
+
+
+        if (action == 2) {
+            newAction = 5;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.6));
+        if (action == 2) {
+            newAction = 8;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.6));
+        if (action == 2) {
+            newAction = 11;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.5));
+
+        if (action == 5) {
+            newAction = 2;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.6));
+        if (action == 8) {
+            newAction = 2;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.6));
+        if (action == 11) {
+            newAction = 2;
+        }
+        similarityRecords.add(new Pair<>(new StateAction(newState, newAction), 0.5));
 
         // *** END OF YOUR CODE ********************************************************************
 
