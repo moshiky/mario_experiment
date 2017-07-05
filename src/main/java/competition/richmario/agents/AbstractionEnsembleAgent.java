@@ -333,7 +333,7 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
     /**
      *  You have access to:
      *
-     *  >>  this.marionState:   represents current mario state
+     *  >>  this.marioState:   represents current mario state
      *      [0]     Mario Status    [Mario.STATUS_DEAD, Mario.STATUS_WIN, Mario.STATUS_RUNNING]
      *      [1]     Mario Mode      [0= small, 1= large, 2= large+able to shoot fireballs]
      *      [2]     Is mario on ground  [0= no, 1= yes]
@@ -377,7 +377,7 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *                Sprite.SPIKY_WINGED
      *                Sprite.SHELL
      *      [i+1] =  (enemy_i.x - mario.x)
-     *      [i+2] =  (enemy_i.x - mario.x)
+     *      [i+2] =  (enemy_i.y - mario.y)
      *
      *  >>  method     int enemies(int out, int in)
      *      returns one or sum of few of the following numbers:
@@ -422,12 +422,54 @@ abstract public class AbstractionEnsembleAgent extends BasicMarioAIAgent impleme
      *          xDist   =   {closest_enemy}.x - mario.x
      *          yDist   =   {closest_enemy}.y - mario.y
      */
-    private int stateLength = 10;   // NOTICE: remember to change this to your state length!
+    private int stateLength = 8;   // NOTICE: remember to change this to your state length!
     private double[] getCustomState() {
         double[] state = new double[this.stateLength];
 
         // *** YOUR CODE HERE **********************************************************************
 
+        state[0] = this.marioState[2];
+
+        state[1] = 10;
+        for (int i = 9; i >= 0; i--) {
+            if (this.levelScene[i][9] == -60 || this.levelScene[i][9] == 1) {
+                state[1] = 9 - i;
+                break;
+            }
+        }
+        state[2] = 10;
+        for (int i = 10; i < 19; i++) {
+            if (this.levelScene[i][9] == -60 || this.levelScene[i][9] == 1) {
+                state[2] = i - 10;
+                break;
+            }
+        }
+        state[3] = 10;
+        for (int i = 9; i >= 0; i--) {
+            if (this.levelScene[i][9] == -60 || this.levelScene[i][9] == 1) {
+                state[3] = 9 - i;
+                break;
+            }
+        }
+        state[4] = 10;
+        for (int i = 10; i < 19; i++) {
+            if (this.levelScene[9][i] == -60 || this.levelScene[9][i] == 1) {
+                state[4] = i - 10;
+                break;
+            }
+        }
+
+        double closestDistance = 9999;
+        for (int i = 0; i < this.enemiesFloatPos.length; i+=3) {
+            double dist = Math.sqrt(Math.pow(this.enemiesFloatPos[i+1], 2) + Math.pow(this.enemiesFloatPos[i+2], 2));
+            if (dist < closestDistance) {
+                closestDistance = dist;
+                state[5] = this.enemiesFloatPos[i+1];
+                state[6] = this.enemiesFloatPos[i+2];
+            }
+        }
+
+        state[7] = this.marioState[1];
         // *** END OF YOUR CODE ********************************************************************
 
         return state;
