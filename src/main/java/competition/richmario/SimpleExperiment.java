@@ -89,9 +89,9 @@ public class SimpleExperiment {
 
         double[] resultsSum = null;
         int runs = 10;
-        int episodesForRun = 10000;
+        int episodesForRun = 100000;
 
-        AgentType[] agentsToRun = new AgentType[] { AgentType.Similarities };
+        AgentType[] agentsToRun = new AgentType[] { AgentType.RewardShaping };
 
         for (AgentType agentType : agentsToRun) {
             runAgentExperiment(logger, agentType, runs, episodesForRun);
