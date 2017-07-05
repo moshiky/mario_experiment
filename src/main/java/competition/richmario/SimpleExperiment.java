@@ -88,7 +88,7 @@ public class SimpleExperiment {
     public static double[] experimentMain(Logger logger) throws Exception {
 
         double[] resultsSum = null;
-        int runs = 3;
+        int runs = 10;
         int episodesForRun = 10000;
 
         AgentType[] agentsToRun = new AgentType[] { AgentType.Similarities };
