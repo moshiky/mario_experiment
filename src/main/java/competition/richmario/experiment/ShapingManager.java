@@ -110,6 +110,43 @@ public class ShapingManager {
 
         // *** YOUR CODE HERE **********************************************************************
 
+        if( (previousState[0] ==1 ) && (previousState[4]== 32)&&
+                (previousAction == 4 ||     previousAction == 10 ) && currentState[4] ==0){
+            return 10.0;
+        }
+
+        if((previousState[0] ==1 ) && (previousState[5]== 4 )&&
+                (previousAction == 5 ||previousAction == 11 )&& currentState[4] ==0){
+            return 20.0;
+        }
+
+        if( (previousState[0] ==1 ) && (previousState[5]== 32)&&
+                (previousAction == 3 ||previousAction == 5 ||
+            previousAction == 9  ||previousAction == 11)&& currentState[4] ==0){
+            return 10.0;
+        }
+
+        if((previousState[0] ==1 ) && (previousState[5]== 4 )&&
+                (previousAction == 3 || previousAction == 4 ||
+                        previousAction == 9 || previousAction == 10 )&& currentState[4] ==0){
+            return 10.0;
+        }
+
+        if((previousState[0] ==1 ) && (previousState[6]== 32 )&& (previousAction == 11)&& currentState[4] ==0){
+            return 10.0;
+        }
+        if((previousState[0] ==1 ) && (previousState[6]== 4 )&& (previousAction == 10 )&& currentState[4] ==0){
+            return 10.0;
+        }
+
+
+
+
+
+
+
+
+
         // *** END OF YOUR CODE ********************************************************************
 
         return rewardShaping;
