@@ -51,7 +51,14 @@ public class QLHash {
         if(!weights.containsKey(features.key())){
             weights.put(features.key(), init.potential(features));
         }
-        return weights.get(features.key());
+
+        try {
+            return weights.get(features.key());
+        }
+        catch (Exception ex) {
+            System.out.println("### error: table size is " + this.weights.size() + " ###");
+            throw ex;
+        }
     }
     
     public double getValueNoUpdate(StateAction features){
