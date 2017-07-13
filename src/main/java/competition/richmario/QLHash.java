@@ -4,7 +4,10 @@
  */
 package competition.richmario;
 
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import competition.richmario.shapings.Shaping;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -47,16 +50,22 @@ public class QLHash {
         this.es = new HashMap<Long, Double>();
     }
     
-    public double getValue(StateAction features){
-        if(!weights.containsKey(features.key())){
-            weights.put(features.key(), init.potential(features));
+    public double getValue(StateAction features) {
+        Long featuresKey = features.key();
+
+        if(!weights.containsKey(featuresKey)){
+            Double potentialValue = init.potential(features);
+            weights.put(featuresKey, potentialValue);
         }
 
         try {
-            return weights.get(features.key());
+            return weights.get(featuresKey);
         }
         catch (Exception ex) {
+            Object getObject = weights.get(featuresKey);
             System.out.println("### error: table size is " + this.weights.size() + " ###");
+            System.out.println("### key is " + featuresKey + " ###");
+            System.out.println("### value is [" + getObject.getClass().getName() + ", " + getObject + "] ###");
             throw ex;
         }
     }
