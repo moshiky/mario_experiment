@@ -91,7 +91,7 @@ public class SimpleExperiment {
         int runs = 50;
         int episodesForRun = 20000;
 
-        AgentType[] agentsToRun = new AgentType[] { AgentType.BasicQLearning };
+        AgentType[] agentsToRun = new AgentType[] { AgentType.Abstraction };
 
         for (AgentType agentType : agentsToRun) {
             runAgentExperiment(logger, agentType, runs, episodesForRun);
@@ -156,7 +156,7 @@ public class SimpleExperiment {
 
         int evaluationEpisodes = 1000;
         int evaluationInterval = 1000;
-        int maxSecondsForTrainSession = 500 * 1000;
+        int maxSecondsForTrainSession = 17 * 60 * 1000;
 
         boolean visualize = false;
 
@@ -282,7 +282,7 @@ public class SimpleExperiment {
                         }
 
                         evaluationEpisodeResult = basicTask.runSingleEpisode(1, false);
-                        evaluationResults[ep] = evaluationEpisodeResult;
+                        evaluationResults[evalEp] = evaluationEpisodeResult;
                     }
 
                     logger.info("evaluation results: " + Arrays.toString(evaluationResults));
