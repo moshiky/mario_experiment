@@ -88,10 +88,10 @@ public class SimpleExperiment {
     public static double[] experimentMain(Logger logger) throws Exception {
 
         double[] resultsSum = null;
-        int runs = 10;
-        int episodesForRun = 100000;
+        int runs = 50;
+        int episodesForRun = 20000;
 
-        AgentType[] agentsToRun = new AgentType[] { AgentType.RewardShaping };
+        AgentType[] agentsToRun = new AgentType[] { AgentType.Abstraction };
 
         for (AgentType agentType : agentsToRun) {
             runAgentExperiment(logger, agentType, runs, episodesForRun);
@@ -155,6 +155,9 @@ public class SimpleExperiment {
     public static void experiment(Logger logger, int runs, int episodesForRun) throws Exception {
 
         int evaluationEpisodes = 1000;
+        int evaluationInterval = 1000;
+        int maxSecondsForTrainSession = 17 * 60 * 1000;
+
         boolean visualize = false;
 
         double alpha = 0.01;
@@ -163,7 +166,7 @@ public class SimpleExperiment {
         double lambda = 0.5;
 
         double[] trainMeanResults = new double[episodesForRun];
-        double[] evaluationMeanResults = new double[evaluationEpisodes];
+        double[] evaluationResults = new double[evaluationEpisodes];
 
         long startTime = System.currentTimeMillis();
 
@@ -212,6 +215,8 @@ public class SimpleExperiment {
 
             final BasicTask basicTask = new BasicTask(marioAIOptions);
             double rewardTmpSum = 0;
+            long sessionCurrentTime = System.currentTimeMillis();
+            double currentSessionDuration = 0;
 
             for (int ep = 0; ep < episodesForRun; ++ep) {
 
@@ -240,7 +245,6 @@ public class SimpleExperiment {
                     ((EnsembleAgent)agent).newEpisode();
                 }
 
-
                 Double episodeResult = basicTask.runSingleEpisode(1, true);
                 trainMeanResults[ep] = ((trainMeanResults[ep] * run_id) + episodeResult) / (run_id + 1.0);
 
@@ -250,44 +254,57 @@ public class SimpleExperiment {
                 }
                 rewardTmpSum += episodeResult;
 //                logger.addEpisodeResult(res);
-            }
 
-            // 2. run evaluation session
+                // 2. run evaluation session
+                if ((ep+1) % evaluationInterval == 0) {
 
-            for (int ep = 0; ep < evaluationEpisodes; ++ep) {
+                    // hold session timer
+                    currentSessionDuration += System.currentTimeMillis() - sessionCurrentTime;
 
-                marioAIOptions.setAgent(agent);
-                marioAIOptions.setLevelDifficulty(0);
-                marioAIOptions.setLevelRandSeed(RNG.randomInt(1000000));
-                marioAIOptions.setMarioMode(RNG.randomInt(3));
-                marioAIOptions.setGapsCount(false);
-                marioAIOptions.setVisualization(visualize);
-                basicTask.setOptionsAndReset(marioAIOptions);
+                    logger.info("-- Evaluation --");
 
-                if (AgentType.Abstraction == SimpleExperiment.activeAgentType
-                        || AgentType.AbstractionBasicQLearning == SimpleExperiment.activeAgentType) {
-                    ((AbstractionEnsembleAgent)agent).newEpisode();
+                    Double evaluationEpisodeResult = 0.0;
+                    for (int evalEp = 0; evalEp < evaluationEpisodes; ++evalEp) {
+
+                        marioAIOptions.setAgent(agent);
+                        marioAIOptions.setLevelDifficulty(0);
+                        marioAIOptions.setLevelRandSeed(RNG.randomInt(1000000));
+                        marioAIOptions.setMarioMode(RNG.randomInt(3));
+                        marioAIOptions.setGapsCount(false);
+                        marioAIOptions.setVisualization(visualize);
+                        basicTask.setOptionsAndReset(marioAIOptions);
+
+                        if (AgentType.Abstraction == SimpleExperiment.activeAgentType
+                                || AgentType.AbstractionBasicQLearning == SimpleExperiment.activeAgentType) {
+                            ((AbstractionEnsembleAgent) agent).newEpisode();
+                        } else {
+                            ((EnsembleAgent) agent).newEpisode();
+                        }
+
+                        evaluationEpisodeResult = basicTask.runSingleEpisode(1, false);
+                        evaluationResults[evalEp] = evaluationEpisodeResult;
+                    }
+
+                    logger.info("evaluation results: " + Arrays.toString(evaluationResults));
+                    logger.info("mean result: " + mean(evaluationResults));
+
+                    // continue session timer
+                    sessionCurrentTime = System.currentTimeMillis();
                 }
-                else {
-                    ((EnsembleAgent)agent).newEpisode();
+
+                if (currentSessionDuration+(System.currentTimeMillis()-sessionCurrentTime) > maxSecondsForTrainSession) {
+                    logger.error("session timeout");
+                    break;
                 }
-
-
-                Double episodeResult = basicTask.runSingleEpisode(1, false);
-                logger.info("ex" + run_id + "eval_ep" + ep + ": " + episodeResult);
-                evaluationMeanResults[ep] = ((evaluationMeanResults[ep] * run_id) + episodeResult) / (run_id + 1.0);
-//                logger.addEpisodeResult(res);
             }
         }
 
-        long totalTime = (System.currentTimeMillis() - startTime) / 1000;
+        double totalTime = (System.currentTimeMillis() - startTime) / 1000.0;
         logger.info("total time: " + totalTime + " secs");
         logger.addSeriesTime(totalTime);
 
-        logger.info("ex_eval_mean:" + SimpleExperiment.mean(evaluationMeanResults));
-
-        logger.info(">> Train episodes mean: " + Arrays.toString(trainMeanResults));
-        logger.info(">> Train experiments mean: " + SimpleExperiment.mean(trainMeanResults));
+        logger.info("Train episodes mean: " + Arrays.toString(trainMeanResults));
+        logger.info("Train experiments mean: " + SimpleExperiment.mean(trainMeanResults));
     }
 
     private static double mean(double[] stats) {
