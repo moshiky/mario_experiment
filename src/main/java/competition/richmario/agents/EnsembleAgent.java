@@ -396,7 +396,8 @@ abstract public class EnsembleAgent extends BasicMarioAIAgent implements Agent {
 
         lastReward = reward;
 
-        int action = egreedyActionSelection(sa);
+        // send update as isTrainMode because we update iff this is train mode
+        int action = egreedyActionSelection(sa, update);
         sa.setAction(action);
 
         if((SimpleExperiment.usingSimilarities != 2) && update) {
@@ -501,8 +502,8 @@ abstract public class EnsembleAgent extends BasicMarioAIAgent implements Agent {
     }
 
 
-    public int egreedyActionSelection(StateAction sa){
-        if(RNG.randomDouble() < epsilon){
+    public int egreedyActionSelection(StateAction sa, boolean isTrainMode){
+        if((RNG.randomDouble() < epsilon) && isTrainMode){
             return RNG.randomInt(getNumActions());
         } else {
             return greedyActionSelection(sa);
