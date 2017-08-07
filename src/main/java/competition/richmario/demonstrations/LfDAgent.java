@@ -39,7 +39,7 @@ public class LfDAgent extends EnsembleAgent{
     }
     
     @Override
-    public int egreedyActionSelection(StateAction sa) {
+    public int egreedyActionSelection(StateAction sa, boolean update) {
         try {
             Instances unlabeled = source.getStructure();
             unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
@@ -60,7 +60,7 @@ public class LfDAgent extends EnsembleAgent{
 
     @Override
     protected int greedyActionSelection(StateAction sa) {
-        return egreedyActionSelection(sa);
+        return egreedyActionSelection(sa, true);
     }
 
     

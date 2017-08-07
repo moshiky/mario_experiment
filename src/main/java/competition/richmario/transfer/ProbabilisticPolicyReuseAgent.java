@@ -32,7 +32,7 @@ public class ProbabilisticPolicyReuseAgent extends LinearEnsembleAgent {
     }
     
     @Override
-    public int egreedyActionSelection(StateAction sa){
+    public int egreedyActionSelection(StateAction sa, boolean update){
         if(RNG.randomDouble() < phi){
             return policyReuse(sa);
         } else if(RNG.randomDouble() < epsilon){

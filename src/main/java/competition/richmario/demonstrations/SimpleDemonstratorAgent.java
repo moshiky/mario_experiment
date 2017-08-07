@@ -21,7 +21,7 @@ public class SimpleDemonstratorAgent extends EnsembleAgent{
     }
     
     @Override
-    public int egreedyActionSelection(StateAction sa) {
+    public int egreedyActionSelection(StateAction sa, boolean update) {
         double rand = RNG.randomDouble();
         if(rand < 1.0/3.0){
             return 2;
@@ -39,7 +39,7 @@ public class SimpleDemonstratorAgent extends EnsembleAgent{
 
     @Override
     protected int greedyActionSelection(StateAction sa) {
-        return egreedyActionSelection(sa);
+        return egreedyActionSelection(sa, true);
     }
     
 }
