@@ -136,7 +136,9 @@ public double runSingleEpisode(final int repetitionsOfSingleEpisode, Boolean upd
         environment.closeRecorder(); //recorder initialized in environment.reset
         environment.getEvaluationInfo().setTaskName(name);
         this.evaluationInfo = environment.getEvaluationInfo().clone();
-        agent.endEpisode();
+        if (update) {
+            agent.endEpisode();
+        }
     }
 
     return environment.getIntermediateReward();
