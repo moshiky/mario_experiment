@@ -88,7 +88,7 @@ public class SimpleExperiment {
     public static double[] experimentMain(Logger logger) throws Exception {
 
         double[] resultsSum = null;
-        int runs = 50;
+        int runs = 10;
         int episodesForRun = 20000;
 
         AgentType[] agentsToRun = new AgentType[] { AgentType.RewardShaping };
@@ -155,7 +155,7 @@ public class SimpleExperiment {
     public static void experiment(Logger logger, int runs, int episodesForRun) throws Exception {
 
         int evaluationEpisodes = 1000;
-        int evaluationInterval = 1000;
+        int evaluationInterval = 2000;
         int maxSecondsForTrainSession = 40 * 60 * 1000;
 
         boolean visualize = false;
