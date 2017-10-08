@@ -88,8 +88,8 @@ public class SimpleExperiment {
     public static double[] experimentMain(Logger logger) throws Exception {
 
         double[] resultsSum = null;
-        int runs = 1;
-        int episodesForRun = 7500;
+        int runs = 10;
+        int episodesForRun = 10000;
 
         AgentType[] agentsToRun = new AgentType[] {
                 AgentType.RewardShaping,
@@ -164,6 +164,7 @@ public class SimpleExperiment {
 
         for (int i = 0 ; i < runs ; i++) {
 
+
             logger.increaseRound();
 
             final MarioAIOptions marioAIOptions = new MarioAIOptions(new String[]{});
@@ -208,6 +209,13 @@ public class SimpleExperiment {
 
             for (int j = 0; j < episodesForRun; ++j) {
 
+
+                if (j > 500) {
+                    //visualize = true;
+                }else {
+                    visualize = false;
+                }
+
             /*if(i > 0 && i % testStepSize == 0) {
                 Integer stepResultIndex = i / testStepSize;
                 System.out.println("Test " + stepResultIndex + "  current episode:" + i);
@@ -244,6 +252,9 @@ public class SimpleExperiment {
                 logger.addEpisodeResult(res);
 
             }
+
+
+
         }
         logger.addSeriesTime((System.currentTimeMillis() - startTime) / 1000);
     }
