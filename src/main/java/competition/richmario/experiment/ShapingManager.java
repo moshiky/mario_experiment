@@ -104,11 +104,68 @@ public class ShapingManager {
     public double getShapingReward(int[] previousState, float[] previousMarionPosition, int previousAction,
                                    int[] currentState, float[] currentMarionPosition) {
         double rewardShaping = 0.0;
-        if (AgentType.RewardShaping != SimpleExperiment.activeAgentType) {
+        if (AgentType.RewardShaping != SimpleExperiment.activeAgentType
+                && AgentType.SimilaritiesOnRewardShaping != SimpleExperiment.activeAgentType) {
             return rewardShaping;
         }
 
         // *** YOUR CODE HERE **********************************************************************
+
+        // don't go left
+        if (1 == previousAction) {
+            rewardShaping -= 0.5;
+        }
+        if (7 == previousAction) {
+            rewardShaping -= 0.5;
+        }
+        if (10 == previousAction) {
+            rewardShaping -= 0.5;
+        }
+
+
+        // Shoot if you can
+        if (1 == currentState[2] &&
+                previousAction >= 6) {
+            rewardShaping += 0.2;
+        }
+
+
+        // don't hit obstacles
+        if ((1 == currentState[7] ||
+                3 == currentState[7] ||
+                7 == currentState[7] ||
+                15 == currentState[7]) &&
+                (3 != previousAction ||
+                        4 != previousAction ||
+                        5 != previousAction ||
+                        7 != previousAction ||
+                        8 != previousAction ||
+                        10 != previousAction ||
+                        11 != previousAction)) {
+            rewardShaping -= 0.1;
+        }
+
+
+//
+//        // Do not hit enemies
+//        if (32 == currentState[4] && currentState[8] < 2 &&
+//                (2 == previousAction ||
+//                        5 == previousAction ||
+//                        8 == previousAction ||
+//                        11 == previousAction) &&
+//                1 != currentState[2]) {
+//
+//            rewardShaping -= 0.3;
+//        }
+
+
+//        // Jump!
+//        if ((5 == previousAction ||
+//                7 == previousAction ||
+//                8 == previousAction ||
+//                11 == previousAction)) {
+//            rewardShaping += 0.1;
+//        }
 
         // *** END OF YOUR CODE ********************************************************************
 
