@@ -88,11 +88,13 @@ public class SimpleExperiment {
     public static double[] experimentMain(Logger logger) throws Exception {
 
         double[] resultsSum = null;
-        int runs = 10;
+        int runs = 1;
         int episodesForRun = 10000;
 
         AgentType[] agentsToRun = new AgentType[] {
+                AgentType.Similarities,
                 AgentType.RewardShaping,
+                AgentType.SimilaritiesOnRewardShaping,
                 AgentType.BasicQLearning
         };
 
@@ -125,6 +127,10 @@ public class SimpleExperiment {
             }
             case AbstractionBasicQLearning: {
                 logger.setActiveSeries("AbstractionBasicQLearning");
+                break;
+            }
+            case SimilaritiesOnRewardShaping: {
+                logger.setActiveSeries("SimilaritiesOnRewardShaping");
                 break;
             }
         }

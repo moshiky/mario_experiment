@@ -104,7 +104,8 @@ public class ShapingManager {
     public double getShapingReward(int[] previousState, float[] previousMarionPosition, int previousAction,
                                    int[] currentState, float[] currentMarionPosition) {
         double rewardShaping = 0.0;
-        if (AgentType.RewardShaping != SimpleExperiment.activeAgentType) {
+        if (AgentType.RewardShaping != SimpleExperiment.activeAgentType
+                && AgentType.SimilaritiesOnRewardShaping != SimpleExperiment.activeAgentType) {
             return rewardShaping;
         }
 
